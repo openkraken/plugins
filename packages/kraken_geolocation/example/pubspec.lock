@@ -155,7 +155,7 @@ packages:
       name: kraken
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.6"
+    version: "0.6.6+1"
   kraken_geolocation:
     dependency: "direct main"
     description:

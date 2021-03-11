@@ -26,15 +26,6 @@ android {
 
     defaultConfig {
         minSdkVersion 23
-        ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a'
-        }
-
-        externalNativeBuild {
-            cmake {
-                abiFilters 'armeabi-v7a', 'arm64-v8a'
-            }
-        }
     }
     lintOptions {
         disable 'InvalidPackage'
