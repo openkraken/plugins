@@ -82,24 +82,20 @@ container1.appendChild(playBtn);
 
 ## Contribute
 
-**Building Bridge for macos**
+Install `kraken-nbpt`
 
-```shell
-cd bridge/scripts
-./build_macos.sh
+```
+npm install kraken-nbpt -g
 ```
 
-**Building Bridge for ios**
-```shell
-cd bridge/scripts
-./build_ios.sh
+Generate build project files: 
+
+```
+kraken-nbpt configure
 ```
 
-**Building Bridge for Android**
-requirement: Android SDK installed at `~/Library/Android/sdk`
-NDK version requirement: 20.0.5594570
+Build native dynamic library
 
-```shell
-cd bridge/scripts
-./build_android.sh
+```
+kraken-nbpt build
 ```
