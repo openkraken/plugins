@@ -1,17 +1,24 @@
 
 import 'package:flutter/widgets.dart';
 import 'websocket_module.dart';
-import 'package:kraken/launcher.dart';
 import 'package:kraken/module.dart';
-import 'package:kraken/bridge.dart';
+import 'platform.dart';
+import 'dart:ffi';
+
+typedef Native_InitBridge = Void Function();
+typedef Dart_InitBridge = void Function();
+
+final Dart_InitBridge _initBridge =
+nativeDynamicLibrary.lookup<NativeFunction<Native_InitBridge>>('initBridge').asFunction();
+
+void initBridge() {
+  _initBridge();
+}
 
 class KrakenWebsocket {
   static void initialize() {
+    initBridge();
     WidgetsFlutterBinding.ensureInitialized();
     ModuleManager.defineModule((moduleNamager) => WebSocketModule(moduleNamager));
-    KrakenBundle.getBundle('packages/kraken_websocket/assets/websocket.js').then((KrakenBundle bundle) {
-      // print(bundle.content);
-      patchKrakenPolyfill(bundle.content, 'kraken_websocket://');
-    });
   }
 }

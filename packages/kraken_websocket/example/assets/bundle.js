@@ -3,4 +3,5 @@ ws.onopen = () => {
     ws.send('helloworld');
 };
 ws.onmessage = (event) => {
+    console.log(event);
 }
