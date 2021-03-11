@@ -1,6 +1,6 @@
 name: kraken_mqtt
 description: kraken MQTT protocol support
-version: 0.0.1
+version: 0.0.2
 author:
 homepage:
 
@@ -12,8 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   mqtt_client: ^6.0.0
-  kraken:
-    path: ../kraken/kraken
+  kraken: ^0.6.6+2
 
 dev_dependencies:
   flutter_test:

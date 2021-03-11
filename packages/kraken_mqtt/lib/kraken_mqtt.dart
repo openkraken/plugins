@@ -5,16 +5,24 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:kraken/module.dart';
-import 'package:kraken/launcher.dart';
-import 'package:kraken/bridge.dart';
 import 'mqtt_module.dart';
+import 'platform.dart';
+import 'dart:ffi';
+
+typedef Native_InitBridge = Void Function();
+typedef Dart_InitBridge = void Function();
+
+final Dart_InitBridge _initBridge =
+nativeDynamicLibrary.lookup<NativeFunction<Native_InitBridge>>('initBridge').asFunction();
+
+void initBridge() {
+  _initBridge();
+}
 
 class KrakenMQTT {
   static void initialize() {
+    initBridge();
     WidgetsFlutterBinding.ensureInitialized();
     ModuleManager.defineModule((moduleNamager) => MQTTModule(moduleNamager));
-    KrakenBundle.getBundle('packages/kraken_mqtt/assets/mqtt.js').then((KrakenBundle bundle) {
-      patchKrakenPolyfill(bundle.content, 'kraken_mqtt://');
-    });
   }
 }
