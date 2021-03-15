@@ -18,7 +18,7 @@ void initBridge() {
 
 class KrakenGeolocation {
   static void initialize() {
-    WidgetsFlutterBinding.ensureInitialized();
+    initBridge();
     ModuleManager.defineModule((moduleManager) => GeolocationModule(moduleManager));
   }
 }

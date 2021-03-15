@@ -18,7 +18,6 @@ void initBridge() {
 class KrakenWebsocket {
   static void initialize() {
     initBridge();
-    WidgetsFlutterBinding.ensureInitialized();
     ModuleManager.defineModule((moduleNamager) => WebSocketModule(moduleNamager));
   }
 }

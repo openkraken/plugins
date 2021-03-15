@@ -6,7 +6,6 @@ import 'camera_element.dart';
 
 class KrakenCamera {
   static void initialize() {
-    WidgetsFlutterBinding.ensureInitialized();
     ElementManager.defineElement(
         'ANIMATION-PLAYER',
             (id, nativePtr, elementManager) => CameraPreviewElement(

@@ -16,7 +16,6 @@ void initBridge() {
 
 class KrakenVideoPlayer {
   static void initialize() {
-    WidgetsFlutterBinding.ensureInitialized();
     initBridge();
     ElementManager.defineElement(
         'VIDEO',

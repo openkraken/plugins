@@ -22,7 +22,6 @@ void initBridge() {
 class KrakenMQTT {
   static void initialize() {
     initBridge();
-    WidgetsFlutterBinding.ensureInitialized();
     ModuleManager.defineModule((moduleNamager) => MQTTModule(moduleNamager));
   }
 }

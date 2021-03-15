@@ -21,7 +21,6 @@ void initBridge() {
 
 class KrakenWebView {
   static void initialize() {
-    WidgetsFlutterBinding.ensureInitialized();
     initBridge();
     ElementManager.defineElement(
         'IFRAME',
