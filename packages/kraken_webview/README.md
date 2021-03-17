@@ -28,28 +28,21 @@ iframe.style.height = '375px';
 document.body.appendChild(iframe);
 ```
 
-## Development
+## Contribute
+Install kraken-nbpt
 
-**Building Bridge for macos**
-
-```shell
-cd bridge/scripts
-./build_macos.sh
+```
+npm install kraken-nbpt -g
 ```
 
-**Building Bridge for ios**
-```shell
-cd bridge/scripts
-./build_ios.sh
+Generate build project files:
+
+```
+kraken-nbpt configure
 ```
 
-**Building Bridge for Android**
+Build native dynamic library
 
-requirement: Android SDK installed at `~/Library/Android/sdk`
-
-NDK version requirement: 20.0.5594570
-
-```shell
-cd bridge/scripts
-./build_android.sh
+```
+kraken-nbpt build
 ```

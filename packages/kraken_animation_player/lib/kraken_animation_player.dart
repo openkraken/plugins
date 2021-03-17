@@ -16,7 +16,6 @@ void initBridge() {
 
 class KrakenAnimationPlayer {
   static void initialize() {
-    WidgetsFlutterBinding.ensureInitialized();
     initBridge();
     ElementManager.defineElement(
         'ANIMATION-PLAYER',

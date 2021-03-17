@@ -1,6 +1,6 @@
 name: kraken_animation_player
 description: A kraken plugin which provide `<animation-player />` tags to play animation format files.
-version: 0.0.2
+version: 0.0.3
 homepage: https://openkraken.com
 
 environment:
