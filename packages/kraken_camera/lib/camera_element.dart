@@ -230,7 +230,7 @@ class CameraPreviewElement extends Element {
     }
   }
 
-  void _propertyChangedListener(String key, String original, String present, bool inAnimation) {
+  void _propertyChangedListener(String key, String original, String present) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);

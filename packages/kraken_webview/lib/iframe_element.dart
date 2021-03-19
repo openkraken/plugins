@@ -538,7 +538,7 @@ abstract class WebViewElement extends Element {
     addChild(sizedBox);
   }
 
-  void _stylePropertyChanged(String property, String prev, String present, bool isAnimation) {
+  void _stylePropertyChanged(String property, String prev, String present) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);

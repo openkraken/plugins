@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Change `_propertyChangedListener` to `void Function(String, String, String)`.
+
 ## 0.0.4
 
 * remove WidgetsFlutterBinding.ensureInitialized() when initialized;
