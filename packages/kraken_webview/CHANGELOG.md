@@ -1,15 +1,19 @@
-## 0.3.0
+## 0.5.0
+
+* Change `_propertyChangedListener` to `void Function(String, String, String)`.
+
+## 0.4.0
 
 * upgrade to kraken 0.7.0
 
 ## 0.2.3
 
-* remove WidgetsFlutterBinding.ensureInitialized() when initialized;
+* Remove WidgetsFlutterBinding.ensureInitialized() when initialized;
 
 ## 0.0.2
 
-* migrate from kraken
+* Migrate from kraken.
 
 ## 0.0.1
 
-* init release
+* Initial release.
