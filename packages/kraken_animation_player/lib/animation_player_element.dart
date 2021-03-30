@@ -25,6 +25,7 @@ class NativeAnimationElement extends Struct {
 }
 
 final Map<String, dynamic> _defaultStyle = {
+  DISPLAY: BLOCK,
   WIDTH: ELEMENT_DEFAULT_WIDTH,
   HEIGHT: ELEMENT_DEFAULT_HEIGHT,
 };
