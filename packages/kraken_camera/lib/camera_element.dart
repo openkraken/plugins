@@ -15,6 +15,7 @@ import 'camera.dart';
 const String CAMERA_PREVIEW = 'CAMERA-PREVIEW';
 
 final Map<String, dynamic> _defaultStyle = {
+  DISPLAY: BLOCK,
   WIDTH: ELEMENT_DEFAULT_WIDTH,
   HEIGHT: ELEMENT_DEFAULT_HEIGHT,
 };
