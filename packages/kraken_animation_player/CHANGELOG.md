@@ -1,3 +1,7 @@
+## 0.1.1
+
+* default display set to block.
+
 ## 0.1.0
 
 * upgrade to kraken 0.7.0
