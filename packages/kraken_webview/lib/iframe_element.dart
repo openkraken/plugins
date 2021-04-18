@@ -28,6 +28,7 @@ class NativeIframeElement extends Struct {
 const String IFRAME = 'IFRAME';
 
 const Map<String, dynamic> _defaultStyle = {
+  DISPLAY: BLOCK,
   WIDTH: ELEMENT_DEFAULT_WIDTH,
   HEIGHT: ELEMENT_DEFAULT_HEIGHT,
 };

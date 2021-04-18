@@ -1,3 +1,7 @@
+## 0.5.1
+
+* default display set to block.
+
 ## 0.5.0
 
 * Change `_propertyChangedListener` to `void Function(String, String, String)`.
