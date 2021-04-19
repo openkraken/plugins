@@ -50,12 +50,8 @@ Future<CameraDescription> detectCamera(String lens) async {
 }
 
 class CameraPreviewElement extends Element {
-  CameraPreviewElement(int targetId, Pointer<NativeElement> nativePtr,
-      ElementManager elementManager)
-      : super(targetId, nativePtr, elementManager,
-            tagName: CAMERA_PREVIEW,
-            defaultStyle: _defaultStyle,
-            isIntrinsicBox: true);
+  CameraPreviewElement(int targetId, Pointer<NativeElement> nativePtr, ElementManager elementManager)
+      : super(targetId, nativePtr, elementManager, tagName: CAMERA_PREVIEW, defaultStyle: _defaultStyle, isIntrinsicBox: true);
 
   @override
   void willAttachRenderer() {
@@ -82,7 +78,6 @@ class CameraPreviewElement extends Element {
   }
 
   bool enableAudio = false;
-  bool isFallback = true;
   RenderConstrainedBox sizedBox;
   CameraDescription cameraDescription;
   TextureBox renderTextureBox;
@@ -159,15 +154,13 @@ class CameraPreviewElement extends Element {
     if (cameraDescription != null) {
       TextureBox textureBox = await createCameraTextureBox(cameraDescription);
       _invokeReady();
-      sizedBox.child =
-          RenderAspectRatio(aspectRatio: aspectRatio, child: textureBox);
+      sizedBox.child = RenderAspectRatio(aspectRatio: aspectRatio, child: textureBox);
     }
   }
 
   void _initCameraWithLens(String lens) async {
     cameraDescription = await detectCamera(lens);
     if (cameraDescription == null) {
-      isFallback = true;
       _invokeReady();
       sizedBox.child = _buildFallbackView('Camera Fallback View');
     } else {
@@ -178,8 +171,10 @@ class CameraPreviewElement extends Element {
   RenderBox _buildFallbackView(String description) {
     assert(description != null);
 
-    TextStyle textStyle =
-        TextStyle(color: Color(0xFF000000), backgroundColor: Color(0xFFFFFFFF));
+    TextStyle textStyle = TextStyle(
+      color: Color(0xFF000000),
+      backgroundColor: Color(0xFFFFFFFF)
+    );
     return RenderFallbackViewBox(
       child: KrakenRenderParagraph(
         TextSpan(text: description, style: textStyle),
@@ -188,8 +183,7 @@ class CameraPreviewElement extends Element {
     );
   }
 
-  Future<TextureBox> createCameraTextureBox(
-      CameraDescription cameraDescription) async {
+  Future<TextureBox> createCameraTextureBox(CameraDescription cameraDescription) async {
     this.cameraDescription = cameraDescription;
     await _createCameraController();
     return TextureBox(textureId: controller.textureId);
@@ -228,8 +222,7 @@ class CameraPreviewElement extends Element {
   @override
   void setProperty(String key, dynamic value) async {
     super.setProperty(key, value);
-
-    if (isFallback || controller != null) {
+    if (controller != null) {
       _setProperty(key, value);
     } else {
       waitUntilReady(() {
@@ -238,8 +231,7 @@ class CameraPreviewElement extends Element {
     }
   }
 
-  void _propertyChangedListener(
-      String key, String original, String present, bool isChanged) {
+  void _propertyChangedListener(String key, String original, String present, bool isChanged) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);
@@ -256,7 +248,7 @@ class CameraPreviewElement extends Element {
     }
   }
 
-  Future<void> _setProperty(String key, dynamic value) {
+  void _setProperty(String key, dynamic value) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);
@@ -287,8 +279,7 @@ class CameraPreviewElement extends Element {
 
   void _updateSensorOrientation(value) async {
     int sensorOrientation = int.tryParse(value.toString());
-    cameraDescription =
-        cameraDescription.copyWith(sensorOrientation: sensorOrientation);
+    cameraDescription = cameraDescription.copyWith(sensorOrientation: sensorOrientation);
     await _initCamera();
   }
 }

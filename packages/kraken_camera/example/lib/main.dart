@@ -85,12 +85,16 @@ class _MyHomePageState extends State<MyBrowser> {
 
     kraken = Kraken(
       viewportWidth: window.physicalSize.width / window.devicePixelRatio,
-      viewportHeight: window.physicalSize.height / window.devicePixelRatio -
-          appBar.preferredSize.height -
-          queryData.padding.top,
+      viewportHeight: window.physicalSize.height / window.devicePixelRatio - appBar.preferredSize.height - queryData.padding.top,
       bundlePath: 'assets/bundle.js',
     );
 
-    return Scaffold(appBar: appBar, body: Center(child: kraken));
+    return Scaffold(
+        appBar: appBar,
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+            child: kraken
+        ));
   }
 }
