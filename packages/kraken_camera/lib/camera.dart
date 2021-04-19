@@ -111,7 +111,7 @@ class CameraDescription {
   /// is from top to bottom in the sensor's coordinate system.
   final int sensorOrientation;
 
-   CameraDescription copyWith({
+  CameraDescription copyWith({
     int sensorOrientation,
     String name,
     CameraLensDirection lensDirection
