@@ -111,11 +111,8 @@ class CameraDescription {
   /// is from top to bottom in the sensor's coordinate system.
   final int sensorOrientation;
 
-  CameraDescription copyWith({
-    int sensorOrientation,
-    String name,
-    CameraLensDirection lensDirection
-  }) {
+  CameraDescription copyWith(
+      {int sensorOrientation, String name, CameraLensDirection lensDirection}) {
     return CameraDescription(
       sensorOrientation: sensorOrientation ?? this.sensorOrientation,
       name: name ?? this.name,
@@ -365,6 +362,7 @@ class CameraController extends ValueNotifier<CameraValue> {
         <String, dynamic>{'textureId': _textureId, 'path': path},
       );
       value = value.copyWith(isTakingPicture: false);
+      print("保存成功, 路径为 $path");
     } on PlatformException catch (e) {
       value = value.copyWith(isTakingPicture: false);
       throw CameraException(e.code, e.message);

@@ -5,17 +5,19 @@
 
 import 'dart:ffi';
 import 'dart:async';
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:kraken/bridge.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kraken/dom.dart';
 import 'package:kraken/rendering.dart';
 import 'package:kraken/css.dart';
+import 'package:path_provider/path_provider.dart';
 import 'camera.dart';
 
 const String CAMERA_PREVIEW = 'CAMERA-PREVIEW';
 
 final Map<String, dynamic> _defaultStyle = {
-  DISPLAY: BLOCK,
   WIDTH: ELEMENT_DEFAULT_WIDTH,
   HEIGHT: ELEMENT_DEFAULT_HEIGHT,
 };
@@ -47,8 +49,12 @@ Future<CameraDescription> detectCamera(String lens) async {
 }
 
 class CameraPreviewElement extends Element {
-  CameraPreviewElement(int targetId, Pointer<NativeElement> nativePtr, ElementManager elementManager)
-      : super(targetId, nativePtr, elementManager, tagName: CAMERA_PREVIEW, defaultStyle: _defaultStyle, isIntrinsicBox: true);
+  CameraPreviewElement(int targetId, Pointer<NativeElement> nativePtr,
+      ElementManager elementManager)
+      : super(targetId, nativePtr, elementManager,
+            tagName: CAMERA_PREVIEW,
+            defaultStyle: _defaultStyle,
+            isIntrinsicBox: true);
 
   @override
   void willAttachRenderer() {
@@ -75,7 +81,7 @@ class CameraPreviewElement extends Element {
   }
 
   bool enableAudio = false;
-  bool isFallback = false;
+  bool isFallback = true;
   RenderConstrainedBox sizedBox;
   CameraDescription cameraDescription;
   TextureBox renderTextureBox;
@@ -152,7 +158,8 @@ class CameraPreviewElement extends Element {
     if (cameraDescription != null) {
       TextureBox textureBox = await createCameraTextureBox(cameraDescription);
       _invokeReady();
-      sizedBox.child = RenderAspectRatio(aspectRatio: aspectRatio, child: textureBox);
+      sizedBox.child =
+          RenderAspectRatio(aspectRatio: aspectRatio, child: textureBox);
     }
   }
 
@@ -170,10 +177,8 @@ class CameraPreviewElement extends Element {
   RenderBox _buildFallbackView(String description) {
     assert(description != null);
 
-    TextStyle textStyle = TextStyle(
-      color: Color(0xFF000000),
-      backgroundColor: Color(0xFFFFFFFF)
-    );
+    TextStyle textStyle =
+        TextStyle(color: Color(0xFF000000), backgroundColor: Color(0xFFFFFFFF));
     return RenderFallbackViewBox(
       child: KrakenRenderParagraph(
         TextSpan(text: description, style: textStyle),
@@ -182,7 +187,8 @@ class CameraPreviewElement extends Element {
     );
   }
 
-  Future<TextureBox> createCameraTextureBox(CameraDescription cameraDescription) async {
+  Future<TextureBox> createCameraTextureBox(
+      CameraDescription cameraDescription) async {
     this.cameraDescription = cameraDescription;
     await _createCameraController();
     return TextureBox(textureId: controller.textureId);
@@ -231,7 +237,8 @@ class CameraPreviewElement extends Element {
     }
   }
 
-  void _propertyChangedListener(String key, String original, String present) {
+  void _propertyChangedListener(
+      String key, String original, String present, bool isChanged) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);
@@ -248,7 +255,7 @@ class CameraPreviewElement extends Element {
     }
   }
 
-  void _setProperty(String key, dynamic value) {
+  Future<void> _setProperty(String key, dynamic value) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);
@@ -266,12 +273,21 @@ class CameraPreviewElement extends Element {
       _initCameraWithLens(value);
     } else if (key == 'sensor-orientation') {
       _updateSensorOrientation(value);
+    } else if (key == 'take-picture') {
+      _takePicture(value);
     }
+  }
+
+  void _takePicture(value) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    controller.takePicture(tempPath + '/' + value);
   }
 
   void _updateSensorOrientation(value) async {
     int sensorOrientation = int.tryParse(value.toString());
-    cameraDescription = cameraDescription.copyWith(sensorOrientation: sensorOrientation);
+    cameraDescription =
+        cameraDescription.copyWith(sensorOrientation: sensorOrientation);
     await _initCamera();
   }
 }
