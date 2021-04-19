@@ -84,10 +84,6 @@ class CameraPreviewElement extends Element {
   CameraController controller;
   List<VoidCallback> detectedFunc = [];
 
-  void waitUntilReady(VoidCallback fn) {
-    detectedFunc.add(fn);
-  }
-
   void _invokeReady() {
     for (VoidCallback fn in detectedFunc) fn();
     detectedFunc = [];
@@ -222,13 +218,7 @@ class CameraPreviewElement extends Element {
   @override
   void setProperty(String key, dynamic value) async {
     super.setProperty(key, value);
-    if (controller != null) {
-      _setProperty(key, value);
-    } else {
-      waitUntilReady(() {
-        _setProperty(key, value);
-      });
-    }
+    _setProperty(key, value);
   }
 
   void _propertyChangedListener(String key, String original, String present, bool isChanged) {
