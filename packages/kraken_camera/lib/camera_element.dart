@@ -5,11 +5,14 @@
 
 import 'dart:ffi';
 import 'dart:async';
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:kraken/bridge.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kraken/dom.dart';
 import 'package:kraken/rendering.dart';
 import 'package:kraken/css.dart';
+import 'package:path_provider/path_provider.dart';
 import 'camera.dart';
 
 const String CAMERA_PREVIEW = 'CAMERA-PREVIEW';
@@ -75,16 +78,11 @@ class CameraPreviewElement extends Element {
   }
 
   bool enableAudio = false;
-  bool isFallback = false;
   RenderConstrainedBox sizedBox;
   CameraDescription cameraDescription;
   TextureBox renderTextureBox;
   CameraController controller;
   List<VoidCallback> detectedFunc = [];
-
-  void waitUntilReady(VoidCallback fn) {
-    detectedFunc.add(fn);
-  }
 
   void _invokeReady() {
     for (VoidCallback fn in detectedFunc) fn();
@@ -159,7 +157,6 @@ class CameraPreviewElement extends Element {
   void _initCameraWithLens(String lens) async {
     cameraDescription = await detectCamera(lens);
     if (cameraDescription == null) {
-      isFallback = true;
       _invokeReady();
       sizedBox.child = _buildFallbackView('Camera Fallback View');
     } else {
@@ -221,17 +218,10 @@ class CameraPreviewElement extends Element {
   @override
   void setProperty(String key, dynamic value) async {
     super.setProperty(key, value);
-
-    if (isFallback || controller != null) {
-      _setProperty(key, value);
-    } else {
-      waitUntilReady(() {
-        _setProperty(key, value);
-      });
-    }
+    _setProperty(key, value);
   }
 
-  void _propertyChangedListener(String key, String original, String present) {
+  void _propertyChangedListener(String key, String original, String present, bool isChanged) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);
@@ -266,7 +256,15 @@ class CameraPreviewElement extends Element {
       _initCameraWithLens(value);
     } else if (key == 'sensor-orientation') {
       _updateSensorOrientation(value);
+    } else if (key == 'take-picture') {
+      _takePicture(value);
     }
+  }
+
+  void _takePicture(value) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    controller.takePicture(tempPath + '/' + value);
   }
 
   void _updateSensorOrientation(value) async {
