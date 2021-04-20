@@ -6,7 +6,6 @@
 import 'dart:ffi';
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:kraken/bridge.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kraken/dom.dart';
@@ -221,7 +220,7 @@ class CameraPreviewElement extends Element {
     _setProperty(key, value);
   }
 
-  void _propertyChangedListener(String key, String original, String present, bool isChanged) {
+  void _propertyChangedListener(String key, String original, String present) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);

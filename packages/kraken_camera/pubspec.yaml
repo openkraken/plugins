@@ -1,6 +1,6 @@
 name: kraken_camera
 description: A new flutter plugin project.
-version: 0.0.5
+version: 0.1.1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -9,7 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  kraken: ^0.6.6
+  kraken: ^0.7.1
+  path_provider: ^1.1.0
 
 dev_dependencies:
   flutter_test:
