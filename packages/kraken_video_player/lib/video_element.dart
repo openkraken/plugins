@@ -224,14 +224,19 @@ class VideoElement extends MediaElement {
     switch (key) {
       case 'loop':
         value = controller?.value.isLooping;
+        break;
       case 'currentTime':
         value = controller?.value.position.inSeconds;
+        break;
       case 'src':
         value = _src;
+        break;
       case 'videoWidth':
         value = controller?.value.size.width;
+        break;
       case 'videoHeight':
         value = controller?.value.size.height;
+        break;
     }
 
     return value ?? super.getProperty(key);
