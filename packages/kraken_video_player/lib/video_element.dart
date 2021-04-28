@@ -21,6 +21,7 @@ class NativeVideoElement extends Struct {
 }
 
 const Map<String, dynamic> _defaultStyle = {
+  DISPLAY: INLINE_BLOCK,
   WIDTH: ELEMENT_DEFAULT_WIDTH,
   HEIGHT: ELEMENT_DEFAULT_HEIGHT,
 };
