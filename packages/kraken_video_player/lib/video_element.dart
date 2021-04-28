@@ -21,7 +21,6 @@ class NativeVideoElement extends Struct {
 }
 
 const Map<String, dynamic> _defaultStyle = {
-  DISPLAY: BLOCK,
   WIDTH: ELEMENT_DEFAULT_WIDTH,
   HEIGHT: ELEMENT_DEFAULT_HEIGHT,
 };
@@ -125,7 +124,7 @@ class VideoElement extends MediaElement {
   }
 
   void addVideoBox(int textureId) {
-    if (properties['src'] == null) {
+    if (_src == null) {
       return;
     }
 
@@ -193,17 +192,17 @@ class VideoElement extends MediaElement {
 
   @override
   void play() {
-    controller.play();
+    controller?.play();
   }
 
   @override
   void pause() {
-    controller.pause();
+    controller?.pause();
   }
 
   @override
   void fastSeek(double duration) {
-    controller.seekTo(Duration(seconds: duration.toInt()));
+    controller?.seekTo(Duration(seconds: duration.toInt()));
   }
 
   @override
@@ -212,28 +211,29 @@ class VideoElement extends MediaElement {
     if (key == 'src') {
       src = value.toString();
     } else if (key == 'loop') {
-      controller.setLooping(value == 'true' ? true : false);
+      controller?.setLooping(value == 'true' ? true : false);
     } else if (key == 'currentTime') {
-      controller.seekTo(Duration(seconds: int.parse(value)));
+      controller?.seekTo(Duration(seconds: int.parse(value)));
     }
   }
 
   @override
   dynamic getProperty(String key) {
+    var value;
     switch (key) {
       case 'loop':
-        return controller.value.isLooping;
+        value = controller?.value.isLooping;
       case 'currentTime':
-        return controller.value.position.inSeconds;
+        value = controller?.value.position.inSeconds;
       case 'src':
-        return _src;
+        value = _src;
       case 'videoWidth':
-        return controller.value.size.width;
+        value = controller?.value.size.width;
       case 'videoHeight':
-        return controller.value.size.height;
+        value = controller?.value.size.height;
     }
 
-    return super.getProperty(key);
+    return value ?? super.getProperty(key);
   }
 
   @override
@@ -241,10 +241,10 @@ class VideoElement extends MediaElement {
     super.removeProperty(key);
     switch (key) {
       case 'loop':
-        controller.setLooping(false);
+        controller?.setLooping(false);
         break;
       case 'muted':
-        controller.setMuted(false);
+        controller?.setMuted(false);
         break;
     }
   }
