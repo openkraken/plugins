@@ -26,8 +26,8 @@ JSIframeElement::IframeElementInstance::IframeElementInstance(JSIframeElement *j
 
   NativeString args_01{};
   buildUICommandArgs(tagName, args_01);
-  foundation::UICommandTaskMessageQueue::instance(context->getContextId())
-    ->registerCommand(eventTargetId, UICommand::createElement, args_01, nativeIframeElement);
+  foundation::UICommandBuffer::instance(context->getContextId())
+    ->addCommand(eventTargetId, UICommand::createElement, args_01, nativeIframeElement);
 }
 
 JSValueRef JSIframeElement::IframeElementInstance::getProperty(std::string &name, JSValueRef *exception) {
@@ -75,8 +75,8 @@ bool JSIframeElement::IframeElementInstance::setProperty(std::string &name, JSVa
       NativeString args_02{};
 
       buildUICommandArgs(name, widthString, args_01, args_02);
-      foundation::UICommandTaskMessageQueue::instance(_hostClass->contextId)
-        ->registerCommand(eventTargetId, UICommand::setProperty, args_01, args_02, nullptr);
+      foundation::UICommandBuffer::instance(_hostClass->contextId)
+        ->addCommand(eventTargetId, UICommand::setProperty, args_01, args_02, nullptr);
       break;
     }
     case IFrameElementProperty::height: {
@@ -87,8 +87,8 @@ bool JSIframeElement::IframeElementInstance::setProperty(std::string &name, JSVa
       NativeString args_01{};
       NativeString args_02{};
       buildUICommandArgs(name, heightString, args_01, args_02);
-      foundation::UICommandTaskMessageQueue::instance(_hostClass->contextId)
-        ->registerCommand(eventTargetId, UICommand::setProperty, args_01, args_02, nullptr);
+      foundation::UICommandBuffer::instance(_hostClass->contextId)
+        ->addCommand(eventTargetId, UICommand::setProperty, args_01, args_02, nullptr);
       break;
     }
     default:

@@ -1,3 +1,8 @@
+## 0.3.4
+
+
+* compact with kraken 0.7.3+1
+
 ## 0.3.1
 
 * default display set to block.

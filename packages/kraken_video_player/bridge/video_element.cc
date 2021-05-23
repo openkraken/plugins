@@ -27,8 +27,8 @@ JSVideoElement::VideoElementInstance::VideoElementInstance(JSVideoElement *JSVid
   NativeString args_01{};
   buildUICommandArgs(tagName, args_01);
 
-  foundation::UICommandTaskMessageQueue::instance(context->getContextId())
-    ->registerCommand(eventTargetId, UICommand::createElement, args_01, nativeVideoElement);
+  foundation::UICommandBuffer::instance(context->getContextId())
+    ->addCommand(eventTargetId, UICommand::createElement, args_01, nativeVideoElement);
 }
 
 JSVideoElement::VideoElementInstance::~VideoElementInstance() {

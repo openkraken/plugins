@@ -112,8 +112,8 @@ bool JSMediaElement::MediaElementInstance::setProperty(std::string &name, JSValu
     NativeString args_02{};
 
     buildUICommandArgs(name, _src, args_01, args_02);
-    foundation::UICommandTaskMessageQueue::instance(_hostClass->contextId)
-      ->registerCommand(eventTargetId,UICommand::setProperty, args_01, args_02, nullptr);
+    foundation::UICommandBuffer::instance(_hostClass->contextId)
+      ->addCommand(eventTargetId,UICommand::setProperty, args_01, args_02, nullptr);
     return true;
   }
 
