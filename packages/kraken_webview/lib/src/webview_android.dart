@@ -18,8 +18,8 @@ import 'webview_method_channel.dart';
 /// an [AndroidView] to embed the webview in the widget hierarchy, and uses a method channel to
 /// communicate with the platform code.
 class AndroidWebView implements WebViewPlatform {
-  AndroidViewController _controller;
-  int _id;
+  AndroidViewController? _controller;
+  late int _id;
 
   void dispose() {
     _controller?.dispose();
@@ -27,11 +27,11 @@ class AndroidWebView implements WebViewPlatform {
 
   @override
   RenderAndroidView buildRenderBox({
-    CreationParams creationParams,
-    @required WebViewPlatformCallbacksHandler webViewPlatformCallbacksHandler,
-    WebViewPlatformCreatedCallback onWebViewPlatformCreated,
-    Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-    VoidCallback onFocus,
+    CreationParams? creationParams,
+    required WebViewPlatformCallbacksHandler? webViewPlatformCallbacksHandler,
+    WebViewPlatformCreatedCallback? onWebViewPlatformCreated,
+    Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
+    VoidCallback? onFocus,
   }) {
     assert(webViewPlatformCallbacksHandler != null);
     _id = platformViewsRegistry.getNextPlatformViewId();
@@ -42,22 +42,22 @@ class AndroidWebView implements WebViewPlatform {
       // we explicitly set it here so that the widget doesn't require an ambient
       // directionality.
       layoutDirection: TextDirection.rtl,
-      creationParams: MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
+      creationParams: MethodChannelWebViewPlatform.creationParamsToMap(creationParams!),
       creationParamsCodec: const StandardMessageCodec(),
       onFocus: onFocus,
     );
 
-    _controller.addOnPlatformViewCreatedListener((int id) {
+    _controller!.addOnPlatformViewCreatedListener((int id) {
       if (onWebViewPlatformCreated != null) {
         onWebViewPlatformCreated(MethodChannelWebViewPlatform(
-            id, webViewPlatformCallbacksHandler));
+            id, webViewPlatformCallbacksHandler!));
       }
     });
 
     return RenderAndroidView(
-      viewController: _controller,
+      viewController: _controller!,
       hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-      gestureRecognizers: gestureRecognizers,
+      gestureRecognizers: gestureRecognizers!,
     );
   }
 

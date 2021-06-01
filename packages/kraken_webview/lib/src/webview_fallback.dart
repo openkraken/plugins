@@ -23,12 +23,12 @@ class FallbackWebView implements WebViewPlatform {
 
   @override
   RenderBox buildRenderBox({
-    CreationParams creationParams,
-    WebViewPlatformCallbacksHandler webViewPlatformCallbacksHandler, onWebViewPlatformCreated,
-    Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-    VoidCallback onFocus,
+    CreationParams? creationParams,
+    WebViewPlatformCallbacksHandler? webViewPlatformCallbacksHandler, onWebViewPlatformCreated,
+    Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
+    VoidCallback? onFocus,
   }) {
-    String description = _getWebViewDescriptionFromCreationParams(creationParams);
+    String description = _getWebViewDescriptionFromCreationParams(creationParams!);
     TextStyle textStyle = TextStyle(
       color: Color(0xFF000000),
       backgroundColor: Color(0xFFFFFFFF)

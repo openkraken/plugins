@@ -1,45 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="kraken_mqtt.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/kraken_mqtt.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:chore" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:feat" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:fix" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:release" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:chore" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:fix" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:release" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
   </component>
-  <component name="ToolWindowManager">
-    <editor active="true" />
-    <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-    </layout>
+  <component name="ChangeListManager">
+    <list default="true" id="9025bf80-d726-4674-b223-6d0583a53416" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/android/jniLibs/arm64-v8a/libkraken_animation_player_jsc.so" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/android/jniLibs/arm64-v8a/libkraken_animation_player_jsc.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/android/jniLibs/armeabi-v7a/libkraken_animation_player_jsc.so" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/android/jniLibs/armeabi-v7a/libkraken_animation_player_jsc.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/bridge/animation_player_element.cc" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/bridge/animation_player_element.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/example/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/example/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/example/macos/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/example/macos/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/example/macos/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/example/macos/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/example/macos/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/example/macos/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/ios/libkraken_animation_player_jsc.dylib" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/ios/libkraken_animation_player_jsc.dylib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/lib/animation_player_element.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/lib/animation_player_element.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/lib/flare_render_object.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/lib/flare_render_object.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/lib/kraken_animation_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/lib/kraken_animation_player.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/macos/libkraken_animation_player_jsc.dylib" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/macos/libkraken_animation_player_jsc.dylib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_animation_player/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_animation_player/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/lib/camera.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/lib/camera.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/lib/camera_element.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/lib/camera_element.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/lib/camera_image.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/lib/camera_image.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/lib/new/src/camera_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/lib/new/src/camera_controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/lib/new/src/common/camera_channel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/lib/new/src/common/camera_channel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/lib/new/src/common/camera_interface.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/lib/new/src/common/camera_interface.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/lib/new/src/common/native_texture.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/lib/new/src/common/native_texture.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/lib/new/src/support_android/camera.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/lib/new/src/support_android/camera.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/lib/new/src/support_android/camera_info.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/lib/new/src/support_android/camera_info.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../kraken_camera/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kraken_camera/test/kraken_camera_test.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/jniLibs/arm64-v8a/libkraken_mqtt_jsc.so" beforeDir="false" afterPath="$PROJECT_DIR$/android/jniLibs/arm64-v8a/libkraken_mqtt_jsc.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/jniLibs/armeabi-v7a/libkraken_mqtt_jsc.so" beforeDir="false" afterPath="$PROJECT_DIR$/android/jniLibs/armeabi-v7a/libkraken_mqtt_jsc.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bridge/kraken/include" beforeDir="false" afterPath="$PROJECT_DIR$/bridge/kraken/include" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bridge/kraken/lib/android/jniLibs" beforeDir="false" afterPath="$PROJECT_DIR$/bridge/kraken/lib/android/jniLibs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bridge/kraken/lib/ios/kraken_bridge.framework" beforeDir="false" afterPath="$PROJECT_DIR$/bridge/kraken/lib/ios/kraken_bridge.framework" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bridge/kraken/lib/macos/libkraken_jsc.dylib" beforeDir="false" afterPath="$PROJECT_DIR$/bridge/kraken/lib/macos/libkraken_jsc.dylib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/libkraken_mqtt_jsc.dylib" beforeDir="false" afterPath="$PROJECT_DIR$/ios/libkraken_mqtt_jsc.dylib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kraken_mqtt.iml" beforeDir="false" afterPath="$PROJECT_DIR$/kraken_mqtt.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/mqtt_module.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/mqtt_module.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/libkraken_mqtt_jsc.dylib" beforeDir="false" afterPath="$PROJECT_DIR$/macos/libkraken_mqtt_jsc.dylib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/kraken_mqtt_test.dart" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <option name="show-excluded-files" value="false" />
-      </pane>
-    </panes>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1tLBQCvFB1UiqElZBEssiekk1Pc" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="dart.analysis.tool.window.force.activate" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9025bf80-d726-4674-b223-6d0583a53416" name="Default Changelist" comment="" />
+      <created>1622538470338</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1622538470338</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

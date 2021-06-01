@@ -4,26 +4,25 @@ import 'package:kraken/bridge.dart';
 import 'package:kraken/dom.dart';
 
 class NativeMediaElement extends Struct {
-  Pointer<NativeElement> nativeElement;
-
-  Pointer<NativeFunction<Native_PlayMedia>> play;
-  Pointer<NativeFunction<Native_PauseMedia>> pause;
-  Pointer<NativeFunction<Native_FastSeek>> fastSeek;
+  external Pointer<NativeElement> nativeElement;
+  external Pointer<NativeFunction<NativePlayMedia>>? play;
+  external Pointer<NativeFunction<NativePauseMedia>>? pause;
+  external Pointer<NativeFunction<NativeFastSeek>>? fastSeek;
 }
 
-typedef Native_PlayMedia = Void Function(Pointer<NativeMediaElement> nativeMediaElement);
-typedef Native_PauseMedia = Void Function(Pointer<NativeMediaElement> nativeMediaElement);
-typedef Native_FastSeek = Void Function(Pointer<NativeMediaElement> nativeMediaElement, Double duration);
+typedef NativePlayMedia = Void Function(Pointer<NativeMediaElement> nativeMediaElement);
+typedef NativePauseMedia = Void Function(Pointer<NativeMediaElement> nativeMediaElement);
+typedef NativeFastSeek = Void Function(Pointer<NativeMediaElement> nativeMediaElement, Double duration);
 
-final Pointer<NativeFunction<Native_PlayMedia>> nativePlay = Pointer.fromFunction(MediaElement._play);
-final Pointer<NativeFunction<Native_PauseMedia>> nativePause = Pointer.fromFunction(MediaElement._pause);
-final Pointer<NativeFunction<Native_FastSeek>> nativeFastSeek = Pointer.fromFunction(MediaElement._fastSeek);
+final Pointer<NativeFunction<NativePlayMedia>> nativePlay = Pointer.fromFunction(MediaElement._play);
+final Pointer<NativeFunction<NativePauseMedia>> nativePause = Pointer.fromFunction(MediaElement._pause);
+final Pointer<NativeFunction<NativeFastSeek>> nativeFastSeek = Pointer.fromFunction(MediaElement._fastSeek);
 
 abstract class MediaElement extends Element {
   static SplayTreeMap<int, MediaElement> _nativeMap = SplayTreeMap();
 
   static MediaElement getMediaElementOfNativePtr(Pointer<NativeMediaElement> nativeMediaElement) {
-    MediaElement mediaElement = _nativeMap[nativeMediaElement.address];
+    MediaElement mediaElement = _nativeMap[nativeMediaElement.address]!;
     assert(mediaElement != null, 'Can not get mediaElement from nativeElement: $nativeMediaElement');
     return mediaElement;
   }
@@ -46,7 +45,7 @@ abstract class MediaElement extends Element {
   final Pointer<NativeMediaElement> nativeMediaElementPtr;
 
   MediaElement(int targetId, this.nativeMediaElementPtr, ElementManager elementManager, String tagName,
-      {Map<String, dynamic> defaultStyle})
+      {required Map<String, dynamic> defaultStyle})
       : super(targetId, nativeMediaElementPtr.ref.nativeElement, elementManager,
             isIntrinsicBox: true, tagName: tagName, repaintSelf: true, defaultStyle: defaultStyle) {
     _nativeMap[nativeMediaElementPtr.address] = this;

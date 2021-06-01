@@ -29,7 +29,7 @@ class VideoPlayerValue {
   /// Constructs a video with the given values. Only [duration] is required. The
   /// rest will initialize with default values when unset.
   VideoPlayerValue({
-    @required this.duration,
+    required this.duration,
     this.size,
     this.position = const Duration(),
     this.buffered = const <DurationRange>[],
@@ -46,13 +46,13 @@ class VideoPlayerValue {
 
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
-  VideoPlayerValue.erroneous(String errorDescription)
+  VideoPlayerValue.erroneous(String? errorDescription)
     : this(duration: null, errorDescription: errorDescription);
 
   /// The total duration of the video.
   ///
   /// Is null when [initialized] is false.
-  final Duration duration;
+  final Duration? duration;
 
   /// The current playback position.
   final Duration position;
@@ -78,12 +78,12 @@ class VideoPlayerValue {
   /// A description of the error if present.
   ///
   /// If [hasError] is false this is [null].
-  final String errorDescription;
+  final String? errorDescription;
 
   /// The [size] of the currently loaded video.
   ///
   /// Is null when [initialized] is false.
-  final Size size;
+  final Size? size;
 
   /// Indicates whether or not the video has been loaded and is ready to play.
   bool get initialized => duration != null;
@@ -94,21 +94,21 @@ class VideoPlayerValue {
 
   /// Returns [size.width] / [size.height] when size is non-null, or `1.0.` when
   /// it is.
-  double get aspectRatio => size != null ? size.width / size.height : 1.0;
+  double get aspectRatio => size != null ? size!.width / size!.height : 1.0;
 
   /// Returns a new instance that has the same values as this current instance,
   /// except for any overrides passed in as arguments to [copyWidth].
   VideoPlayerValue copyWith({
-    Duration duration,
-    Size size,
-    Duration position,
-    List<DurationRange> buffered,
-    bool isPlaying,
-    bool isLooping,
-    bool isBuffering,
-    bool isMuted,
-    double volume,
-    String errorDescription,
+    Duration? duration,
+    Size? size,
+    Duration? position,
+    List<DurationRange>? buffered,
+    bool? isPlaying,
+    bool? isLooping,
+    bool? isBuffering,
+    bool? isMuted,
+    double? volume,
+    String? errorDescription,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -183,17 +183,17 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       super(VideoPlayerValue(duration: null));
 
   /// VideoController Callbacks
-  VoidCallback onCanPlay;
-  VoidCallback onCanPlayThrough;
-  VoidCallback onEnded;
-  void Function(int, String) onError;
-  VoidCallback onPause;
-  VoidCallback onPlay;
-  VoidCallback onSeeked;
-  void Function() onSeeking;
-  VoidCallback onVolumeChange;
+  VoidCallback? onCanPlay;
+  VoidCallback? onCanPlayThrough;
+  VoidCallback? onEnded;
+  void Function(int, String?)? onError;
+  VoidCallback? onPause;
+  VoidCallback? onPlay;
+  VoidCallback? onSeeked;
+  void Function()? onSeeking;
+  VoidCallback? onVolumeChange;
 
-  int _textureId;
+  int? _textureId;
 
   /// The URI to the video file. This will be in different formats depending on
   /// the [DataSourceType] of the original video.
@@ -201,29 +201,29 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   /// **Android only**. Will override the platform's generic file format
   /// detection with whatever is set here.
-  final VideoFormat formatHint;
+  final VideoFormat? formatHint;
 
   /// Describes the type of data source this [VideoPlayerController]
   /// is constructed with.
   final DataSourceType dataSourceType;
 
   /// Only set for [asset] videos. The package that the asset was loaded from.
-  final String package;
-  Timer _timer;
+  final String? package;
+  Timer? _timer;
   bool _isDisposed = false;
-  Completer<void> _creatingCompleter;
-  StreamSubscription<dynamic> _eventSubscription;
+  Completer<void>? _creatingCompleter;
+  StreamSubscription<dynamic>? _eventSubscription;
 
   /// This is just exposed for testing. It shouldn't be used by anyone depending
   /// on the plugin.
   @visibleForTesting
-  int get textureId => _textureId;
+  int? get textureId => _textureId;
 
   /// Attempts to open the given [dataSource] and load metadata about the video.
   Future<int> initialize() async {
     _creatingCompleter = Completer<void>();
 
-    DataSource dataSourceDescription;
+    DataSource? dataSourceDescription;
     switch (dataSourceType) {
       case DataSourceType.asset:
         dataSourceDescription = DataSource(
@@ -248,7 +248,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
     _textureId =
     await VideoPlayerPlatform.instance.create(dataSourceDescription);
-    _creatingCompleter.complete(null);
+    _creatingCompleter!.complete(null);
     final Completer<int> initializingCompleter = Completer<int>();
 
     void eventListener(VideoEvent event) {
@@ -266,10 +266,10 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           _applyLooping();
           _applyVolume();
           _applyPlayPause();
-          if (onCanPlay != null) onCanPlay();
+          if (onCanPlay != null) onCanPlay!();
           break;
         case VideoEventType.completed:
-          if (onEnded != null) onEnded();
+          if (onEnded != null) onEnded!();
           value = value.copyWith(isPlaying: false, position: value.duration);
           _timer?.cancel();
           break;
@@ -280,18 +280,18 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           value = value.copyWith(isBuffering: true);
           break;
         case VideoEventType.bufferingEnd:
-          if (onCanPlayThrough != null) onCanPlayThrough();
+          if (onCanPlayThrough != null) onCanPlayThrough!();
           value = value.copyWith(isBuffering: false);
           break;
         case VideoEventType.unknown:
-          onError(MEDIA_ERR_ABORTED, 'unknown video error');
+          onError!(MEDIA_ERR_ABORTED, 'unknown video error');
           break;
       }
     }
 
     void errorListener(Object obj) {
-      final PlatformException e = obj;
-      if (onError != null) onError(MEDIA_ERR_NETWORK, e.message);
+      final PlatformException e = obj as PlatformException;
+      if (onError != null) onError!(MEDIA_ERR_NETWORK, e.message);
       value = VideoPlayerValue.erroneous(e.message);
       _timer?.cancel();
     }
@@ -305,7 +305,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   @override
   Future<void> dispose() async {
     if (_creatingCompleter != null) {
-      await _creatingCompleter.future;
+      await _creatingCompleter!.future;
       if (!_isDisposed) {
         _isDisposed = true;
         _timer?.cancel();
@@ -325,7 +325,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> play() async {
     value = value.copyWith(isPlaying: true);
     await _applyPlayPause();
-    if (onPlay != null) onPlay();
+    if (onPlay != null) onPlay!();
   }
 
   /// Sets whether or not the video should loop after playing once. See also
@@ -339,7 +339,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> pause() async {
     value = value.copyWith(isPlaying: false);
     await _applyPlayPause();
-    if (onPause != null) onPause();
+    if (onPause != null) onPause!();
   }
 
   Future<void> _applyLooping() async {
@@ -378,7 +378,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           if (_isDisposed) {
             return;
           }
-          final Duration newPosition = await position;
+          final Duration? newPosition = await position;
           if (_isDisposed) {
             return;
           }
@@ -399,7 +399,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   /// The position in the current video.
-  Future<Duration> get position async {
+  Future<Duration?> get position async {
     if (_isDisposed) {
       return null;
     }
@@ -411,19 +411,19 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   ///
   /// If [moment] is outside of the video's full range it will be automatically
   /// and silently clamped.
-  Future<void> seekTo(Duration position) async {
+  Future<void> seekTo(Duration? position) async {
     if (_isDisposed) {
       return;
     }
-    if (position > value.duration) {
+    if (position! > value.duration!) {
       position = value.duration;
     } else if (position < const Duration()) {
       position = const Duration();
     }
-    if (onSeeking != null) onSeeking();
+    if (onSeeking != null) onSeeking!();
     await VideoPlayerPlatform.instance.seekTo(_textureId, position);
     value = value.copyWith(position: position);
-    if (onSeeked != null) onSeeked();
+    if (onSeeked != null) onSeeked!();
   }
 
   /// Sets the audio volume of [this].
@@ -433,6 +433,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> setVolume(double volume) async {
     value = value.copyWith(volume: volume.clamp(0.0, 1.0));
     await _applyVolume();
-    if (onVolumeChange != null) onVolumeChange();
+    if (onVolumeChange != null) onVolumeChange!();
   }
 }

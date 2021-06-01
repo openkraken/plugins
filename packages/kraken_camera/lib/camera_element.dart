@@ -25,7 +25,7 @@ final Map<String, dynamic> _defaultStyle = {
 bool camerasDetected = false;
 List<CameraDescription> cameras = [];
 
-Future<CameraDescription> detectCamera(String lens) async {
+Future<CameraDescription?> detectCamera(String? lens) async {
   if (lens == null) lens = 'back';
 
   if (!camerasDetected) {
@@ -61,8 +61,8 @@ class CameraPreviewElement extends Element {
 
     sizedBox = RenderConstrainedBox(
       additionalConstraints: BoxConstraints.loose(Size(
-        CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_WIDTH, viewportSize),
-        CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_HEIGHT, viewportSize),
+        CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_WIDTH, viewportSize)!,
+        CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_HEIGHT, viewportSize)!,
       )),
     );
 
@@ -77,10 +77,10 @@ class CameraPreviewElement extends Element {
   }
 
   bool enableAudio = false;
-  RenderConstrainedBox sizedBox;
-  CameraDescription cameraDescription;
-  TextureBox renderTextureBox;
-  CameraController controller;
+  late RenderConstrainedBox sizedBox;
+  CameraDescription? cameraDescription;
+  TextureBox? renderTextureBox;
+  CameraController? controller;
   List<VoidCallback> detectedFunc = [];
 
   void _invokeReady() {
@@ -91,30 +91,30 @@ class CameraPreviewElement extends Element {
   @override
   void dispose() {
     super.dispose();
-    controller.dispose();
+    controller!.dispose();
   }
 
   /// Element attribute width
-  double _width;
-  double get width => _width;
-  set width(double newValue) {
+  double? _width;
+  double? get width => _width;
+  set width(double? newValue) {
     if (newValue != null) {
       _width = newValue;
       sizedBox.additionalConstraints = BoxConstraints.expand(
         width: width,
-        height: height ?? width / aspectRatio,
+        height: height ?? width! / aspectRatio,
       );
     }
   }
 
   /// Element attribute height
-  double _height;
-  double get height => _height;
-  set height(double newValue) {
+  double? _height;
+  double? get height => _height;
+  set height(double? newValue) {
     if (newValue != null) {
       _height = newValue;
       sizedBox.additionalConstraints = BoxConstraints.expand(
-        width: width ?? height * aspectRatio,
+        width: width ?? height! * aspectRatio,
         height: height,
       );
     }
@@ -123,9 +123,9 @@ class CameraPreviewElement extends Element {
   double get aspectRatio {
     double _aspectRatio = 1.0;
     if (width != null && height != null) {
-      _aspectRatio = width / height;
+      _aspectRatio = width! / height!;
     } else if (controller != null) {
-      _aspectRatio = controller.value.aspectRatio;
+      _aspectRatio = controller!.value.aspectRatio;
     }
 
     // sensorOrientation can be [0, 90, 180, 270],
@@ -136,16 +136,16 @@ class CameraPreviewElement extends Element {
     return _aspectRatio;
   }
 
-  ResolutionPreset _resolutionPreset;
-  ResolutionPreset get resolutionPreset => _resolutionPreset;
-  set resolutionPreset(ResolutionPreset value) {
+  ResolutionPreset? _resolutionPreset;
+  ResolutionPreset? get resolutionPreset => _resolutionPreset;
+  set resolutionPreset(ResolutionPreset? value) {
     if (_resolutionPreset != value) {
       _resolutionPreset = value;
       _initCamera();
     }
   }
 
-  void _initCamera() async {
+  Future<void> _initCamera() async {
     if (cameraDescription != null) {
       TextureBox textureBox = await createCameraTextureBox(cameraDescription);
       _invokeReady();
@@ -153,7 +153,7 @@ class CameraPreviewElement extends Element {
     }
   }
 
-  void _initCameraWithLens(String lens) async {
+  void _initCameraWithLens(String? lens) async {
     cameraDescription = await detectCamera(lens);
     if (cameraDescription == null) {
       _invokeReady();
@@ -178,10 +178,10 @@ class CameraPreviewElement extends Element {
     );
   }
 
-  Future<TextureBox> createCameraTextureBox(CameraDescription cameraDescription) async {
+  Future<TextureBox> createCameraTextureBox(CameraDescription? cameraDescription) async {
     this.cameraDescription = cameraDescription;
     await _createCameraController();
-    return TextureBox(textureId: controller.textureId);
+    return TextureBox(textureId: controller!.textureId!);
   }
 
   Future<void> _createCameraController({
@@ -189,7 +189,7 @@ class CameraPreviewElement extends Element {
     bool enableAudio = false,
   }) async {
     if (controller != null) {
-      await controller.dispose();
+      await controller!.dispose();
     }
     controller = CameraController(
       cameraDescription,
@@ -198,17 +198,17 @@ class CameraPreviewElement extends Element {
     );
 
     // If the controller is updated then update the UI.
-    controller.addListener(() {
+    controller!.addListener(() {
       if (isConnected) {
-        renderBoxModel.markNeedsPaint();
+        renderBoxModel!.markNeedsPaint();
       }
-      if (controller.value.hasError) {
-        print('Camera error ${controller.value.errorDescription}');
+      if (controller!.value.hasError) {
+        print('Camera error ${controller!.value.errorDescription}');
       }
     });
 
     try {
-      await controller.initialize();
+      await controller!.initialize();
     } on CameraException catch (err) {
       print('Error while initializing camera controller: $err');
     }
@@ -220,7 +220,7 @@ class CameraPreviewElement extends Element {
     _setProperty(key, value);
   }
 
-  void _propertyChangedListener(String key, String original, String present) {
+  void _propertyChangedListener(String key, String? original, String present) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);
@@ -263,18 +263,18 @@ class CameraPreviewElement extends Element {
   void _takePicture(value) async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
-    controller.takePicture(tempPath + '/' + value);
+    controller!.takePicture(tempPath + '/' + value);
   }
 
   void _updateSensorOrientation(value) async {
-    int sensorOrientation = int.tryParse(value.toString());
-    cameraDescription = cameraDescription.copyWith(sensorOrientation: sensorOrientation);
+    int? sensorOrientation = int.tryParse(value.toString());
+    cameraDescription = cameraDescription!.copyWith(sensorOrientation: sensorOrientation);
     await _initCamera();
   }
 }
 
 /// Returns the resolution preset from string.
-ResolutionPreset getResolutionPreset(String preset) {
+ResolutionPreset getResolutionPreset(String? preset) {
   switch (preset) {
     case 'max':
       return ResolutionPreset.max;

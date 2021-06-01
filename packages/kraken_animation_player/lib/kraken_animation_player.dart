@@ -1,14 +1,14 @@
-import 'package:flutter/widgets.dart';
 import 'animation_player_element.dart';
 import 'package:kraken/dom.dart';
 import 'platform.dart';
 import 'dart:ffi';
 
-typedef Native_InitBridge = Void Function();
-typedef Dart_InitBridge = void Function();
+typedef NativeInitBridge = Void Function();
+typedef DartInitBridge = void Function();
 
-final Dart_InitBridge _initBridge =
-nativeDynamicLibrary.lookup<NativeFunction<Native_InitBridge>>('initBridge').asFunction();
+final DartInitBridge _initBridge = nativeDynamicLibrary
+    .lookup<NativeFunction<NativeInitBridge>>('initBridge')
+    .asFunction();
 
 void initBridge() {
   _initBridge();

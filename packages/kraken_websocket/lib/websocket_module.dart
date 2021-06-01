@@ -10,7 +10,7 @@ typedef WebSocketEventCallback = void Function(String id, Event event);
 
 class _WebSocketState {
   _ConnectionState status;
-  dynamic data;
+  late dynamic data;
 
   _WebSocketState(this.status);
 }
@@ -20,17 +20,17 @@ class WebSocketModule extends BaseModule {
   String get name => 'WebSocket';
 
   Map<String, IOWebSocketChannel> _clientMap = {};
-  Map<String, Map<String, bool>> _listenMap = {};
-  Map<String, _WebSocketState> _stateMap = {};
+  Map<String?, Map<String?, bool>> _listenMap = {};
+  Map<String?, _WebSocketState> _stateMap = {};
   int _clientId = 0;
 
-  WebSocketModule(ModuleManager moduleManager) : super(moduleManager);
+  WebSocketModule(ModuleManager? moduleManager) : super(moduleManager);
 
   @override
   String invoke(String method, dynamic params, callback) {
     if (method == 'init') {
       return init(params, (String id, Event event) {
-        moduleManager.emitModuleEvent(name, event: event, data: id);
+        moduleManager!.emitModuleEvent(name, event: event, data: id);
       });
     } else if (method == 'addEvent') {
       addEvent(params[0], params[1]);
@@ -52,11 +52,11 @@ class WebSocketModule extends BaseModule {
     _stateMap.clear();
   }
 
-  String init(String url, WebSocketEventCallback callback, {String protocols}) {
+  String init(String url, WebSocketEventCallback callback, {String? protocols}) {
     var id = (_clientId++).toString();
-    WebSocket.connect(url, protocols: [protocols]).then((webSocket) {
+    WebSocket.connect(url, protocols: [protocols!]).then((webSocket) {
       IOWebSocketChannel client = IOWebSocketChannel(webSocket);
-      _WebSocketState state = _stateMap[id];
+      _WebSocketState? state = _stateMap[id];
       if (state != null && state.status == _ConnectionState.closed) {
         dynamic data = state.data;
         webSocket.close(data[0], data[1]);
@@ -82,16 +82,16 @@ class WebSocketModule extends BaseModule {
     return id;
   }
 
-  void send(String id, String message) {
-    IOWebSocketChannel client = _clientMap[id];
+  void send(String? id, String? message) {
+    IOWebSocketChannel? client = _clientMap[id!];
 
     if (client == null) return;
 
     client.sink.add(message);
   }
 
-  void close(String id, [int closeCode, String closeReason]) {
-    IOWebSocketChannel client = _clientMap[id];
+  void close(String? id, [int? closeCode, String? closeReason]) {
+    IOWebSocketChannel? client = _clientMap[id!];
     // has not connect
     if (client == null) {
       if (!_stateMap.containsKey(id)) {
@@ -99,7 +99,7 @@ class WebSocketModule extends BaseModule {
         state.data = [closeCode, closeReason];
         _stateMap[id] = state;
       } else {
-        _WebSocketState state = _stateMap[id];
+        _WebSocketState state = _stateMap[id]!;
         state.status = _ConnectionState.closed;
         state.data = [closeCode, closeReason];
       }
@@ -111,12 +111,12 @@ class WebSocketModule extends BaseModule {
 
   bool _hasListener(String id, String type) {
     if (!_listenMap.containsKey(id)) return false;
-    var listeners = _listenMap[id];
+    var listeners = _listenMap[id]!;
     return listeners.containsKey(type);
   }
 
   void _listen(String id, WebSocketEventCallback callback) {
-    IOWebSocketChannel client = _clientMap[id];
+    IOWebSocketChannel client = _clientMap[id]!;
 
     client.stream.listen((message) {
       if (!_hasListener(id, EVENT_MESSAGE)) return;
@@ -131,7 +131,7 @@ class WebSocketModule extends BaseModule {
     }, onDone: () {
       if (_hasListener(id, EVENT_CLOSE)) {
         // CloseEvent https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/CloseEvent
-        CloseEvent event = CloseEvent(client.closeCode, client.closeReason, false);
+        CloseEvent event = CloseEvent(client.closeCode!, client.closeReason!, false);
         callback(id, event);
       }
       // Clear instance after close
@@ -141,14 +141,14 @@ class WebSocketModule extends BaseModule {
     });
   }
 
-  void addEvent(String id, String type) {
+  void addEvent(String? id, String? type) {
     if (!_listenMap.containsKey(id)) {
       // Init listener map
       _listenMap[id] = {};
     }
 
     // Mark event type listened
-    var listeners = _listenMap[id];
+    var listeners = _listenMap[id]!;
     listeners[type] = true;
   }
 }

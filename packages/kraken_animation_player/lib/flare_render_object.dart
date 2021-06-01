@@ -14,7 +14,7 @@ class FlareRenderObject extends FlareActorRenderObject {
   @override
   void dispose() {
     // Lazy dispose, due to dynamic render-box arrangement.
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
       if (!attached) super.dispose();
     });
   }

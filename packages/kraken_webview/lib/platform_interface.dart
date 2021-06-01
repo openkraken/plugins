@@ -53,21 +53,21 @@ class JavascriptMessage {
 /// [WebViewPlatformController] is notifying this handler on events that happened on the platform's webview.
 abstract class WebViewPlatformCallbacksHandler {
   /// Invoked by [WebViewPlatformController] when a JavaScript channel message is received.
-  void onJavaScriptChannelMessage(String channel, String message);
+  void onJavaScriptChannelMessage(String? channel, String? message);
 
   /// Invoked by [WebViewPlatformController] when a navigation request is pending.
   ///
   /// If true is returned the navigation is allowed, otherwise it is blocked.
-  FutureOr<bool> onNavigationRequest({String url, bool isForMainFrame});
+  FutureOr<bool> onNavigationRequest({String? url, bool? isForMainFrame});
 
   /// Invoked by [WebViewPlatformController] when a page has started loading.
-  void onPageStarted(String url);
+  void onPageStarted(String? url);
 
   /// Invoked by [WebViewPlatformController] when a page has finished loading.
-  void onPageFinished(String url);
+  void onPageFinished(String? url);
 
   /// Invoked by [WebViewPlatformController] when a page postMessage to kraken.
-  void onPostMessage(String message);
+  void onPostMessage(String? message);
 }
 
 /// Interface for talking to the webview's platform implementation.
@@ -98,7 +98,7 @@ abstract class WebViewPlatformController {
   /// Throws an ArgumentError if `url` is not a valid URL string.
   Future<void> loadUrl(
     String url,
-    Map<String, String> headers,
+    Map<String, String>? headers,
   ) {
     throw UnimplementedError(
         "WebView loadUrl is not implemented on the current platform");
@@ -108,7 +108,7 @@ abstract class WebViewPlatformController {
   ///
   /// Any non null field in `settings` will be set as the new setting value.
   /// All null fields in `settings` are ignored.
-  Future<void> updateSettings(WebSettings setting) {
+  Future<void>? updateSettings(WebSettings setting) {
     throw UnimplementedError(
         "WebView updateSettings is not implemented on the current platform");
   }
@@ -116,19 +116,19 @@ abstract class WebViewPlatformController {
   /// Accessor to the current URL that the WebView is displaying.
   ///
   /// If no URL was ever loaded, returns `null`.
-  Future<String> currentUrl() {
+  Future<String?> currentUrl() {
     throw UnimplementedError(
         "WebView currentUrl is not implemented on the current platform");
   }
 
   /// Checks whether there's a back history item.
-  Future<bool> canGoBack() {
+  Future<bool?> canGoBack() {
     throw UnimplementedError(
         "WebView canGoBack is not implemented on the current platform");
   }
 
   /// Checks whether there's a forward history item.
-  Future<bool> canGoForward() {
+  Future<bool?> canGoForward() {
     throw UnimplementedError(
         "WebView canGoForward is not implemented on the current platform");
   }
@@ -172,7 +172,7 @@ abstract class WebViewPlatformController {
   ///
   /// The Future completes with an error if a JavaScript error occurred, or if the type of the
   /// evaluated expression is not supported(e.g on iOS not all non primitive type can be evaluated).
-  Future<String> evaluateJavascript(String javascriptString) {
+  Future<String?> evaluateJavascript(String javascriptString) {
     throw UnimplementedError(
         "WebView evaluateJavascript is not implemented on the current platform");
   }
@@ -214,7 +214,7 @@ abstract class WebViewPlatformController {
   }
 
   /// Returns the title of the currently loaded page.
-  Future<String> getTitle() {
+  Future<String?> getTitle() {
     throw UnimplementedError(
         "WebView getTitle is not implemented on the current platform");
   }
@@ -238,12 +238,12 @@ class WebSetting<T> {
       : _value = value,
         isPresent = true;
 
-  final T _value;
+  final T? _value;
 
   /// The setting's value.
   ///
   /// Throws if [WebSetting.isPresent] is false.
-  T get value {
+  T? get value {
     if (!isPresent) {
       throw StateError('Cannot access a value of an absent WebSetting');
     }
@@ -259,7 +259,7 @@ class WebSetting<T> {
   @override
   bool operator ==(Object other) {
     if (other.runtimeType != runtimeType) return false;
-    final WebSetting<T> typedOther = other;
+    final WebSetting<T> typedOther = other as WebSetting<T>;
     return typedOther.isPresent == isPresent && typedOther._value == _value;
   }
 }
@@ -280,19 +280,19 @@ class WebSettings {
     this.hasNavigationDelegate,
     this.debuggingEnabled,
     this.gestureNavigationEnabled,
-    @required this.userAgent,
+    required this.userAgent,
   }) : assert(userAgent != null);
 
   /// The JavaScript execution mode to be used by the webview.
-  final JavascriptMode javascriptMode;
+  final JavascriptMode? javascriptMode;
 
   /// Whether the [WebView] has a [NavigationDelegate] set.
-  final bool hasNavigationDelegate;
+  final bool? hasNavigationDelegate;
 
   /// Whether to enable the platform's webview content debugging tools.
   ///
   /// See also: [WebView.debuggingEnabled].
-  final bool debuggingEnabled;
+  final bool? debuggingEnabled;
 
   /// The value used for the HTTP `User-Agent:` request header.
   ///
@@ -307,7 +307,7 @@ class WebSettings {
   /// Whether to allow swipe based navigation in iOS.
   ///
   /// See also: [WebView.gestureNavigationEnabled]
-  final bool gestureNavigationEnabled;
+  final bool? gestureNavigationEnabled;
 
   @override
   String toString() {
@@ -335,12 +335,12 @@ class CreationParams {
   /// The initialUrl to load in the webview.
   ///
   /// When null the webview will be created without loading any page.
-  final String initialUrl;
+  final String? initialUrl;
 
   /// The initial [WebSettings] for the new webview.
   ///
   /// This can later be updated with [WebViewPlatformController.updateSettings].
-  final WebSettings webSettings;
+  final WebSettings? webSettings;
 
   /// The initial set of JavaScript channels that are configured for this webview.
   ///
@@ -353,12 +353,12 @@ class CreationParams {
   /// ```
   // TODO(amirh): describe what should happen when postMessage is called once that code is migrated
   // to PlatformWebView.
-  final Set<String> javascriptChannelNames;
+  final Set<String>? javascriptChannelNames;
 
   /// The value used for the HTTP User-Agent: request header.
   ///
   /// When null the platform's webview default is used for the User-Agent header.
-  final String userAgent;
+  final String? userAgent;
 
   /// Which restrictions apply on automatic media playback.
   final AutoMediaPlaybackPolicy autoMediaPlaybackPolicy;
@@ -403,11 +403,11 @@ abstract class WebViewPlatform {
     // TODO(amirh): convert this to be the actual parameters.
     // I'm starting without it as the PR is starting to become pretty big.
     // I'll followup with the conversion PR.
-    CreationParams creationParams,
-    @required WebViewPlatformCallbacksHandler webViewPlatformCallbacksHandler,
-    WebViewPlatformCreatedCallback onWebViewPlatformCreated,
-    Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-    VoidCallback onFocus,
+    CreationParams? creationParams,
+    required WebViewPlatformCallbacksHandler? webViewPlatformCallbacksHandler,
+    WebViewPlatformCreatedCallback? onWebViewPlatformCreated,
+    Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
+    VoidCallback? onFocus,
   });
 
   void dispose();

@@ -18,8 +18,8 @@ import 'webview_method_channel.dart';
 /// a [UiKitView] to embed the webview in the widget hierarchy, and uses a method channel to
 /// communicate with the platform code.
 class CupertinoWebView implements WebViewPlatform {
-  UiKitViewController _controller;
-  int _id;
+  UiKitViewController? _controller;
+  int? _id;
 
   void dispose() {
     _controller?.dispose();
@@ -38,11 +38,11 @@ class CupertinoWebView implements WebViewPlatform {
 
   @override
   RenderBox buildRenderBox({
-    CreationParams creationParams,
-    @required WebViewPlatformCallbacksHandler webViewPlatformCallbacksHandler,
-    WebViewPlatformCreatedCallback onWebViewPlatformCreated,
-    Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-    VoidCallback onFocus,
+    CreationParams? creationParams,
+    required WebViewPlatformCallbacksHandler? webViewPlatformCallbacksHandler,
+    WebViewPlatformCreatedCallback? onWebViewPlatformCreated,
+    Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
+    VoidCallback? onFocus,
   }) {
     _id = platformViewsRegistry.getNextPlatformViewId();
 
@@ -52,19 +52,19 @@ class CupertinoWebView implements WebViewPlatform {
     );
 
     // Async get uikit view controller.
-    getUiKitViewController(_id, creationParams)
+    getUiKitViewController(_id!, creationParams!)
       .then((UiKitViewController controller) {
         _controller = controller;
         MethodChannelWebViewPlatform methodChannelWebViewPlatform = MethodChannelWebViewPlatform(
-              _id, webViewPlatformCallbacksHandler);
+              _id, webViewPlatformCallbacksHandler!);
         if (onWebViewPlatformCreated != null) {
           onWebViewPlatformCreated(methodChannelWebViewPlatform);
         }
         _polyfillWebView(methodChannelWebViewPlatform);
         _expandHolder.child = RenderUiKitView(
-          viewController: _controller,
+          viewController: _controller!,
           hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-          gestureRecognizers: gestureRecognizers,
+          gestureRecognizers: gestureRecognizers!,
         );
       });
 

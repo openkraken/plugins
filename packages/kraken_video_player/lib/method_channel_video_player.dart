@@ -18,7 +18,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> dispose(int textureId) {
+  Future<void> dispose(int? textureId) {
     return _channel.invokeMethod<void>(
       'dispose',
       <String, dynamic>{'textureId': textureId},
@@ -26,10 +26,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<int> create(DataSource dataSource) async {
-    Map<String, dynamic> dataSourceDescription;
+  Future<int?> create(DataSource? dataSource) async {
+    Map<String, dynamic>? dataSourceDescription;
 
-    switch (dataSource.sourceType) {
+    switch (dataSource!.sourceType) {
       case DataSourceType.asset:
         dataSourceDescription = <String, dynamic>{
           'asset': dataSource.asset,
@@ -48,15 +48,15 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     }
 
     final Map<String, dynamic> response =
-        await _channel.invokeMapMethod<String, dynamic>(
+        await (_channel.invokeMapMethod<String, dynamic>(
       'create',
       dataSourceDescription,
-    );
+    ) as FutureOr<Map<String, dynamic>>);
     return response['textureId'];
   }
 
   @override
-  Future<void> setLooping(int textureId, bool looping) {
+  Future<void> setLooping(int? textureId, bool looping) {
     return _channel.invokeMethod<void>(
       'setLooping',
       <String, dynamic>{
@@ -67,7 +67,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> play(int textureId) {
+  Future<void> play(int? textureId) {
     return _channel.invokeMethod<void>(
       'play',
       <String, dynamic>{'textureId': textureId},
@@ -75,7 +75,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> pause(int textureId) {
+  Future<void> pause(int? textureId) {
     return _channel.invokeMethod<void>(
       'pause',
       <String, dynamic>{'textureId': textureId},
@@ -83,7 +83,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setVolume(int textureId, double volume) {
+  Future<void> setVolume(int? textureId, double volume) {
     return _channel.invokeMethod<void>(
       'setVolume',
       <String, dynamic>{
@@ -94,7 +94,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setMuted(int textureId, bool muted) {
+  Future<void> setMuted(int? textureId, bool muted) {
     return _channel.invokeMethod<void>(
       'setMuted',
       <String, dynamic>{
@@ -104,28 +104,28 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     );
   }
   @override
-  Future<void> seekTo(int textureId, Duration position) {
+  Future<void> seekTo(int? textureId, Duration? position) {
     return _channel.invokeMethod<void>(
       'seekTo',
       <String, dynamic>{
         'textureId': textureId,
-        'location': position.inMilliseconds,
+        'location': position!.inMilliseconds,
       },
     );
   }
 
   @override
-  Future<Duration> getPosition(int textureId) async {
+  Future<Duration> getPosition(int? textureId) async {
     return Duration(
-      milliseconds: await _channel.invokeMethod<int>(
+      milliseconds: await (_channel.invokeMethod<int>(
         'position',
         <String, dynamic>{'textureId': textureId},
-      ),
+      ) as FutureOr<int>),
     );
   }
 
   @override
-  Stream<VideoEvent> videoEventsFor(int textureId) {
+  Stream<VideoEvent> videoEventsFor(int? textureId) {
     return _eventChannelFor(textureId)
         .receiveBroadcastStream()
         .map((dynamic event) {
@@ -159,7 +159,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     });
   }
 
-  EventChannel _eventChannelFor(int textureId) {
+  EventChannel _eventChannelFor(int? textureId) {
     return EventChannel('flutter.io/videoPlayer/videoEvents$textureId');
   }
 

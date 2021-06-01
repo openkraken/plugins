@@ -1,5 +1,3 @@
-
-import 'package:flutter/widgets.dart';
 import 'websocket_module.dart';
 import 'package:kraken/module.dart';
 import 'platform.dart';

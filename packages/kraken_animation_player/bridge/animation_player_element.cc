@@ -67,8 +67,8 @@ namespace kraken::binding::jsc {
     std::string tagName = "animation-player";
     NativeString args_01{};
     buildUICommandArgs(tagName, args_01);
-    foundation::UICommandTaskMessageQueue::instance(context->getContextId())
-        ->registerCommand(eventTargetId, UICommand::createElement, args_01, nativeAnimationPlayerElement);
+    foundation::UICommandBuffer::instance(context->getContextId())
+        ->addCommand(eventTargetId, UICommand::createElement, args_01, nativeAnimationPlayerElement);
   }
 
   JSValueRef JSAnimationPlayerElement::AnimationPlayerElementInstance::getProperty(std::string &name,
@@ -115,8 +115,8 @@ namespace kraken::binding::jsc {
       NativeString args_01{};
       NativeString args_02{};
       buildUICommandArgs(name, src, args_01, args_02);
-      foundation::UICommandTaskMessageQueue::instance(_hostClass->contextId)
-          ->registerCommand(eventTargetId, UICommand::setProperty, args_01, args_02, nullptr);
+      foundation::UICommandBuffer::instance(_hostClass->contextId)
+          ->addCommand(eventTargetId, UICommand::setProperty, args_01, args_02, nullptr);
       return true;
     } else if (property == AnimationPlayerProperty::type) {
       JSStringRef type = JSValueToStringCopy(_hostClass->ctx, value, exception);
@@ -126,8 +126,8 @@ namespace kraken::binding::jsc {
       NativeString args_02{};
 
       buildUICommandArgs(name, type, args_01, args_02);
-      foundation::UICommandTaskMessageQueue::instance(_hostClass->contextId)
-          ->registerCommand(eventTargetId, UICommand::setProperty, args_01, args_02, nullptr);
+      foundation::UICommandBuffer::instance(_hostClass->contextId)
+          ->addCommand(eventTargetId, UICommand::setProperty, args_01, args_02, nullptr);
       return true;
     } else {
       return ElementInstance::setProperty(name, value, exception);
