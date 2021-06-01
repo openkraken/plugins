@@ -4,7 +4,7 @@ div.style.flexDirection = "column";
 div.style.alignItems = "center";
 document.body.appendChild(div);
 
-var camera = document.createElement("CAMERA-PREVIEW");
+var camera = document.createElement("camera-preview");
 camera.style.width = camera.style.height = "200px";
 camera.setAttribute("resolution-preset", "medium");
 camera.setAttribute("lens", "back");

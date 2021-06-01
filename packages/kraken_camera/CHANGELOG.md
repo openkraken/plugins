@@ -1,3 +1,7 @@
+## 0.1.0
+
+* upgrade to kraken 0.7.1
+
 ## 0.0.5
 
 * Change `_propertyChangedListener` to `void Function(String, String, String)`.

@@ -30,4 +30,3 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Android")
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../android/jniLibs/${ANDROID_ABI}/"
         )
 endif()
-  
