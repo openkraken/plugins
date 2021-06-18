@@ -54,7 +54,7 @@ class WebSocketModule extends BaseModule {
 
   String init(String url, WebSocketEventCallback callback, {String? protocols}) {
     var id = (_clientId++).toString();
-    WebSocket.connect(url, protocols: [protocols!]).then((webSocket) {
+    WebSocket.connect(url, protocols: protocols != null ? [protocols] : null).then((webSocket) {
       IOWebSocketChannel client = IOWebSocketChannel(webSocket);
       _WebSocketState? state = _stateMap[id];
       if (state != null && state.status == _ConnectionState.closed) {

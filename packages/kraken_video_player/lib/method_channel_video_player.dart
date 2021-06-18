@@ -47,12 +47,12 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
         break;
     }
 
-    final Map<String, dynamic> response =
+    final Map<String, dynamic>? response =
         await (_channel.invokeMapMethod<String, dynamic>(
       'create',
       dataSourceDescription,
-    ) as FutureOr<Map<String, dynamic>>);
-    return response['textureId'];
+    ));
+    return response!['textureId'];
   }
 
   @override
@@ -116,11 +116,13 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<Duration> getPosition(int? textureId) async {
+    int? position = await (_channel.invokeMethod<int>(
+      'position',
+      <String, dynamic>{'textureId': textureId},
+    ));
+
     return Duration(
-      milliseconds: await (_channel.invokeMethod<int>(
-        'position',
-        <String, dynamic>{'textureId': textureId},
-      ) as FutureOr<int>),
+      milliseconds: position!,
     );
   }
 
