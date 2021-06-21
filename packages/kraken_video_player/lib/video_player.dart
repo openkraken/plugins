@@ -11,7 +11,7 @@ import 'package:meta/meta.dart';
 
 import 'video_player_platform_interface.dart';
 export 'video_player_platform_interface.dart'
-  show DurationRange, DataSourceType, VideoFormat;
+    show DurationRange, DataSourceType, VideoFormat;
 
 const int MEDIA_ERR_ABORTED = 1;
 const int MEDIA_ERR_NETWORK = 2;
@@ -47,7 +47,7 @@ class VideoPlayerValue {
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
   VideoPlayerValue.erroneous(String? errorDescription)
-    : this(duration: null, errorDescription: errorDescription);
+      : this(duration: null, errorDescription: errorDescription);
 
   /// The total duration of the video.
   ///
@@ -127,15 +127,15 @@ class VideoPlayerValue {
   @override
   String toString() {
     return '$runtimeType('
-      'duration: $duration, '
-      'size: $size, '
-      'position: $position, '
-      'buffered: [${buffered.join(', ')}], '
-      'isPlaying: $isPlaying, '
-      'isLooping: $isLooping, '
-      'isBuffering: $isBuffering'
-      'volume: $volume, '
-      'errorDescription: $errorDescription)';
+        'duration: $duration, '
+        'size: $size, '
+        'position: $position, '
+        'buffered: [${buffered.join(', ')}], '
+        'isPlaying: $isPlaying, '
+        'isLooping: $isLooping, '
+        'isBuffering: $isBuffering'
+        'volume: $volume, '
+        'errorDescription: $errorDescription)';
   }
 }
 
@@ -156,9 +156,9 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// null. The [package] argument must be non-null when the asset comes from a
   /// package and null otherwise.
   VideoPlayerController.asset(this.dataSource, {this.package})
-    : dataSourceType = DataSourceType.asset,
-      formatHint = null,
-      super(VideoPlayerValue(duration: null));
+      : dataSourceType = DataSourceType.asset,
+        formatHint = null,
+        super(VideoPlayerValue(duration: null));
 
   /// Constructs a [VideoPlayerController] playing a video from obtained from
   /// the network.
@@ -168,19 +168,19 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// **Android only**: The [formatHint] option allows the caller to override
   /// the video format detection code.
   VideoPlayerController.network(this.dataSource, {this.formatHint})
-    : dataSourceType = DataSourceType.network,
-      package = null,
-      super(VideoPlayerValue(duration: null));
+      : dataSourceType = DataSourceType.network,
+        package = null,
+        super(VideoPlayerValue(duration: null));
 
   /// Constructs a [VideoPlayerController] playing a video from a file.
   ///
   /// This will load the file from the file-URI given by:
   /// `'file://${file.path}'`.
   VideoPlayerController.file(this.dataSource)
-    : dataSourceType = DataSourceType.file,
-      package = null,
-      formatHint = null,
-      super(VideoPlayerValue(duration: null));
+      : dataSourceType = DataSourceType.file,
+        package = null,
+        formatHint = null,
+        super(VideoPlayerValue(duration: null));
 
   /// VideoController Callbacks
   VoidCallback? onCanPlay;
@@ -247,7 +247,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         break;
     }
     _textureId =
-    await VideoPlayerPlatform.instance.create(dataSourceDescription);
+        await VideoPlayerPlatform.instance.create(dataSourceDescription);
     _creatingCompleter!.complete(null);
     final Completer<int> initializingCompleter = Completer<int>();
 
@@ -297,8 +297,8 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
 
     _eventSubscription = VideoPlayerPlatform.instance
-      .videoEventsFor(_textureId)
-      .listen(eventListener, onError: errorListener);
+        .videoEventsFor(_textureId)
+        .listen(eventListener, onError: errorListener);
     return initializingCompleter.future;
   }
 
@@ -374,7 +374,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       await VideoPlayerPlatform.instance.play(_textureId);
       _timer = Timer.periodic(
         const Duration(milliseconds: 500),
-          (Timer timer) async {
+        (Timer timer) async {
           if (_isDisposed) {
             return;
           }

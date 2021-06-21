@@ -57,7 +57,7 @@ class VideoElement extends MediaElement {
   @override
   void dispose() {
     super.dispose();
-    controller!.dispose();
+    controller?.dispose();
   }
 
   void renderVideo() {

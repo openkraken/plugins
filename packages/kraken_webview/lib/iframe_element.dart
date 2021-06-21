@@ -21,7 +21,7 @@ typedef NativeIframePostMessage = Void Function(Pointer<NativeIframeElement> nat
 
 class NativeIframeElement extends Struct {
   external Pointer<NativeElement> nativeElement;
-  external Pointer<NativeFunction<NativeIframePostMessage>>? postMessage;
+  external Pointer<NativeFunction<NativeIframePostMessage>> postMessage;
 }
 
 const String IFRAME = 'IFRAME';
@@ -845,7 +845,6 @@ class IFrameElement extends WebViewElement {
   }
 
   final Pointer<NativeIframeElement> nativeIframeElement;
-
 
   IFrameElement(int targetId, this.nativeIframeElement, ElementManager elementManager)
       : super(targetId, nativeIframeElement.ref.nativeElement, elementManager, tagName: IFRAME) {

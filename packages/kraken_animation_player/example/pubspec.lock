@@ -162,14 +162,14 @@ packages:
       name: kraken
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.0-dev.1"
+    version: "0.8.0"
   kraken_animation_player:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "0.2.0-dev.1"
+    version: "0.2.0"
   matcher:
     dependency: transitive
     description:

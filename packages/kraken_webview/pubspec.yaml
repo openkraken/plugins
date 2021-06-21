@@ -1,6 +1,6 @@
 name: kraken_webview
 description: kraken `<iframe />` tags support.
-version: 0.6.0-dev.1
+version: 0.6.0
 author: openkraken.com
 homepage: https://openkraken.com/
 
@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  kraken: ^0.8.0-dev.1
+  kraken: ^0.8.0
 
 dev_dependencies:
   flutter_test:

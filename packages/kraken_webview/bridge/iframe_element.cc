@@ -20,7 +20,7 @@ JSObjectRef JSIframeElement::instanceConstructor(JSContextRef ctx, JSObjectRef c
   return instance->object;
 }
 
-JSIframeElement::IframeElementInstance::IframeElementInstance(JSIframeElement *jsAnchorElement)
+IframeElementInstance::IframeElementInstance(JSIframeElement *jsAnchorElement)
   : ElementInstance(jsAnchorElement, "iframe", false), nativeIframeElement(new NativeIframeElement(nativeElement)) {
   std::string tagName = "iframe";
 
@@ -30,7 +30,7 @@ JSIframeElement::IframeElementInstance::IframeElementInstance(JSIframeElement *j
     ->addCommand(eventTargetId, UICommand::createElement, args_01, nativeIframeElement);
 }
 
-JSValueRef JSIframeElement::IframeElementInstance::getProperty(std::string &name, JSValueRef *exception) {
+JSValueRef IframeElementInstance::getProperty(std::string &name, JSValueRef *exception) {
   auto propertyMap = getIFrameElementPropertyMap();
   auto prototypePropertyMap = getIFrameElementPrototypePropertyMap();
   JSStringHolder nameStringHolder = JSStringHolder(context, name);
@@ -55,7 +55,7 @@ JSValueRef JSIframeElement::IframeElementInstance::getProperty(std::string &name
   return ElementInstance::getProperty(name, exception);
 }
 
-bool JSIframeElement::IframeElementInstance::setProperty(std::string &name, JSValueRef value, JSValueRef *exception) {
+bool IframeElementInstance::setProperty(std::string &name, JSValueRef value, JSValueRef *exception) {
   auto propertyMap = getIFrameElementPropertyMap();
   auto prototypePropertyMap = getIFrameElementPrototypePropertyMap();
   JSStringHolder nameStringHolder = JSStringHolder(context, name);
@@ -100,7 +100,7 @@ bool JSIframeElement::IframeElementInstance::setProperty(std::string &name, JSVa
   }
 }
 
-void JSIframeElement::IframeElementInstance::getPropertyNames(JSPropertyNameAccumulatorRef accumulator) {
+void IframeElementInstance::getPropertyNames(JSPropertyNameAccumulatorRef accumulator) {
   ElementInstance::getPropertyNames(accumulator);
 
   for (auto &property : getIFrameElementPropertyNames()) {
@@ -112,7 +112,7 @@ void JSIframeElement::IframeElementInstance::getPropertyNames(JSPropertyNameAccu
   }
 }
 
-JSIframeElement::IframeElementInstance::~IframeElementInstance() {
+IframeElementInstance::~IframeElementInstance() {
   ::foundation::UICommandCallbackQueue::instance()->registerCallback([](void *ptr) {
     delete reinterpret_cast<NativeIframeElement *>(ptr);
   }, nativeIframeElement);
@@ -137,7 +137,7 @@ JSValueRef JSIframeElement::postMessage(JSContextRef ctx, JSObjectRef function,
   message.string = JSStringGetCharactersPtr(messageStringRef);
   message.length = JSStringGetLength(messageStringRef);
 
-  auto instance = reinterpret_cast<JSIframeElement::IframeElementInstance *>(JSObjectGetPrivate(thisObject));
+  auto instance = reinterpret_cast<IframeElementInstance *>(JSObjectGetPrivate(thisObject));
   assert_m(instance->nativeIframeElement->postMessage != nullptr, "Failed to execute postMessage(): dart method is nullptr.");
   instance->nativeIframeElement->postMessage(instance->nativeIframeElement, &message);
 
@@ -149,6 +149,6 @@ JSValueRef JSIframeElement::postMessage(JSContextRef ctx, JSObjectRef function,
 void initBridge() {
   using namespace kraken::binding::jsc;
   JSElement::defineElement("iframe", [](JSContext *context) -> ElementInstance * {
-    return new JSIframeElement::IframeElementInstance(JSIframeElement::instance(context));
+    return new IframeElementInstance(JSIframeElement::instance(context));
   });
 }

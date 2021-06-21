@@ -1,3 +1,10 @@
+
+## 0.2.0+1
+
+* rebuilt dylibs.
+## 0.2.0
+
+* upgrade to kraken 0.8.0
 ## 0.1.1
 
 * default display set to block.

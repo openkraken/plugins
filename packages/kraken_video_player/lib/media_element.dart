@@ -34,6 +34,7 @@ abstract class MediaElement extends Element {
 
   static void _pause(Pointer<NativeMediaElement> nativeMediaElement) {
     MediaElement mediaElement = getMediaElementOfNativePtr(nativeMediaElement);
+    print('pause');
     mediaElement.pause();
   }
 

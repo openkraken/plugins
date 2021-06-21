@@ -148,7 +148,9 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 - (void)createVideoOutput:(FLTFrameUpdater*)frameUpdater {
   NSDictionary* pixBuffAttributes = @{
     (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),
-    (id)kCVPixelBufferIOSurfacePropertiesKey : @{}
+    (id)kCVPixelBufferIOSurfacePropertiesKey : @{},
+    (id)kCVPixelBufferOpenGLCompatibilityKey : @YES,
+    (id)kCVPixelBufferMetalCompatibilityKey : @YES,
   };
   _videoOutput = [[AVPlayerItemVideoOutput alloc] initWithPixelBufferAttributes:pixBuffAttributes];
 }
