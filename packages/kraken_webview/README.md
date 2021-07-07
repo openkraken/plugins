@@ -29,20 +29,20 @@ document.body.appendChild(iframe);
 ```
 
 ## Contribute
-Install kraken-nbpt
+Install kraken-npbt
 
 ```
-npm install kraken-nbpt -g
+npm install kraken-npbt -g
 ```
 
 Generate build project files:
 
 ```
-kraken-nbpt configure
+kraken-npbt configure
 ```
 
 Build native dynamic library
 
 ```
-kraken-nbpt build
+kraken-npbt build
 ```
