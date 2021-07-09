@@ -475,9 +475,6 @@ abstract class WebViewElement extends Element {
         assert(initialMediaPlaybackPolicy != null),
         super(targetId, nativePtr, elementManager,
             tagName: tagName, defaultStyle: _defaultStyle, isIntrinsicBox: true, repaintSelf: true) {
-    double viewportWidth = elementManager.viewportWidth;
-    double viewportHeight = elementManager.viewportHeight;
-    Size viewportSize = Size(viewportWidth, viewportHeight);
     _width = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_WIDTH, viewportSize: viewportSize);
     _height = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_HEIGHT, viewportSize: viewportSize);
   }
@@ -540,10 +537,22 @@ abstract class WebViewElement extends Element {
 
   void _stylePropertyChanged(String property, String? prev, String present) {
     RenderStyle renderStyle = renderBoxModel!.renderStyle;
+    double rootFontSize = renderBoxModel!.elementDelegate.getRootElementFontSize();
+    double fontSize = renderStyle.fontSize;
     if (property == WIDTH) {
-      width = CSSLength.toDisplayPortValue(present, renderStyle: renderStyle);
+      width = CSSLength.toDisplayPortValue(
+        present,
+        viewportSize: viewportSize,
+        rootFontSize: rootFontSize,
+        fontSize: fontSize
+      );
     } else if (property == HEIGHT) {
-      height = CSSLength.toDisplayPortValue(present, renderStyle: renderStyle);
+      height = CSSLength.toDisplayPortValue(
+        present,
+        viewportSize: viewportSize,
+        rootFontSize: rootFontSize,
+        fontSize: fontSize
+      );
     }
   }
 
