@@ -1,18 +1,18 @@
 name: kraken_websocket
 description: W3C compact video tag support.
-version: 0.1.1
+version: 0.2.0+1
 author: kraken team
 homepage: https://openkraken.com
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
   flutter: ">=1.20.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  web_socket_channel: ^1.1.0
-  kraken: ^0.7.0
+  web_socket_channel: ^2.1.0
+  kraken: ^0.8.0
 
 dev_dependencies:
   flutter_test:

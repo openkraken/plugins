@@ -17,11 +17,15 @@ import 'flare_render_object.dart';
 const String ANIMATION_PLAYER = 'ANIMATION-PLAYER';
 const String ANIMATION_TYPE_FLARE = 'flare';
 
-typedef Native_PlayAnimation = Void Function(
-    Pointer<NativeAnimationElement> nativePtr, Pointer<NativeString> name, Double mix, Double mixSeconds);
+typedef NativePlayAnimation = Void Function(
+    Pointer<NativeAnimationElement> nativePtr,
+    Pointer<NativeString> name,
+    Double mix,
+    Double mixSeconds);
+
 class NativeAnimationElement extends Struct {
-  Pointer<NativeElement> nativeElement;
-  Pointer<NativeFunction<Native_PlayAnimation>> play;
+  external Pointer<NativeElement> nativeElement;
+  external Pointer<NativeFunction<NativePlayAnimation>> play;
 }
 
 final Map<String, dynamic> _defaultStyle = {
@@ -30,29 +34,42 @@ final Map<String, dynamic> _defaultStyle = {
   HEIGHT: ELEMENT_DEFAULT_HEIGHT,
 };
 
-final Pointer<NativeFunction<Native_PlayAnimation>> nativePlay = Pointer.fromFunction(AnimationPlayerElement._play);
+final Pointer<NativeFunction<NativePlayAnimation>> nativePlay =
+    Pointer.fromFunction(AnimationPlayerElement._play);
 
 // Ref: https://github.com/LottieFiles/lottie-player
 class AnimationPlayerElement extends Element {
   static SplayTreeMap<int, AnimationPlayerElement> _nativeMap = SplayTreeMap();
-  static AnimationPlayerElement getAnimationPlayerOfNativePtr(Pointer<NativeAnimationElement> nativeAnimationElement) {
-    AnimationPlayerElement animationPlayerElement = _nativeMap[nativeAnimationElement.address];
-    assert(animationPlayerElement != null, 'Can not get animationPlayerElement from nativeElement: $nativeAnimationElement');
+  static AnimationPlayerElement getAnimationPlayerOfNativePtr(
+      Pointer<NativeAnimationElement> nativeAnimationElement) {
+    AnimationPlayerElement? animationPlayerElement =
+        _nativeMap[nativeAnimationElement.address];
+    if (animationPlayerElement == null) {
+      throw FlutterError(
+          'Can not get animationPlayerElement from nativeElement: $nativeAnimationElement');
+    }
     return animationPlayerElement;
   }
 
-  static void _play(Pointer<NativeAnimationElement> nativePtr, Pointer<NativeString> name, double mix, double mixSeconds) {
+  static void _play(Pointer<NativeAnimationElement> nativePtr,
+      Pointer<NativeString> name, double mix, double mixSeconds) {
     AnimationPlayerElement element = getAnimationPlayerOfNativePtr(nativePtr);
     element.play(nativeStringToString(name), mix, mixSeconds);
   }
 
   final Pointer<NativeAnimationElement> nativeAnimationElement;
 
-  RenderObject _animationRenderObject;
-  FlareControls _animationController;
+  FlareRenderObject? _animationRenderObject;
+  FlareControls? _animationController;
 
-  AnimationPlayerElement(int targetId, this.nativeAnimationElement, ElementManager elementManager)
-      : super(targetId, nativeAnimationElement.ref.nativeElement, elementManager, tagName: ANIMATION_PLAYER, defaultStyle: _defaultStyle, isIntrinsicBox: true, repaintSelf: true) {
+  AnimationPlayerElement(
+      int targetId, this.nativeAnimationElement, ElementManager elementManager)
+      : super(
+            targetId, nativeAnimationElement.ref.nativeElement, elementManager,
+            tagName: ANIMATION_PLAYER,
+            defaultStyle: _defaultStyle,
+            isIntrinsicBox: true,
+            repaintSelf: true) {
     _nativeMap[nativeAnimationElement.address] = this;
     nativeAnimationElement.ref.play = nativePlay;
   }
@@ -62,7 +79,7 @@ class AnimationPlayerElement extends Element {
   // Default type to flare
   String get type => properties['type'] ?? ANIMATION_TYPE_FLARE;
 
-  String get src => properties['src'];
+  String? get src => properties['src'];
 
   @override
   void willAttachRenderer() {
@@ -70,7 +87,7 @@ class AnimationPlayerElement extends Element {
 
     _animationRenderObject = _createFlareRenderObject();
     if (_animationRenderObject != null) {
-      addChild(_animationRenderObject);
+      addChild(_animationRenderObject!);
     }
   }
 
@@ -87,10 +104,10 @@ class AnimationPlayerElement extends Element {
 
   void _updateRenderObject() {
     if (isConnected && isRendererAttached) {
-      RenderObject prev = previousSibling?.renderer;
+      RenderObject? prev = previousSibling?.renderer;
 
       detach();
-      attachTo(parent, after: prev);
+      attachTo(parent as Element, after: prev as RenderBox?);
     }
   }
 
@@ -100,8 +117,8 @@ class AnimationPlayerElement extends Element {
 
   void _updateObjectFit() {
     if (_animationRenderObject is FlareRenderObject) {
-      FlareRenderObject renderBox = _animationRenderObject;
-      renderBox?.fit = _getObjectFit();
+      FlareRenderObject renderBox = _animationRenderObject!;
+      renderBox.fit = _getObjectFit();
     }
   }
 
@@ -143,7 +160,7 @@ class AnimationPlayerElement extends Element {
     }
   }
 
-  FlareRenderObject _createFlareRenderObject() {
+  FlareRenderObject? _createFlareRenderObject() {
     if (src == null) {
       return null;
     }
@@ -152,7 +169,10 @@ class AnimationPlayerElement extends Element {
     _animationController = FlareControls();
 
     return FlareRenderObject()
-      ..assetProvider = AssetFlare(bundle: NetworkAssetBundle(Uri.parse(src)), name: '')
+      ..assetProvider = AssetFlare(
+          bundle: NetworkAssetBundle(Uri.parse(src!),
+              contextId: elementManager.contextId),
+          name: '')
       ..fit = boxFit
       ..alignment = Alignment.center
       ..animationName = properties['name']

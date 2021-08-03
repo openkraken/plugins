@@ -17,12 +17,11 @@ import 'src/webview_android.dart';
 import 'src/webview_cupertino.dart';
 import 'src/webview_fallback.dart';
 
-typedef Native_IframePostMessage = Void Function(Pointer<NativeIframeElement> nativePtr, Pointer<NativeString> message);
+typedef NativeIframePostMessage = Void Function(Pointer<NativeIframeElement> nativePtr, Pointer<NativeString> message);
 
 class NativeIframeElement extends Struct {
-  Pointer<NativeElement> nativeElement;
-
-  Pointer<NativeFunction<Native_IframePostMessage>> postMessage;
+  external Pointer<NativeElement> nativeElement;
+  external Pointer<NativeFunction<NativeIframePostMessage>> postMessage;
 }
 
 const String IFRAME = 'IFRAME';
@@ -42,8 +41,8 @@ class RenderWebViewBoundaryBox extends RenderConstrainedBox {
 
   RenderWebViewBoundaryBox(
     this.onDetach, {
-    BoxConstraints additionalConstraints,
-    RenderBox child,
+    required BoxConstraints additionalConstraints,
+    RenderBox? child,
   }) : super(additionalConstraints: additionalConstraints, child: child);
 
   @override
@@ -64,10 +63,10 @@ class NavigationRequest {
   NavigationRequest({this.url, this.isForMainFrame});
 
   /// The URL that will be loaded if the navigation is executed.
-  final String url;
+  final String? url;
 
   /// Whether the navigation request is to be loaded as the main frame.
-  final bool isForMainFrame;
+  final bool? isForMainFrame;
 
   @override
   String toString() {
@@ -106,8 +105,8 @@ class JavascriptChannel {
   ///
   /// The parameters `name` and `onMessageReceived` must not be null.
   JavascriptChannel({
-    @required this.name,
-    @required this.onMessageReceived,
+    required this.name,
+    required this.onMessageReceived,
   })  : assert(name != null),
         assert(onMessageReceived != null),
         assert(_validChannelNames.hasMatch(name));
@@ -144,9 +143,9 @@ class WebViewController {
 
   final WebViewPlatformController _webViewPlatformController;
 
-  final _PlatformCallbacksHandler _platformCallbacksHandler;
+  final _PlatformCallbacksHandler? _platformCallbacksHandler;
 
-  WebSettings _settings;
+  late WebSettings _settings;
 
   WebViewElement _element;
 
@@ -160,7 +159,7 @@ class WebViewController {
   /// Throws an ArgumentError if `url` is not a valid URL string.
   Future<void> loadUrl(
     String url, {
-    Map<String, String> headers,
+    Map<String, String>? headers,
   }) async {
     assert(url != null);
     _validateUrlString(url);
@@ -174,7 +173,7 @@ class WebViewController {
   /// current URL changes again by the time this function returns (in other
   /// words, by the time this future completes, the WebView may be displaying a
   /// different URL).
-  Future<String> currentUrl() {
+  Future<String?> currentUrl() {
     return _webViewPlatformController.currentUrl();
   }
 
@@ -182,7 +181,7 @@ class WebViewController {
   ///
   /// Note that this operation is asynchronous, and it is possible that the "canGoBack" state has
   /// changed by the time the future completed.
-  Future<bool> canGoBack() {
+  Future<bool?> canGoBack() {
     return _webViewPlatformController.canGoBack();
   }
 
@@ -190,7 +189,7 @@ class WebViewController {
   ///
   /// Note that this operation is asynchronous, and it is possible that the "canGoForward" state has
   /// changed by the time the future completed.
-  Future<bool> canGoForward() {
+  Future<bool?> canGoForward() {
     return _webViewPlatformController.canGoForward();
   }
 
@@ -243,14 +242,14 @@ class WebViewController {
     await _updateJavascriptChannels(element.javascriptChannels);
   }
 
-  Future<void> _updateSettings(WebSettings newSettings) {
+  Future<void>? _updateSettings(WebSettings newSettings) {
     final WebSettings update = _clearUnchangedWebSettings(_settings, newSettings);
     _settings = newSettings;
     return _webViewPlatformController.updateSettings(update);
   }
 
-  Future<void> _updateJavascriptChannels(Set<JavascriptChannel> newChannels) async {
-    final Set<String> currentChannels = _platformCallbacksHandler._javascriptChannels.keys.toSet();
+  Future<void> _updateJavascriptChannels(Set<JavascriptChannel>? newChannels) async {
+    final Set<String> currentChannels = _platformCallbacksHandler!._javascriptChannels.keys.toSet();
     final Set<String> newChannelNames = _extractChannelNames(newChannels);
     final Set<String> channelsToAdd = newChannelNames.difference(currentChannels);
     final Set<String> channelsToRemove = currentChannels.difference(newChannelNames);
@@ -260,7 +259,7 @@ class WebViewController {
     if (channelsToAdd.isNotEmpty) {
       await _webViewPlatformController.addJavascriptChannels(channelsToAdd);
     }
-    _platformCallbacksHandler._updateJavascriptChannelsFromSet(newChannels);
+    _platformCallbacksHandler!._updateJavascriptChannelsFromSet(newChannels);
   }
 
   /// Evaluates a JavaScript expression in the context of the current page.
@@ -279,7 +278,7 @@ class WebViewController {
   /// When evaluating Javascript in a [WebView], it is best practice to wait for
   /// the [WebView.onPageFinished] callback. This guarantees all the Javascript
   /// embedded in the main frame HTML has been loaded.
-  Future<String> evaluateJavascript(String javascriptString) {
+  Future<String?> evaluateJavascript(String javascriptString) {
     if (_settings.javascriptMode == JavascriptMode.disabled) {
       return Future<String>.error(
           FlutterError('JavaScript mode must be enabled/unrestricted when calling evaluateJavascript.'));
@@ -294,7 +293,7 @@ class WebViewController {
   }
 
   /// Returns the title of the currently loaded page.
-  Future<String> getTitle() {
+  Future<String?> getTitle() {
     return _webViewPlatformController.getTitle();
   }
 }
@@ -308,14 +307,14 @@ class CookieManager {
 
   CookieManager._();
 
-  static CookieManager _instance;
+  static CookieManager? _instance;
 
   /// Clears all cookies for all [WebView] instances.
   ///
   /// This is a no op on iOS version smaller than 9.
   ///
   /// Returns true if cookies were present before clearing, else false.
-  Future<bool> clearCookies() => WebViewElement.platform.clearCookies();
+  Future<bool> clearCookies() => WebViewElement.platform!.clearCookies();
 }
 
 class _PlatformCallbacksHandler implements WebViewPlatformCallbacksHandler {
@@ -329,40 +328,40 @@ class _PlatformCallbacksHandler implements WebViewPlatformCallbacksHandler {
   final Map<String, JavascriptChannel> _javascriptChannels = <String, JavascriptChannel>{};
 
   @override
-  void onJavaScriptChannelMessage(String channel, String message) {
-    _javascriptChannels[channel].onMessageReceived(JavascriptMessage(message));
+  void onJavaScriptChannelMessage(String? channel, String? message) {
+    _javascriptChannels[channel!]!.onMessageReceived(JavascriptMessage(message!));
   }
 
   @override
-  FutureOr<bool> onNavigationRequest({String url, bool isForMainFrame}) async {
+  FutureOr<bool> onNavigationRequest({String? url, bool? isForMainFrame}) async {
     final NavigationRequest request = NavigationRequest(url: url, isForMainFrame: isForMainFrame);
     final bool allowNavigation = _element.navigationDelegate == null ||
-        await _element.navigationDelegate(request) == NavigationDecision.navigate;
+        await _element.navigationDelegate!(request) == NavigationDecision.navigate;
     return allowNavigation;
   }
 
   @override
-  void onPageStarted(String url) {
+  void onPageStarted(String? url) {
     if (_element.onPageStarted != null) {
       _element.onPageStarted(url);
     }
   }
 
   @override
-  void onPageFinished(String url) {
+  void onPageFinished(String? url) {
     if (_element.onPageFinished != null) {
       _element.onPageFinished(url);
     }
   }
 
   @override
-  void onPostMessage(String message) {
+  void onPostMessage(String? message) {
     if (_element.onPostMessage != null) {
       _element.onPostMessage(message);
     }
   }
 
-  void _updateJavascriptChannelsFromSet(Set<JavascriptChannel> channels) {
+  void _updateJavascriptChannelsFromSet(Set<JavascriptChannel>? channels) {
     _javascriptChannels.clear();
     if (channels == null) {
       return;
@@ -416,9 +415,9 @@ WebSettings _clearUnchangedWebSettings(WebSettings currentValue, WebSettings new
   assert(newValue.debuggingEnabled != null);
   assert(newValue.userAgent.isPresent);
 
-  JavascriptMode javascriptMode;
-  bool hasNavigationDelegate;
-  bool debuggingEnabled;
+  JavascriptMode? javascriptMode;
+  bool? hasNavigationDelegate;
+  bool? debuggingEnabled;
   WebSetting<String> userAgent = WebSetting<String>.absent();
   if (currentValue.javascriptMode != newValue.javascriptMode) {
     javascriptMode = newValue.javascriptMode;
@@ -441,7 +440,7 @@ WebSettings _clearUnchangedWebSettings(WebSettings currentValue, WebSettings new
   );
 }
 
-Set<String> _extractChannelNames(Set<JavascriptChannel> channels) {
+Set<String> _extractChannelNames(Set<JavascriptChannel>? channels) {
   final Set<String> channelNames = channels == null
       // TODO(iskakaushik): Remove this when collection literals makes it to stable.
       // ignore: prefer_collection_literals
@@ -462,7 +461,7 @@ abstract class WebViewElement extends Element {
     int targetId,
     Pointer<NativeElement> nativePtr,
     ElementManager elementManager, {
-    String tagName,
+    required String tagName,
     this.initialUrl,
     this.javascriptMode = JavascriptMode.unrestricted,
     this.javascriptChannels,
@@ -502,14 +501,14 @@ abstract class WebViewElement extends Element {
   }
 
   /// The url that WebView loaded at first time.
-  String initialUrl;
+  String? initialUrl;
 
   /// The constrained to platformed render box, applying width and height.
-  RenderConstrainedBox sizedBox;
+  RenderConstrainedBox? sizedBox;
 
   /// The webview render box itself.
-  RenderBox platformRenderBox;
-  _PlatformCallbacksHandler _platformCallbacksHandler;
+  RenderBox? platformRenderBox;
+  _PlatformCallbacksHandler? _platformCallbacksHandler;
 
   static const String SRC = 'src';
   static const String WIDTH = 'width';
@@ -520,7 +519,7 @@ abstract class WebViewElement extends Element {
     super.setProperty(key, value);
 
     if (key == SRC) {
-      String url = value;
+      String? url = value;
       initialUrl = url;
 
       if (renderer != null) {
@@ -536,10 +535,10 @@ abstract class WebViewElement extends Element {
     (renderBoxModel as RenderIntrinsic).child = null;
 
     _buildPlatformRenderBox();
-    addChild(sizedBox);
+    addChild(sizedBox!);
   }
 
-  void _stylePropertyChanged(String property, String prev, String present) {
+  void _stylePropertyChanged(String property, String? prev, String present) {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);
@@ -554,7 +553,7 @@ abstract class WebViewElement extends Element {
   void _buildPlatformRenderBox() {
     _assertJavascriptChannelNamesAreUnique();
     _platformCallbacksHandler = _PlatformCallbacksHandler(this);
-    platformRenderBox = platform.buildRenderBox(
+    platformRenderBox = platform!.buildRenderBox(
       creationParams: _creationParamsFromElement(this),
       webViewPlatformCallbacksHandler: _platformCallbacksHandler,
       onWebViewPlatformCreated: _onWebViewPlatformCreated,
@@ -563,7 +562,7 @@ abstract class WebViewElement extends Element {
       onFocus: onFocus,
     );
     sizedBox = RenderWebViewBoundaryBox(onDetach,
-        additionalConstraints: BoxConstraints.tight(Size(width, height)), child: platformRenderBox);
+        additionalConstraints: BoxConstraints.tight(Size(width!, height!)), child: platformRenderBox);
   }
 
   // Dispose controller.
@@ -574,14 +573,14 @@ abstract class WebViewElement extends Element {
     });
   }
 
-  Size get size => Size(width, height);
+  Size get size => Size(width!, height!);
 
   /// Element attribute width
-  double _width;
+  double? _width;
 
-  double get width => _width;
+  double? get width => _width;
 
-  set width(double value) {
+  set width(double? value) {
     if (value == null) {
       return;
     }
@@ -589,17 +588,17 @@ abstract class WebViewElement extends Element {
       _width = value;
 
       if (sizedBox != null) {
-        sizedBox.additionalConstraints = BoxConstraints.tight(size);
+        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
       }
     }
   }
 
   /// Element attribute height
-  double _height;
+  double? _height;
 
-  double get height => _height;
+  double? get height => _height;
 
-  set height(double value) {
+  set height(double? value) {
     if (value == null) {
       return;
     }
@@ -607,7 +606,7 @@ abstract class WebViewElement extends Element {
       _height = value;
 
       if (sizedBox != null) {
-        sizedBox.additionalConstraints = BoxConstraints.tight(size);
+        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
       }
     }
   }
@@ -616,7 +615,7 @@ abstract class WebViewElement extends Element {
   static const String DEFAULT_USER_AGENT =
       'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome Mobile Safari/537.36 AliApp(Kraken/0.3.0)';
 
-  static WebViewPlatform _platform;
+  static WebViewPlatform? _platform;
 
   /// Sets a custom [WebViewPlatform].
   ///
@@ -625,14 +624,14 @@ abstract class WebViewElement extends Element {
   /// Setting `platform` doesn't affect [WebView]s that were already created.
   ///
   /// The default value is [AndroidWebView] on Android and [CupertinoWebView] on iOS.
-  static set platform(WebViewPlatform platform) {
+  static set platform(WebViewPlatform? platform) {
     _platform = platform;
   }
 
   /// The WebView platform that's used by this WebView.
   ///
   /// The default value is [AndroidWebView] on Android and [CupertinoWebView] on iOS.
-  static WebViewPlatform get platform {
+  static WebViewPlatform? get platform {
     if (_platform == null) {
       switch (defaultTargetPlatform) {
         case TargetPlatform.android:
@@ -653,7 +652,7 @@ abstract class WebViewElement extends Element {
   void onWebViewCreated(WebViewController controller);
 
   // Receive message from webview.
-  void onPostMessage(String message);
+  void onPostMessage(String? message);
 
   // While webview is focus.
   void onFocus();
@@ -667,7 +666,7 @@ abstract class WebViewElement extends Element {
   ///
   /// When this set is empty or null, the web view will only handle pointer events for gestures that
   /// were not claimed by any other gesture recognizer.
-  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
+  final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
   /// Whether Javascript execution is enabled.
   final JavascriptMode javascriptMode;
@@ -702,7 +701,7 @@ abstract class WebViewElement extends Element {
   /// channels in the list.
   ///
   /// A null value is equivalent to an empty set.
-  final Set<JavascriptChannel> javascriptChannels;
+  final Set<JavascriptChannel>? javascriptChannels;
 
   /// A delegate function that decides how to handle navigation actions.
   ///
@@ -726,10 +725,10 @@ abstract class WebViewElement extends Element {
   ///     * When a navigationDelegate is set pages with frames are not properly handled by the
   ///       webview, and frames will be opened in the main frame.
   ///     * When a navigationDelegate is set HTTP requests do not include the HTTP referer header.
-  final NavigationDelegate navigationDelegate;
+  final NavigationDelegate? navigationDelegate;
 
   /// Invoked when a page starts loading.
-  void onPageStarted(String url);
+  void onPageStarted(String? url);
 
   /// Invoked when a page has finished loading.
   ///
@@ -741,7 +740,7 @@ abstract class WebViewElement extends Element {
   /// When invoked on iOS or Android, any Javascript code that is embedded
   /// directly in the HTML has been loaded and code injected with
   /// [WebViewController.evaluateJavascript] can assume this.
-  void onPageFinished(String url);
+  void onPageFinished(String? url);
 
   /// Controls whether WebView debugging is enabled.
   ///
@@ -788,10 +787,10 @@ abstract class WebViewElement extends Element {
   final Completer<WebViewController> _controller = Completer<WebViewController>();
 
   void _assertJavascriptChannelNamesAreUnique() {
-    if (javascriptChannels == null || javascriptChannels.isEmpty) {
+    if (javascriptChannels == null || javascriptChannels!.isEmpty) {
       return;
     }
-    assert(_extractChannelNames(javascriptChannels).length == javascriptChannels.length);
+    assert(_extractChannelNames(javascriptChannels).length == javascriptChannels!.length);
   }
 
   void _onWebViewPlatformCreated(WebViewPlatformController webViewPlatform) async {
@@ -829,13 +828,13 @@ abstract class WebViewElement extends Element {
 //   Document? getSVGDocument();
 // };
 
-final Pointer<NativeFunction<Native_IframePostMessage>> nativePostMessage = Pointer.fromFunction(IFrameElement._postMessage);
+final Pointer<NativeFunction<NativeIframePostMessage>> nativePostMessage = Pointer.fromFunction(IFrameElement._postMessage);
 
 class IFrameElement extends WebViewElement {
   static SplayTreeMap<int, IFrameElement> _nativeMap = SplayTreeMap();
 
   static IFrameElement getIframeElementOfNativePtr(Pointer<NativeIframeElement> nativeIframeElement) {
-    IFrameElement iframeElement = _nativeMap[nativeIframeElement.address];
+    IFrameElement iframeElement = _nativeMap[nativeIframeElement.address]!;
     assert(iframeElement != null, 'Can not get iframeElement from nativeElement: $nativeIframeElement');
     return iframeElement;
   }
@@ -846,7 +845,6 @@ class IFrameElement extends WebViewElement {
   }
 
   final Pointer<NativeIframeElement> nativeIframeElement;
-
 
   IFrameElement(int targetId, this.nativeIframeElement, ElementManager elementManager)
       : super(targetId, nativeIframeElement.ref.nativeElement, elementManager, tagName: IFRAME) {
@@ -861,29 +859,29 @@ class IFrameElement extends WebViewElement {
     dispatchEvent(Event(EVENT_FOCUS));
   }
 
-  bool _isFirstLoaded;
+  late bool _isFirstLoaded;
 
   @override
-  void onPageStarted(String url) {
+  void onPageStarted(String? url) {
     if (_isFirstLoaded) {
       dispatchEvent(Event(EVENT_UNLOAD));
     }
   }
 
   @override
-  void onPageFinished(String url) {
+  void onPageFinished(String? url) {
     _isFirstLoaded = true;
     dispatchEvent(Event(EVENT_LOAD));
   }
 
   @override
-  void onPostMessage(String message) {
-    MessageEvent event = MessageEvent(message, origin: properties['url']);
+  void onPostMessage(String? message) {
+    MessageEvent event = MessageEvent(message!, origin: properties['url']);
     dispatchEvent(event);
   }
 
-  Future<String> postMessage(String message) {
-    String escapedMessage = message?.replaceAll(RegExp('\"', multiLine: true), '\\"');
+  Future<String?> postMessage(String message) {
+    String escapedMessage = message.replaceAll(RegExp('\"', multiLine: true), '\\"');
     String invoker = '''
       window.dispatchEvent(Object.assign(new CustomEvent('message'), {
         data: "${escapedMessage}",

@@ -5,15 +5,15 @@
 
 import 'dart:ffi';
 import 'platform.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kraken/dom.dart';
 import 'iframe_element.dart';
 
 typedef Native_InitBridge = Void Function();
 typedef Dart_InitBridge = void Function();
 
-final Dart_InitBridge _initBridge =
-nativeDynamicLibrary.lookup<NativeFunction<Native_InitBridge>>('initBridge').asFunction();
+final Dart_InitBridge _initBridge = nativeDynamicLibrary
+    .lookup<NativeFunction<Native_InitBridge>>('initBridge')
+    .asFunction();
 
 void initBridge() {
   _initBridge();
@@ -22,9 +22,9 @@ void initBridge() {
 class KrakenWebView {
   static void initialize() {
     initBridge();
-    ElementManager.defineElement(
-        'IFRAME',
-        (id, nativePtr, elementManager) => IFrameElement(
-            id, nativePtr.cast<NativeIframeElement>(), elementManager));
+    ElementManager.defineElement('IFRAME', (id, nativePtr, elementManager) {
+      return IFrameElement(
+          id, nativePtr.cast<NativeIframeElement>(), elementManager);
+    });
   }
 }

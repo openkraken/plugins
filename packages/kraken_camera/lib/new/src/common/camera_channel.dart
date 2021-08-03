@@ -16,8 +16,8 @@ class CameraChannel {
       (MethodCall call) async {
         assert(call.method == 'handleCallback');
 
-        final int handle = call.arguments['handle'];
-        if (callbacks[handle] != null) callbacks[handle](call.arguments);
+        final int? handle = call.arguments['handle'];
+        if (callbacks[handle!] != null) callbacks[handle](call.arguments);
       },
     );
 

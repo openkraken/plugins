@@ -22,28 +22,32 @@ setElementStyle(container1, {
 
 document.body.appendChild(container1);
 
-const video = document.createElement('video');
-setElementStyle(video, {
-    width: '750px',
-    height: '400px',
-});
+//const video = document.createElement('video');
+//setElementStyle(video, {
+//    width: '750px',
+//    height: '400px',
+//});
 
-setAttributes(video, {
-    autoPlay: true,
-    src:
-        'https://videocdn.taobao.com/oss/ali-video/1fa0c3345eb3433b8af7e995e2013cea/1458900536/video.mp4',
-});
+//setAttributes(video, {
+//    autoPlay: true,
+//    src:
+//        'https://videocdn.taobao.com/oss/ali-video/1fa0c3345eb3433b8af7e995e2013cea/1458900536/video.mp4',
+//});
+//
+//video.addEventListener('canplay', () => {
+//    console.log('vide can play');
+//});
 
-video.addEventListener('canplay', () => {
-    console.log('vide can play');
-});
-
-container1.appendChild(video);
+//container1.appendChild(video);
 
 const pauseBtn = document.createElement('div');
 pauseBtn.appendChild(document.createTextNode('pause button'));
+//pauseBtn.onclick = () => {
+//    console.log('pause');
+//};
 pauseBtn.addEventListener('click', () => {
-    video.pause();
+console.log('pause');
+//    video.pause();
 });
 container1.appendChild(pauseBtn);
 

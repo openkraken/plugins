@@ -8,7 +8,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 
 enum ReadyState { CONNECTING, OPEN, CLOSING, CLOSED }
-typedef MQTTEventCallback = void Function(String id, Event event);
+typedef MQTTEventCallback = void Function(String? id, Event event);
 
 class MQTTModule extends BaseModule {
   @override
@@ -17,7 +17,7 @@ class MQTTModule extends BaseModule {
   Map<String, MqttClient> _clientMap = {};
   int _clientId = 0;
 
-  MQTTModule(ModuleManager moduleManager) : super(moduleManager);
+  MQTTModule(ModuleManager? moduleManager) : super(moduleManager);
 
   void dispose() {
     _clientMap.forEach((key, client) {
@@ -43,8 +43,8 @@ class MQTTModule extends BaseModule {
     } else if (method == 'getReadyState') {
       return getReadyState(args[0]);
     } else if (method == 'addEvent') {
-      addEvent(args[0], args[1], (String id, Event event) {
-        moduleManager.emitModuleEvent(name, data: id, event: event);
+      addEvent(args[0], args[1], (String? id, Event event) {
+        moduleManager!.emitModuleEvent(name, data: id, event: event);
       });
     }
 
@@ -67,10 +67,10 @@ class MQTTModule extends BaseModule {
     return id;
   }
 
-  void open(String id, Map<String, dynamic> options) {
-    MqttClient client = _clientMap[id];
-    String username;
-    String password;
+  void open(String? id, Map<String, dynamic> options) {
+    MqttClient client = _clientMap[id!]!;
+    String? username;
+    String? password;
     if (options.containsKey('keepalive')) {
       client.keepAlivePeriod = options['keepalive'];
     }
@@ -100,38 +100,38 @@ class MQTTModule extends BaseModule {
   }
 
   // ignore: non_constant_identifier_names
-  void subscribe(String id, String topic, int QoS) {
-    MqttClient client = _clientMap[id];
+  void subscribe(String? id, String topic, int QoS) {
+    MqttClient client = _clientMap[id!]!;
     client.subscribe(topic, MqttQos.values[QoS]);
   }
 
-  void unsubscribe(String id, String topic) {
-    MqttClient client = _clientMap[id];
+  void unsubscribe(String? id, String topic) {
+    MqttClient client = _clientMap[id!]!;
     client.unsubscribe(topic);
   }
 
   // ignore: non_constant_identifier_names
-  int publish(String id, String topic, String message, int QoS, bool retain) {
-    MqttClient client = _clientMap[id];
+  int publish(String? id, String topic, String message, int QoS, bool retain) {
+    MqttClient client = _clientMap[id!]!;
 
     final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
     builder.addString(message);
 
-    return client.publishMessage(topic, MqttQos.values[QoS], builder.payload, retain: retain);
+    return client.publishMessage(topic, MqttQos.values[QoS], builder.payload!, retain: retain);
   }
 
-  void close(String id) {
-    MqttClient client = _clientMap[id];
+  void close(String? id) {
+    MqttClient client = _clientMap[id!]!;
     client.disconnect();
     _clientMap.remove(id);
   }
 
-  String getReadyState(String id) {
-    MqttClient client = _clientMap[id];
+  String getReadyState(String? id) {
+    MqttClient? client = _clientMap[id!];
     ReadyState state = ReadyState.CLOSED;
 
     if (client != null) {
-      switch (client.connectionStatus.state) {
+      switch (client.connectionStatus!.state) {
         case MqttConnectionState.connecting:
           state = ReadyState.CONNECTING;
           break;
@@ -151,26 +151,26 @@ class MQTTModule extends BaseModule {
     return state.index.toString();
   }
 
-  void addEvent(String id, String type, MQTTEventCallback callback) {
-    MqttClient client = _clientMap[id];
+  void addEvent(String? id, String? type, MQTTEventCallback callback) {
+    MqttClient? client = _clientMap[id!];
 
     if (type == 'message') {
       /// The client has a change notifier object(see the Observable class) which we then listen to to get
       /// notifications of published updates to each subscribed topic.
-      client.updates.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      client!.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
         final String topic = c[0].topic;
-        final MqttPublishMessage recMess = c[0].payload;
-        final String message = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+        final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
+        final String message = MqttPublishPayload.bytesToStringAsString(recMess.payload.message!);
         Event event = MessageEvent(jsonEncode({'topic': topic, 'message': message}), origin: client.server);
         callback(id, event);
       });
     } else if (type == 'open') {
-      client.onConnected = () {
+      client!.onConnected = () {
         Event event = Event('open');
         callback(id, event);
       };
     } else if (type == 'close') {
-      client.onDisconnected = () {
+      client!.onDisconnected = () {
         Event event = Event('close');
         callback(id, event);
       };
@@ -178,11 +178,11 @@ class MQTTModule extends BaseModule {
       /// If needed you can listen for published messages that have completed the publishing
       /// handshake which is Qos dependant. Any message received on this stream has completed its
       /// publishing handshake with the broker.
-      client.published.listen((MqttPublishMessage message) {
+      client!.published!.listen((MqttPublishMessage message) {
         CustomEventInit init = CustomEventInit(detail: jsonEncode({
-          'topic': message.variableHeader.topicName,
-          'message': MqttPublishPayload.bytesToStringAsString(message.payload.message),
-          'code': message.variableHeader.returnCode,
+          'topic': message.variableHeader!.topicName,
+          'message': MqttPublishPayload.bytesToStringAsString(message.payload.message!),
+          'code': message.variableHeader!.returnCode,
         }));
         CustomEvent event = CustomEvent('publish', init);
         callback(id, event);
@@ -193,7 +193,7 @@ class MQTTModule extends BaseModule {
       /// you wish. There is also an onSubscribeFail callback for failed subscriptions, these
       /// can fail either because you have tried to subscribe to an invalid topic or the broker
       /// rejects the subscribe request.
-      client.onSubscribed = (String topic) {
+      client!.onSubscribed = (String topic) {
         CustomEventInit init = CustomEventInit(detail: jsonEncode({
           'topic': topic
         }));
@@ -201,7 +201,7 @@ class MQTTModule extends BaseModule {
         callback(id, event);
       };
     } else if (type == 'subscribeerror') {
-      client.onSubscribeFail = (String topic) {
+      client!.onSubscribeFail = (String topic) {
         CustomEventInit init = CustomEventInit(detail: jsonEncode({
           'topic': topic
         }));
@@ -209,7 +209,7 @@ class MQTTModule extends BaseModule {
         callback(id, event);
       };
     } else if (type == 'unsubscribe') {
-      client.onUnsubscribed = (String topic) {
+      client!.onUnsubscribed = (String? topic) {
         CustomEventInit init = CustomEventInit(detail: jsonEncode({
           'topic': topic
         }));

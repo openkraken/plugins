@@ -3,7 +3,7 @@ PODS:
   - connectivity_macos (0.0.1):
     - FlutterMacOS
     - Reachability
-  - FlutterMacOS (1.0.0)
+  - FlutterMacOS (2.2.2)
   - kraken (0.6.3):
     - FlutterMacOS
   - kraken_websocket (0.0.1):
@@ -19,7 +19,6 @@ PODS:
 DEPENDENCIES:
   - connectivity (from `Flutter/ephemeral/.symlinks/plugins/connectivity/macos`)
   - connectivity_macos (from `Flutter/ephemeral/.symlinks/plugins/connectivity_macos/macos`)
-  - FlutterMacOS (from `Flutter/ephemeral/.symlinks/flutter/darwin-x64`)
   - kraken (from `Flutter/ephemeral/.symlinks/plugins/kraken/macos`)
   - kraken_websocket (from `Flutter/ephemeral/.symlinks/plugins/kraken_websocket/macos`)
   - path_provider (from `Flutter/ephemeral/.symlinks/plugins/path_provider/macos`)
@@ -29,6 +28,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - FlutterMacOS
     - Reachability
 
 EXTERNAL SOURCES:
@@ -36,8 +36,6 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity/macos
   connectivity_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity_macos/macos
-  FlutterMacOS:
-    :path: Flutter/ephemeral/.symlinks/flutter/darwin-x64
   kraken:
     :path: Flutter/ephemeral/.symlinks/plugins/kraken/macos
   kraken_websocket:
@@ -54,7 +52,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   connectivity: 5da134a8c10a7b6f334a17217fe4d0cfc4fb1c64
   connectivity_macos: 9f30e9d0e67a0bc08a0c563ee82310b51ca6e818
-  FlutterMacOS: 15bea8a44d2fa024068daa0140371c020b4b6ff9
+  FlutterMacOS: d225dfc3bb9c0e8f83364ba05e7029358dc93fed
   kraken: 1b6c815708f6468c9301b7c26e357d4f93af6cb0
   kraken_websocket: 49d32001800a131f14e1f2cce72ccf38f65b6b88
   path_provider: e0848572d1d38b9a7dd099e79cf83f5b7e2cde9f
@@ -65,4 +63,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: d8ba9b3e9e93c62c74a660b46c6fcb09f03991a7
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

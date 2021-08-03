@@ -1,7 +1,7 @@
 const iframe = document.createElement('iframe');
 iframe.setAttribute(
     'src',
-    'https://dev.g.alicdn.com/kraken/kraken-demos/todomvc/build/web/index.html'
+    'https://www.baidu.com'
 );
 iframe.style.width = '360px';
 iframe.style.height = '375px';

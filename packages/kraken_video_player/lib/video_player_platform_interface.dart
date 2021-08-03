@@ -61,54 +61,54 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Clears one video.
-  Future<void> dispose(int textureId) {
+  Future<void> dispose(int? textureId) {
     throw UnimplementedError('dispose() has not been implemented.');
   }
 
   /// Creates an instance of a video player and returns its textureId.
-  Future<int> create(DataSource dataSource) {
+  Future<int?> create(DataSource? dataSource) {
     throw UnimplementedError('create() has not been implemented.');
   }
 
   /// Returns a Stream of [VideoEventType]s.
-  Stream<VideoEvent> videoEventsFor(int textureId) {
+  Stream<VideoEvent> videoEventsFor(int? textureId) {
     throw UnimplementedError('videoEventsFor() has not been implemented.');
   }
 
   /// Sets the looping attribute of the video.
-  Future<void> setLooping(int textureId, bool looping) {
+  Future<void> setLooping(int? textureId, bool looping) {
     throw UnimplementedError('setLooping() has not been implemented.');
   }
 
   /// Starts the video playback.
-  Future<void> play(int textureId) {
+  Future<void> play(int? textureId) {
     throw UnimplementedError('play() has not been implemented.');
   }
 
   /// Sets the muted attribute of the video.
   ///
   /// This method shouldn't affect volume value.
-  Future<void> setMuted(int textureId, bool muted) {
+  Future<void> setMuted(int? textureId, bool muted) {
     throw UnimplementedError('setMuted() has no been implemented.');
   }
 
   /// Stops the video playback.
-  Future<void> pause(int textureId) {
+  Future<void> pause(int? textureId) {
     throw UnimplementedError('pause() has not been implemented.');
   }
 
   /// Sets the volume to a range between 0.0 and 1.0.
-  Future<void> setVolume(int textureId, double volume) {
+  Future<void> setVolume(int? textureId, double volume) {
     throw UnimplementedError('setVolume() has not been implemented.');
   }
 
   /// Sets the video position to a [Duration] from the start.
-  Future<void> seekTo(int textureId, Duration position) {
+  Future<void> seekTo(int? textureId, Duration? position) {
     throw UnimplementedError('seekTo() has not been implemented.');
   }
 
   /// Gets the video position as [Duration] from the start.
-  Future<Duration> getPosition(int textureId) {
+  Future<Duration> getPosition(int? textureId) {
     throw UnimplementedError('getPosition() has not been implemented.');
   }
 
@@ -138,7 +138,7 @@ class DataSource {
   /// The [package] argument must be non-null when the asset comes from a
   /// package and null otherwise.
   DataSource({
-    @required this.sourceType,
+    required this.sourceType,
     this.uri,
     this.formatHint,
     this.asset,
@@ -155,18 +155,18 @@ class DataSource {
   ///
   /// This will be in different formats depending on the [DataSourceType] of
   /// the original video.
-  final String uri;
+  final String? uri;
 
   /// **Android only**. Will override the platform's generic file format
   /// detection with whatever is set here.
-  final VideoFormat formatHint;
+  final VideoFormat? formatHint;
 
   /// The name of the asset. Only set for [DataSourceType.asset] videos.
-  final String asset;
+  final String? asset;
 
   /// The package that the asset was loaded from. Only set for
   /// [DataSourceType.asset] videos.
-  final String package;
+  final String? package;
 }
 
 /// The way in which the video was originally loaded.
@@ -208,7 +208,7 @@ class VideoEvent {
   /// Depending on the [eventType], the [duration], [size] and [buffered]
   /// arguments can be null.
   VideoEvent({
-    @required this.eventType,
+    required this.eventType,
     this.duration,
     this.size,
     this.buffered,
@@ -220,17 +220,17 @@ class VideoEvent {
   /// Duration of the video.
   ///
   /// Only used if [eventType] is [VideoEventType.initialized].
-  final Duration duration;
+  final Duration? duration;
 
   /// Size of the video.
   ///
   /// Only used if [eventType] is [VideoEventType.initialized].
-  final Size size;
+  final Size? size;
 
   /// Buffered parts of the video.
   ///
   /// Only used if [eventType] is [VideoEventType.bufferingUpdate].
-  final List<DurationRange> buffered;
+  final List<DurationRange>? buffered;
 
   @override
   bool operator ==(Object other) {

@@ -12,7 +12,7 @@ import '../platform_interface.dart';
 class MethodChannelWebViewPlatform implements WebViewPlatformController {
   /// Constructs an instance that will listen for webviews broadcasting to the
   /// given [id], using the given [WebViewPlatformCallbacksHandler].
-  MethodChannelWebViewPlatform(int id, this._platformCallbacksHandler)
+  MethodChannelWebViewPlatform(int? id, this._platformCallbacksHandler)
       : assert(_platformCallbacksHandler != null),
         _channel = MethodChannel('plugins.kraken/webview_$id') {
     _channel.setMethodCallHandler(_onMethodCall);
@@ -25,11 +25,11 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
   static const MethodChannel _cookieManagerChannel =
       MethodChannel('plugins.kraken/cookie_manager');
 
-  Future<bool> _onMethodCall(MethodCall call) async {
+  Future<bool?> _onMethodCall(MethodCall call) async {
     switch (call.method) {
       case 'javascriptChannelMessage':
-        final String channel = call.arguments['channel'];
-        final String message = call.arguments['message'];
+        final String? channel = call.arguments['channel'];
+        final String? message = call.arguments['message'];
         _platformCallbacksHandler.onJavaScriptChannelMessage(channel, message);
         return true;
       case 'navigationRequest':
@@ -54,7 +54,7 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
   @override
   Future<void> loadUrl(
     String url,
-    Map<String, String> headers,
+    Map<String, String>? headers,
   ) async {
     assert(url != null);
     return _channel.invokeMethod<void>('loadUrl', <String, dynamic>{
@@ -64,13 +64,13 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
   }
 
   @override
-  Future<String> currentUrl() => _channel.invokeMethod<String>('currentUrl');
+  Future<String?> currentUrl() => _channel.invokeMethod<String>('currentUrl');
 
   @override
-  Future<bool> canGoBack() => _channel.invokeMethod<bool>("canGoBack");
+  Future<bool?> canGoBack() => _channel.invokeMethod<bool>("canGoBack");
 
   @override
-  Future<bool> canGoForward() => _channel.invokeMethod<bool>("canGoForward");
+  Future<bool?> canGoForward() => _channel.invokeMethod<bool>("canGoForward");
 
   @override
   Future<void> goBack() => _channel.invokeMethod<void>("goBack");
@@ -85,7 +85,7 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
   Future<void> clearCache() => _channel.invokeMethod<void>("clearCache");
 
   @override
-  Future<void> updateSettings(WebSettings settings) {
+  Future<void>? updateSettings(WebSettings settings) {
     final Map<String, dynamic> updatesMap = _webSettingsToMap(settings);
     if (updatesMap.isEmpty) {
       return null;
@@ -94,7 +94,7 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
   }
 
   @override
-  Future<String> evaluateJavascript(String javascriptString) {
+  Future<String?> evaluateJavascript(String javascriptString) {
     return _channel.invokeMethod<String>(
         'evaluateJavascript', javascriptString);
   }
@@ -122,7 +122,7 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
   }
 
   @override
-  Future<String> getTitle() => _channel.invokeMethod<String>("getTitle");
+  Future<String?> getTitle() => _channel.invokeMethod<String>("getTitle");
 
   /// Method channel implementation for [WebViewPlatform.clearCookies].
   static Future<bool> clearCookies() {
@@ -164,8 +164,8 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
       CreationParams creationParams) {
     return <String, dynamic>{
       'initialUrl': creationParams.initialUrl,
-      'settings': _webSettingsToMap(creationParams.webSettings),
-      'javascriptChannelNames': creationParams.javascriptChannelNames.toList(),
+      'settings': _webSettingsToMap(creationParams.webSettings!),
+      'javascriptChannelNames': creationParams.javascriptChannelNames!.toList(),
       'userAgent': creationParams.userAgent,
       'autoMediaPlaybackPolicy': creationParams.autoMediaPlaybackPolicy.index,
     };

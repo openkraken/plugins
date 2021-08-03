@@ -14,9 +14,9 @@ enum Facing { back, front }
 /// Retrieved from [Camera.getCameraInfo].
 class CameraInfo implements CameraDescription {
   const CameraInfo({
-    @required this.id,
-    @required this.facing,
-    @required this.orientation,
+    required this.id,
+    required this.facing,
+    required this.orientation,
   })  : assert(id != null),
         assert(facing != null),
         assert(orientation != null);
@@ -55,7 +55,7 @@ class CameraInfo implements CameraDescription {
   String get name => id.toString();
 
   @override
-  LensDirection get direction {
+  LensDirection? get direction {
     switch (facing) {
       case Facing.front:
         return LensDirection.front;

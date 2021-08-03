@@ -17,7 +17,7 @@ import 'media_element.dart';
 const String VIDEO = 'VIDEO';
 
 class NativeVideoElement extends Struct {
-  Pointer<NativeMediaElement> nativeMediaElement;
+  external Pointer<NativeMediaElement> nativeMediaElement;
 }
 
 const Map<String, dynamic> _defaultStyle = {
@@ -48,7 +48,7 @@ class VideoElement extends MediaElement {
     _textureBox = null;
 
     if (controller != null) {
-      controller.dispose().then((_) {
+      controller!.dispose().then((_) {
         controller = null;
       });
     }
@@ -57,30 +57,30 @@ class VideoElement extends MediaElement {
   @override
   void dispose() {
     super.dispose();
-    controller.dispose();
+    controller?.dispose();
   }
 
   void renderVideo() {
     _textureBox = TextureBox(textureId: 0);
     if (childNodes.isEmpty) {
-      addChild(_textureBox);
+      addChild(_textureBox!);
     }
   }
 
-  TextureBox _textureBox;
-  VideoPlayerController controller;
+  TextureBox? _textureBox;
+  VideoPlayerController? controller;
 
-  String _src;
+  String? _src;
 
-  String get src => _src;
+  String? get src => _src;
 
-  set src(String value) {
+  set src(String? value) {
     if (_src != value) {
       bool needDispose = _src != null;
       _src = value;
 
       if (needDispose) {
-        controller.dispose().then((_) {
+        controller!.dispose().then((_) {
           _removeVideoBox();
           _createVideoBox();
         });
@@ -104,18 +104,18 @@ class VideoElement extends MediaElement {
 
     _src = src;
 
-    controller.setLooping(properties.containsKey('loop'));
-    controller.onCanPlay = onCanPlay;
-    controller.onCanPlayThrough = onCanPlayThrough;
-    controller.onPlay = onPlay;
-    controller.onPause = onPause;
-    controller.onSeeked = onSeeked;
-    controller.onSeeking = onSeeking;
-    controller.onEnded = onEnded;
-    controller.onError = onError;
-    controller.initialize().then((int textureId) {
+    controller!.setLooping(properties.containsKey('loop'));
+    controller!.onCanPlay = onCanPlay;
+    controller!.onCanPlayThrough = onCanPlayThrough;
+    controller!.onPlay = onPlay;
+    controller!.onPause = onPause;
+    controller!.onSeeked = onSeeked;
+    controller!.onSeeking = onSeeking;
+    controller!.onEnded = onEnded;
+    controller!.onError = onError;
+    controller!.initialize().then((int textureId) {
       if (properties.containsKey('muted')) {
-        controller.setMuted(true);
+        controller!.setMuted(true);
       }
 
       completer.complete(textureId);
@@ -134,12 +134,12 @@ class VideoElement extends MediaElement {
     addChild(box);
 
     if (properties.containsKey('autoplay')) {
-      controller.play();
+      controller!.play();
     }
   }
 
   void _createVideoBox() {
-    createVideoPlayer(_src).then(addVideoBox);
+    createVideoPlayer(_src!).then(addVideoBox);
   }
 
   void _removeVideoBox() {
@@ -161,8 +161,8 @@ class VideoElement extends MediaElement {
     dispatchEvent(event);
   }
 
-  onError(int code, String error) {
-    Event event = MediaError(code, error);
+  onError(int code, String? error) {
+    Event event = MediaError(code, error!);
     dispatchEvent(event);
   }
 
@@ -232,10 +232,10 @@ class VideoElement extends MediaElement {
         value = _src;
         break;
       case 'videoWidth':
-        value = controller?.value.size.width;
+        value = controller?.value.size!.width;
         break;
       case 'videoHeight':
-        value = controller?.value.size.height;
+        value = controller?.value.size!.height;
         break;
     }
 
