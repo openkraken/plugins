@@ -1,4 +1,4 @@
-package io.flutter.plugins.videoplayer;
+package io.flutter.plugins.krakenvideoplayer;
 
 import static com.google.android.exoplayer2.Player.REPEAT_MODE_ALL;
 import static com.google.android.exoplayer2.Player.REPEAT_MODE_OFF;
@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-final class VideoPlayer {
+final class KrakenVideoPlayer {
   private static final String FORMAT_SS = "ss";
   private static final String FORMAT_DASH = "dash";
   private static final String FORMAT_HLS = "hls";
@@ -59,7 +59,7 @@ final class VideoPlayer {
 
   private float lastMutedVolume = 0f;
 
-  VideoPlayer(
+  KrakenVideoPlayer(
       Context context,
       EventChannel eventChannel,
       TextureRegistry.SurfaceTextureEntry textureEntry,

@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  video_player_platform_interface: ^4.1.0
   meta: "^1.3.0"
   kraken: ^0.8.0
 
@@ -19,9 +18,9 @@ flutter:
   plugin:
     platforms:
       android:
-        package: io.flutter.plugins.videoplayer
-        pluginClass: VideoPlayerPlugin
+        package: io.flutter.plugins.krakenvideoplayer
+        pluginClass: KrakenVideoPlayerPlugin
       ios:
-        pluginClass: FLTVideoPlayerPlugin
+        pluginClass: FLTKrakenVideoPlayerPlugin
       macos:
-        pluginClass: FLTVideoPlayerPlugin
+        pluginClass: FLTKrakenVideoPlayerPlugin

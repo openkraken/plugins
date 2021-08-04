@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package io.flutter.plugins.videoplayer;
+package io.flutter.plugins.krakenvideoplayer;
 
 import android.content.Context;
 import android.util.Log;
@@ -18,16 +18,16 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.view.FlutterMain;
 import io.flutter.view.TextureRegistry;
 
-/** Android platform implementation of the VideoPlayerPlugin. */
-public class VideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
-  private static final String TAG = "VideoPlayerPlugin";
-  private final LongSparseArray<VideoPlayer> videoPlayers = new LongSparseArray<>();
+/** Android platform implementation of the KrakenVideoPlayerPlugin. */
+public class KrakenVideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
+  private static final String TAG = "KrakenVideoPlayerPlugin";
+  private final LongSparseArray<KrakenVideoPlayer> videoPlayers = new LongSparseArray<>();
   private FlutterState flutterState;
 
   /** Register this with the v2 embedding for the plugin to respond to lifecycle callbacks. */
-  public VideoPlayerPlugin() {}
+  public KrakenVideoPlayerPlugin() {}
 
-  private VideoPlayerPlugin(Registrar registrar) {
+  private KrakenVideoPlayerPlugin(Registrar registrar) {
     this.flutterState =
         new FlutterState(
             registrar.context(),
@@ -40,7 +40,7 @@ public class VideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
 
   /** Registers this with the stable v1 embedding. Will not respond to lifecycle events. */
   public static void registerWith(Registrar registrar) {
-    final VideoPlayerPlugin plugin = new VideoPlayerPlugin(registrar);
+    final KrakenVideoPlayerPlugin plugin = new KrakenVideoPlayerPlugin(registrar);
     registrar.addViewDestroyListener(
         view -> {
           plugin.onDestroy();
@@ -79,7 +79,7 @@ public class VideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
   private void onDestroy() {
     // The whole FlutterView is being destroyed. Here we release resources acquired for all
     // instances
-    // of VideoPlayer. Once https://github.com/flutter/flutter/issues/19358 is resolved this may
+    // of KrakenVideoPlayer. Once https://github.com/flutter/flutter/issues/19358 is resolved this may
     // be replaced with just asserting that videoPlayers.isEmpty().
     // https://github.com/flutter/flutter/issues/20989 tracks this.
     disposeAllPlayers();
@@ -101,9 +101,9 @@ public class VideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
               flutterState.textureRegistry.createSurfaceTexture();
           EventChannel eventChannel =
               new EventChannel(
-                  flutterState.binaryMessenger, "flutter.io/videoPlayer/videoEvents" + handle.id());
+                  flutterState.binaryMessenger, "flutter.io/krakenVideoPlayer/videoEvents" + handle.id());
 
-          VideoPlayer player;
+          KrakenVideoPlayer player;
           if (call.argument("asset") != null) {
             String assetLookupKey;
             if (call.argument("package") != null) {
@@ -114,7 +114,7 @@ public class VideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
               assetLookupKey = flutterState.keyForAsset.get(call.argument("asset"));
             }
             player =
-                new VideoPlayer(
+                new KrakenVideoPlayer(
                     flutterState.applicationContext,
                     eventChannel,
                     handle,
@@ -124,7 +124,7 @@ public class VideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
             videoPlayers.put(handle.id(), player);
           } else {
             player =
-                new VideoPlayer(
+                new KrakenVideoPlayer(
                     flutterState.applicationContext,
                     eventChannel,
                     handle,
@@ -138,7 +138,7 @@ public class VideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
       default:
         {
           long textureId = ((Number) call.argument("textureId")).longValue();
-          VideoPlayer player = videoPlayers.get(textureId);
+          KrakenVideoPlayer player = videoPlayers.get(textureId);
           if (player == null) {
             result.error(
                 "Unknown textureId",
@@ -152,7 +152,7 @@ public class VideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
     }
   }
 
-  private void onMethodCall(MethodCall call, Result result, long textureId, VideoPlayer player) {
+  private void onMethodCall(MethodCall call, Result result, long textureId, KrakenVideoPlayer player) {
     switch (call.method) {
       case "setLooping":
         player.setLooping(call.argument("looping"));
@@ -221,10 +221,10 @@ public class VideoPlayerPlugin implements MethodCallHandler, FlutterPlugin {
       this.keyForAsset = keyForAsset;
       this.keyForAssetAndPackageName = keyForAssetAndPackageName;
       this.textureRegistry = textureRegistry;
-      methodChannel = new MethodChannel(messenger, "flutter.io/videoPlayer");
+      methodChannel = new MethodChannel(messenger, "flutter.io/krakenVideoPlayer");
     }
 
-    void startListening(VideoPlayerPlugin methodCallHandler) {
+    void startListening(KrakenVideoPlayerPlugin methodCallHandler) {
       methodChannel.setMethodCallHandler(methodCallHandler);
     }
 
