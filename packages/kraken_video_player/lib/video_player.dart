@@ -213,6 +213,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   bool _isDisposed = false;
   Completer<void>? _creatingCompleter;
   StreamSubscription<dynamic>? _eventSubscription;
+  _VideoAppLifeCycleObserver? _lifeCycleObserver;
 
   /// This is just exposed for testing. It shouldn't be used by anyone depending
   /// on the plugin.
@@ -221,6 +222,8 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   /// Attempts to open the given [dataSource] and load metadata about the video.
   Future<int> initialize() async {
+    _lifeCycleObserver = _VideoAppLifeCycleObserver(this);
+    _lifeCycleObserver!.initialize();
     _creatingCompleter = Completer<void>();
 
     DataSource? dataSourceDescription;
@@ -312,6 +315,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         await _eventSubscription?.cancel();
         await VideoPlayerPlatform.instance.dispose(_textureId);
       }
+      _lifeCycleObserver!.dispose();
     }
     _isDisposed = true;
     super.dispose();
@@ -434,5 +438,36 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     value = value.copyWith(volume: volume.clamp(0.0, 1.0));
     await _applyVolume();
     if (onVolumeChange != null) onVolumeChange!();
+  }
+}
+
+class _VideoAppLifeCycleObserver extends Object with WidgetsBindingObserver {
+  _VideoAppLifeCycleObserver(this._controller);
+
+  bool _wasPlayingBeforePause = false;
+  final VideoPlayerController _controller;
+
+  void initialize() {
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.paused:
+        _wasPlayingBeforePause = _controller.value.isPlaying;
+        _controller.pause();
+        break;
+      case AppLifecycleState.resumed:
+        if (_wasPlayingBeforePause) {
+          _controller.play();
+        }
+        break;
+      default:
+    }
+  }
+
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
   }
 }
