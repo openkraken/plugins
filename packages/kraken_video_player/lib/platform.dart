@@ -13,8 +13,8 @@ const String KRAKEN_JS_ENGINE = 'KRAKEN_JS_ENGINE';
 final String kkJsEngine = Platform.environment[KRAKEN_JS_ENGINE] ??
     ((Platform.isIOS || Platform.isMacOS || Platform.isAndroid) ? 'jsc' : 'quickjs');
 final String libName = 'libkraken_video_player_$kkJsEngine';
-final String nativeDynamicLibraryName = (Platform.isMacOS || Platform.isIOS)
+final String nativeDynamicLibraryName = (Platform.isMacOS)
     ? '$libName.dylib'
-    : Platform.isWindows ? '$libName.dll' : '$libName.so';
+    : Platform.isIOS ? 'kraken_video_player.framework/kraken_video_player'  :  Platform.isWindows ? '$libName.dll' : '$libName.so';
 DynamicLibrary nativeDynamicLibrary =
     DynamicLibrary.open(nativeDynamicLibraryName);

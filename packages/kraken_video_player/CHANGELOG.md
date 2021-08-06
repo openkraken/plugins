@@ -1,3 +1,7 @@
+## 0.4.2
+
+* upgrade ios binary to framework
+
 ## 0.4.1
 
 * fix package class name.

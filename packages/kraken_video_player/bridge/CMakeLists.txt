@@ -30,3 +30,15 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Android")
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../android/jniLibs/${ANDROID_ABI}/"
         )
 endif()
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "iOS")
+  set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
+  set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
+
+  set_target_properties(kraken_video_player PROPERTIES
+          OUTPUT_NAME kraken_video_player
+          FRAMEWORK TRUE
+          FRAMEWORK_VERSION C
+          MACOSX_FRAMEWORK_IDENTIFIER com.openkraken.plugins.kraken_video_player
+          )
+endif()
