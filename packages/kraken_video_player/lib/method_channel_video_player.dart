@@ -8,7 +8,7 @@ import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'video_player_platform_interface.dart';
 
-const MethodChannel _channel = MethodChannel('flutter.io/videoPlayer');
+const MethodChannel _channel = MethodChannel('flutter.io/krakenVideoPlayer');
 
 /// An implementation of [VideoPlayerPlatform] that uses method channels.
 class MethodChannelVideoPlayer extends VideoPlayerPlatform {
@@ -162,7 +162,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   EventChannel _eventChannelFor(int? textureId) {
-    return EventChannel('flutter.io/videoPlayer/videoEvents$textureId');
+    return EventChannel('flutter.io/krakenVideoPlayer/videoEvents$textureId');
   }
 
   static const Map<VideoFormat, String> _videoFormatStringMap =

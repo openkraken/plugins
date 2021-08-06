@@ -4,5 +4,5 @@
 
 #import <FlutterMacOS/FlutterMacOS.h>
 
-@interface FLTVideoPlayerPlugin : NSObject <FlutterPlugin>
+@interface FLTKrakenVideoPlayerPlugin : NSObject <FlutterPlugin>
 @end
