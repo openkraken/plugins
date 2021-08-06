@@ -1,3 +1,7 @@
+## 0.4.1
+
+* fix package class name.
+
 ## 0.4.0
 
 * upgrade to kraken 0.8.0
