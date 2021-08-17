@@ -7,7 +7,7 @@
     <key>CFBundleExecutable</key>
     <string>kraken_video_player</string>
     <key>CFBundleIdentifier</key>
-    <string>com.openkraken.plugins.kraken_video_player</string>
+    <string>com.openkraken.plugins.kraken-video-player</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundlePackageType</key>

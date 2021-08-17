@@ -39,6 +39,6 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "iOS")
           OUTPUT_NAME kraken_video_player
           FRAMEWORK TRUE
           FRAMEWORK_VERSION C
-          MACOSX_FRAMEWORK_IDENTIFIER com.openkraken.plugins.kraken_video_player
+          MACOSX_FRAMEWORK_IDENTIFIER com.openkraken.plugins.kraken-video-player
           )
 endif()

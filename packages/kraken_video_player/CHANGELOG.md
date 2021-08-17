@@ -1,3 +1,7 @@
+## 0.4.3
+
+* fix ios binary identify id.
+
 ## 0.4.2
 
 * upgrade ios binary to framework
