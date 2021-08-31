@@ -326,7 +326,6 @@
 				"${BUILT_PRODUCTS_DIR}/kraken/kraken.framework",
 				"${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/kraken_video_player/macos/libkraken_video_player_jsc.dylib",
 				"${BUILT_PRODUCTS_DIR}/kraken_video_player/kraken_video_player.framework",
-				"${BUILT_PRODUCTS_DIR}/path_provider_macos/path_provider_macos.framework",
 				"${BUILT_PRODUCTS_DIR}/shared_preferences_macos/shared_preferences_macos.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -337,7 +336,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/kraken.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libkraken_video_player_jsc.dylib",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/kraken_video_player.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/path_provider_macos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/shared_preferences_macos.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
