@@ -138,9 +138,9 @@ packages:
   kraken:
     dependency: transitive
     description:
-      name: kraken
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "/Users/andycall/work/kraken_main/kraken"
+      relative: false
+    source: path
     version: "0.8.3+3"
   kraken_video_player:
     dependency: "direct main"

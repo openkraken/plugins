@@ -98,9 +98,9 @@ packages:
   kraken:
     dependency: "direct main"
     description:
-      name: kraken
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "/Users/andycall/work/kraken_main/kraken"
+      relative: false
+    source: path
     version: "0.8.3+3"
   meta:
     dependency: "direct main"
