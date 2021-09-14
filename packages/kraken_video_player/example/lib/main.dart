@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:kraken_video_player/kraken_video_player.dart';
 import 'package:kraken/kraken.dart';
@@ -70,6 +72,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Kraken(bundlePath: 'assets/bundle.js');
+    return Kraken(
+      bundlePath: 'assets/bundle.js',
+    );
   }
 }
