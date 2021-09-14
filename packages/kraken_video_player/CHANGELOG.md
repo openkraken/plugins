@@ -1,3 +1,7 @@
+## 0.4.4
+
+* compact with 0.8.3+3
+
 ## 0.4.3
 
 * fix ios binary identify id.
