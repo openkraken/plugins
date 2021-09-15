@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:kraken/bridge.dart';
 import 'package:kraken/dom.dart';
 import 'dart:ffi';
 import 'video_element.dart';
@@ -20,6 +21,6 @@ class KrakenVideoPlayer {
     ElementManager.defineElement(
         'VIDEO',
         (id, nativePtr, elementManager) => VideoElement(
-            id, nativePtr.cast<NativeVideoElement>(), elementManager));
+            id, nativePtr.cast<NativeEventTarget>(), elementManager));
   }
 }

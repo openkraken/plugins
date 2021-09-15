@@ -16,10 +16,6 @@ import 'media_element.dart';
 
 const String VIDEO = 'VIDEO';
 
-class NativeVideoElement extends Struct {
-  external Pointer<NativeMediaElement> nativeMediaElement;
-}
-
 const Map<String, dynamic> _defaultStyle = {
   DISPLAY: INLINE_BLOCK,
   WIDTH: ELEMENT_DEFAULT_WIDTH,
@@ -27,10 +23,10 @@ const Map<String, dynamic> _defaultStyle = {
 };
 
 class VideoElement extends MediaElement {
-  VideoElement(int targetId, Pointer<NativeVideoElement> nativePtr, ElementManager elementManager)
+  VideoElement(int targetId, Pointer<NativeEventTarget> nativePtr, ElementManager elementManager)
       : super(
           targetId,
-          nativePtr.ref.nativeMediaElement,
+          nativePtr,
           elementManager,
           VIDEO,
           defaultStyle: _defaultStyle,

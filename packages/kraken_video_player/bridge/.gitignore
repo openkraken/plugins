@@ -1,2 +1,4 @@
-cmake-build-*
+.kraken-test-tools
+build
 kraken
+cmake-build-*
