@@ -11,9 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   meta: "^1.3.0"
-  # kraken: ^0.8.3+2
-  kraken:
-    path: /Users/andycall/work/kraken_main/kraken
+  kraken: "^0.8.3+3"
 
 # The following section is specific to Futter.
 flutter:
