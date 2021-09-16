@@ -1,17 +1,13 @@
 cmake_minimum_required(VERSION 3.2.0)
 project(kraken_webview)
 
-set (CMAKE_MODULE_PATH /usr/local/lib/node_modules/kraken-npbt/cmake)
+set (CMAKE_MODULE_PATH /Users/andycall/work/plugin-build-tools/cmake)
 find_package(kraken)
 
 add_library(kraken_webview SHARED
-  iframe_element.cc
-iframe_element.h
+  .kraken-test-tools/kraken_webview.cc
+.kraken-test-tools/kraken_webview.h
 )
-
-if ($ENV{KRAKEN_JS_ENGINE} MATCHES "jsc")
-  set_target_properties(kraken_webview PROPERTIES OUTPUT_NAME kraken_webview_jsc)
-endif()
 
 list(APPEND BRIDGE_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(kraken_webview ${BRIDGE_LINK_LIBS} kraken)
@@ -27,5 +23,17 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Android")
         PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../android/jniLibs/${ANDROID_ABI}/"
         )
+endif()
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "iOS")
+  set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
+  set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
+
+  set_target_properties(kraken_webview PROPERTIES
+          OUTPUT_NAME kraken_webview
+          FRAMEWORK TRUE
+          FRAMEWORK_VERSION C
+          MACOSX_FRAMEWORK_IDENTIFIER com.openkraken.plugins.kraken_webview
+          )
 endif()
   

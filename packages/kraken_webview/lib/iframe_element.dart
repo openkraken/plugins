@@ -17,13 +17,6 @@ import 'src/webview_android.dart';
 import 'src/webview_cupertino.dart';
 import 'src/webview_fallback.dart';
 
-typedef NativeIframePostMessage = Void Function(Pointer<NativeIframeElement> nativePtr, Pointer<NativeString> message);
-
-class NativeIframeElement extends Struct {
-  external Pointer<NativeElement> nativeElement;
-  external Pointer<NativeFunction<NativeIframePostMessage>> postMessage;
-}
-
 const String IFRAME = 'IFRAME';
 
 const Map<String, dynamic> _defaultStyle = {
@@ -459,7 +452,7 @@ abstract class WebViewElement extends Element {
   /// The `javascriptMode` and `autoMediaPlaybackPolicy` parameters must not be null.
   WebViewElement(
     int targetId,
-    Pointer<NativeElement> nativePtr,
+    Pointer<NativeEventTarget> nativePtr,
     ElementManager elementManager, {
     required String tagName,
     this.initialUrl,
@@ -478,8 +471,8 @@ abstract class WebViewElement extends Element {
     double viewportWidth = elementManager.viewportWidth;
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);
-    _width = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_WIDTH, viewportSize);
-    _height = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_HEIGHT, viewportSize);
+    _width = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_WIDTH, viewportSize: viewportSize);
+    _height = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_HEIGHT, viewportSize: viewportSize);
   }
 
   @override
@@ -543,9 +536,9 @@ abstract class WebViewElement extends Element {
     double viewportHeight = elementManager.viewportHeight;
     Size viewportSize = Size(viewportWidth, viewportHeight);
     if (property == WIDTH) {
-      width = CSSLength.toDisplayPortValue(present, viewportSize);
+      width = CSSLength.toDisplayPortValue(present, viewportSize: viewportSize);
     } else if (property == HEIGHT) {
-      height = CSSLength.toDisplayPortValue(present, viewportSize);
+      height = CSSLength.toDisplayPortValue(present, viewportSize: viewportSize);
     }
   }
 
@@ -828,27 +821,9 @@ abstract class WebViewElement extends Element {
 //   Document? getSVGDocument();
 // };
 
-final Pointer<NativeFunction<NativeIframePostMessage>> nativePostMessage = Pointer.fromFunction(IFrameElement._postMessage);
-
 class IFrameElement extends WebViewElement {
-  static SplayTreeMap<int, IFrameElement> _nativeMap = SplayTreeMap();
-
-  static IFrameElement getIframeElementOfNativePtr(Pointer<NativeIframeElement> nativeIframeElement) {
-    IFrameElement iframeElement = _nativeMap[nativeIframeElement.address]!;
-    assert(iframeElement != null, 'Can not get iframeElement from nativeElement: $nativeIframeElement');
-    return iframeElement;
-  }
-
-  static void _postMessage(Pointer<NativeIframeElement> nativeIframeElement, Pointer<NativeString> message) {
-    IFrameElement iframeElement = getIframeElementOfNativePtr(nativeIframeElement);
-    iframeElement.postMessage(nativeStringToString(message));
-  }
-
-  final Pointer<NativeIframeElement> nativeIframeElement;
-
-  IFrameElement(int targetId, this.nativeIframeElement, ElementManager elementManager)
-      : super(targetId, nativeIframeElement.ref.nativeElement, elementManager, tagName: IFRAME) {
-    nativeIframeElement.ref.postMessage = nativePostMessage;
+  IFrameElement(int targetId, Pointer<NativeEventTarget> nativePtr, ElementManager elementManager)
+      : super(targetId, nativePtr, elementManager, tagName: IFRAME) {
   }
 
   @override
@@ -875,6 +850,15 @@ class IFrameElement extends WebViewElement {
   }
 
   @override
+  getProperty(String key) {
+    switch(key) {
+      case 'onPostMessage':
+        return (List<dynamic> argv) => onPostMessage(argv[0]);
+    }
+    return super.getProperty(key);
+  }
+
+  @override
   void onPostMessage(String? message) {
     MessageEvent event = MessageEvent(message!, origin: properties['url']);
     dispatchEvent(event);
@@ -897,6 +881,5 @@ class IFrameElement extends WebViewElement {
 
   void dispose() {
     super.dispose();
-    _nativeMap.remove(nativePostMessage.address);
   }
 }

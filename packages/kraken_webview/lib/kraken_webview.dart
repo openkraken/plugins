@@ -4,6 +4,8 @@
  */
 
 import 'dart:ffi';
+import 'package:kraken/bridge.dart';
+
 import 'platform.dart';
 import 'package:kraken/dom.dart';
 import 'iframe_element.dart';
@@ -24,7 +26,7 @@ class KrakenWebView {
     initBridge();
     ElementManager.defineElement('IFRAME', (id, nativePtr, elementManager) {
       return IFrameElement(
-          id, nativePtr.cast<NativeIframeElement>(), elementManager);
+          id, nativePtr.cast<NativeEventTarget>(), elementManager);
     });
   }
 }

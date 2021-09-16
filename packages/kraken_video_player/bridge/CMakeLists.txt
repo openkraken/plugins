@@ -9,12 +9,6 @@ add_library(kraken_video_player SHARED
 .kraken-test-tools/kraken_video_player.h
 )
 
-if ($ENV{KRAKEN_JS_ENGINE} MATCHES "jsc")
-  set_target_properties(kraken_video_player PROPERTIES OUTPUT_NAME kraken_video_player_jsc)
-elseif($ENV{KRAKEN_JS_ENGINE} MATCHES "quickjs")
-  set_target_properties(kraken_video_player PROPERTIES OUTPUT_NAME kraken_video_player_quickjs)
-endif()
-
 list(APPEND BRIDGE_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(kraken_video_player ${BRIDGE_LINK_LIBS} kraken)
 target_include_directories(kraken_video_player PUBLIC ${BRIDGE_INCLUDE})
@@ -42,3 +36,4 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "iOS")
           MACOSX_FRAMEWORK_IDENTIFIER com.openkraken.plugins.kraken_video_player
           )
 endif()
+  
