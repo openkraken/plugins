@@ -20,6 +20,6 @@ class KrakenAnimationPlayer {
     ElementManager.defineElement(
         'ANIMATION-PLAYER',
         (id, nativePtr, elementManager) => AnimationPlayerElement(
-            id, nativePtr.cast<NativeAnimationElement>(), elementManager));
+            id, nativePtr, elementManager));
   }
 }

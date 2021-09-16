@@ -14,26 +14,16 @@ abstract class MediaElement extends Element {
   }
 
   @override
-  handleJSCall(String method, List argv) {
-    switch(method) {
+  getProperty(String key) {
+    switch(key) {
       case 'play':
-        return (List<dynamic> args) {
-          play();
-          return null;
-        };
+        return (List<dynamic> argv) => play();
       case 'pause':
-        return (List<dynamic> args) {
-          pause();
-          return null;
-        };
+        return (List<dynamic> args) => pause();
       case 'fastSeek':
-        return (List<dynamic> args) {
-          fastSeek(argv[0]);
-          return null;
-        };
-      default:
-        return super.handleJSCall(method, argv);
+        return (List<dynamic> argv) => fastSeek(argv[0]);
     }
+    return super.getProperty(key);
   }
 
   @override

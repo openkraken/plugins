@@ -7,8 +7,6 @@ PODS:
     - FlutterMacOS
   - kraken_animation_player (0.0.1):
     - FlutterMacOS
-  - path_provider_macos (0.0.1):
-    - FlutterMacOS
   - Reachability (3.2)
   - shared_preferences_macos (0.0.1):
     - FlutterMacOS
@@ -18,7 +16,6 @@ DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - kraken (from `Flutter/ephemeral/.symlinks/plugins/kraken/macos`)
   - kraken_animation_player (from `Flutter/ephemeral/.symlinks/plugins/kraken_animation_player/macos`)
-  - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
   - shared_preferences_macos (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos`)
 
 SPEC REPOS:
@@ -34,17 +31,14 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/kraken/macos
   kraken_animation_player:
     :path: Flutter/ephemeral/.symlinks/plugins/kraken_animation_player/macos
-  path_provider_macos:
-    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos
   shared_preferences_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos
 
 SPEC CHECKSUMS:
   connectivity_macos: 9f30e9d0e67a0bc08a0c563ee82310b51ca6e818
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
-  kraken: 1b6c815708f6468c9301b7c26e357d4f93af6cb0
-  kraken_animation_player: 35b8401c24589a0f2de3256f1a0829358c80d8bd
-  path_provider_macos: a0a3fd666cb7cd0448e936fb4abad4052961002b
+  kraken: 2fae0b3a1098d933683165f2c2eaeebe21e9998c
+  kraken_animation_player: a0edb2e12188206963a49ccc3e5ac0d940d1dbc7
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences_macos: 480ce071d0666e37cef23fe6c702293a3d21799e
 

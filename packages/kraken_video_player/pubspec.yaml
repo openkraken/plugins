@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   meta: "^1.3.0"
-  kraken: ^0.9.0-dev.1
+  kraken: ^0.9.0-dev.2
 
 # The following section is specific to Futter.
 flutter:

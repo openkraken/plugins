@@ -10,8 +10,7 @@ import 'dart:typed_data';
 
 /// Search dynamic lib from env.KRAKEN_LIBRARY_PATH or /usr/lib
 const String KRAKEN_JS_ENGINE = 'KRAKEN_JS_ENGINE';
-final String kkJsEngine = Platform.environment[KRAKEN_JS_ENGINE] ??
-    ((Platform.isIOS || Platform.isMacOS || Platform.isAndroid) ? 'jsc' : 'quickjs');
+final String kkJsEngine = Platform.environment[KRAKEN_JS_ENGINE] ?? 'quickjs';
 final String libName = 'libkraken_animation_player_$kkJsEngine';
 final String nativeDynamicLibraryName = (Platform.isMacOS || Platform.isIOS)
     ? '$libName.dylib'
