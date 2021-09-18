@@ -7,6 +7,6 @@ class KrakenCamera {
     ElementManager.defineElement(
         'CAMERA-PREVIEW',
         (id, nativePtr, elementManager) => CameraPreviewElement(
-            id, nativePtr.cast<NativeElement>(), elementManager));
+            id, nativePtr.cast<NativeEventTarget>(), elementManager));
   }
 }

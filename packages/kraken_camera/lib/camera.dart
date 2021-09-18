@@ -82,8 +82,8 @@ CameraLensDirection parseCameraLensDirection(String? string) {
 /// May throw a [CameraException].
 Future<List<CameraDescription>> availableCameras() async {
   try {
-    final List<Map<dynamic, dynamic>> cameras = await (_channel
-        .invokeListMethod<Map<dynamic, dynamic>>('availableCameras') as FutureOr<List<Map<dynamic, dynamic>>>);
+
+    List<Map<dynamic, dynamic>> cameras = (await _channel.invokeListMethod<Map<dynamic, dynamic>>('availableCameras'))!;
     return cameras.map((Map<dynamic, dynamic> camera) {
       return CameraDescription(
         name: camera['name'],
@@ -274,7 +274,7 @@ class CameraController extends ValueNotifier<CameraValue> {
     }
     try {
       _creatingCompleter = Completer<void>();
-      final Map<String, dynamic> reply =
+      final Map<String, dynamic>? reply =
           await (_channel.invokeMapMethod<String, dynamic>(
         'initialize',
         <String, dynamic>{
@@ -282,8 +282,8 @@ class CameraController extends ValueNotifier<CameraValue> {
           'resolutionPreset': serializeResolutionPreset(resolutionPreset),
           'enableAudio': enableAudio,
         },
-      ) as FutureOr<Map<String, dynamic>>);
-      _textureId = reply['textureId'];
+      ));
+      _textureId = reply!['textureId'];
       value = value.copyWith(
         isInitialized: true,
         previewSize: Size(

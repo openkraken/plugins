@@ -64,6 +64,7 @@ class AnimationPlayerElement extends Element {
 
   @override
   getProperty(String key) {
+    print('getProperty key: $key');
     switch(key) {
       case 'play':
         return play;
