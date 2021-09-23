@@ -44,10 +44,10 @@ SPEC CHECKSUMS:
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   kraken: abbf8aa9ebd07539e1a736a1e2fcae73cb6cb4d8
-  kraken_webview: 1883a79c231120d7d0c054b3257129c14610d674
+  kraken_webview: e03018683b07a732997dda47ae01785e5ca5e386
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
 
 PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

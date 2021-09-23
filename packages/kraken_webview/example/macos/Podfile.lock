@@ -38,10 +38,10 @@ SPEC CHECKSUMS:
   connectivity_macos: 9f30e9d0e67a0bc08a0c563ee82310b51ca6e818
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
   kraken: 9be11ffec70022c0fcd1bc7c5d7b0d5829f2658d
-  kraken_webview: c1e5fac38f6681d229192288484626167ad22452
+  kraken_webview: 7d24086159db09e2ece088287fa511ebfdf1ec33
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences_macos: 480ce071d0666e37cef23fe6c702293a3d21799e
 
 PODFILE CHECKSUM: 6eac6b3292e5142cfc23bdeb71848a40ec51c14c
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
