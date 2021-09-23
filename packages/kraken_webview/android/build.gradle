@@ -27,23 +27,9 @@ android {
     defaultConfig {
         minSdkVersion 16
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a'
-        }
-
-        externalNativeBuild {
-            cmake {
-                abiFilters 'armeabi-v7a', 'arm64-v8a'
-            }
-        }
     }
     lintOptions {
         disable 'InvalidPackage'
-    }
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['jniLibs']
-        }
     }
     dependencies {
         implementation 'androidx.annotation:annotation:1.0.0'
