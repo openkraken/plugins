@@ -21,9 +21,12 @@ p.style.margin = "40rpx 20rpx 20rpx 20rpx";
 p.appendChild(text);
 p.textNode = text;
 p.onclick = function (e) {
+
   var timestamp = Date.parse(new Date());
   var picName = timestamp + ".png";
-  camera.setAttribute("take-picture", picName);
+
+  camera.takePicture(picName);
+//  camera.setAttribute("take-picture", picName);
 };
 div.appendChild(p);
 

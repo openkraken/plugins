@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyBrowser extends StatefulWidget {
-  MyBrowser({Key key, this.title}) : super(key: key);
+  MyBrowser({Key? key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -33,7 +33,7 @@ class MyBrowser extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyBrowser> {
   Widget build(BuildContext context) {
     MediaQueryData queryData = MediaQuery.of(context);
 
-    Kraken kraken;
+    Kraken? kraken;
     final TextEditingController textEditingController = TextEditingController();
 
     AppBar appBar = AppBar(
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyBrowser> {
           controller: textEditingController,
           onSubmitted: (value) {
             textEditingController.text = value;
-            kraken.loadURL(value);
+            kraken!.loadURL(value);
           },
           decoration: InputDecoration(
             hintText: 'Enter a app url',

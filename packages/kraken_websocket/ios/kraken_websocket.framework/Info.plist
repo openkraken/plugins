@@ -5,9 +5,9 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleExecutable</key>
-    <string>kraken_video_player</string>
+    <string>kraken_websocket</string>
     <key>CFBundleIdentifier</key>
-    <string>com.openkraken.plugins.kraken-video-player</string>
+    <string>com.openkraken.plugins.kraken-websocket</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundlePackageType</key>
