@@ -270,7 +270,7 @@ class CameraPreviewElement extends Element {
   Future<void> _takePicture(value) async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
-    controller!.takePicture(tempPath + '/' + value);
+    await controller!.takePicture(tempPath + '/' + value);
   }
 
   void _updateSensorOrientation(value) async {
