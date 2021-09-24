@@ -1,3 +1,7 @@
+## 0.7.0
+
+* Support rem and em unit.
+
 ## 0.5.3
 
 * upgrade kraken to 0.7.3+1
