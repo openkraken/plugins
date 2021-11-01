@@ -465,27 +465,12 @@ abstract class WebViewElement extends Element {
     this.initialMediaPlaybackPolicy = AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
   })  : assert(javascriptMode != null),
         assert(initialMediaPlaybackPolicy != null),
-        super(targetId, nativePtr, elementManager, defaultStyle: _defaultStyle, isIntrinsicBox: true, repaintSelf: true) {
-    _width = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_WIDTH, viewportSize: viewportSize);
-    _height = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_HEIGHT, viewportSize: viewportSize);
-  }
-
-  @override
-  void willAttachRenderer() {
-    super.willAttachRenderer();
-    style.addStyleChangeListener(_stylePropertyChanged);
-  }
+        super(targetId, nativePtr, elementManager, defaultStyle: _defaultStyle, isIntrinsicBox: true, repaintSelf: true);
 
   @override
   void didAttachRenderer() {
     super.didAttachRenderer();
     _setupRenderer();
-  }
-
-  @override
-  void didDetachRenderer() {
-    super.didAttachRenderer();
-    style.removeStyleChangeListener(_stylePropertyChanged);
   }
 
   /// The url that WebView loaded at first time.
@@ -502,6 +487,12 @@ abstract class WebViewElement extends Element {
   static const String WIDTH = 'width';
   static const String HEIGHT = 'height';
 
+  double? _propertyWidth;
+  double? _propertyHeight;
+  double? get width => renderStyle.width.isAuto ? _propertyWidth : renderStyle.width.computedValue;
+  double? get height => renderStyle.height.isAuto ? _propertyHeight : renderStyle.height.computedValue;
+  Size get size => Size(width!, height!);
+
   @override
   void setProperty(String key, value) {
     super.setProperty(key, value);
@@ -513,8 +504,16 @@ abstract class WebViewElement extends Element {
       if (renderer != null) {
         _setupRenderer();
       }
-    } else if (key == WIDTH || key == HEIGHT) {
-      setStyle(key, value);
+    } else if (key == WIDTH) {
+      _propertyWidth = CSSNumber.parseNumber(value);
+      if (sizedBox != null) {
+        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
+      }
+    } else if (key == HEIGHT) {
+      _propertyHeight = CSSNumber.parseNumber(value);
+      if (sizedBox != null) {
+        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
+      }
     }
   }
 
@@ -524,27 +523,6 @@ abstract class WebViewElement extends Element {
 
     _buildPlatformRenderBox();
     addChild(sizedBox!);
-  }
-
-  void _stylePropertyChanged(String property, String? prev, String present) {
-    RenderStyle renderStyle = renderBoxModel!.renderStyle;
-    double rootFontSize = renderBoxModel!.elementDelegate.getRootElementFontSize();
-    double fontSize = renderStyle.fontSize;
-    if (property == WIDTH) {
-      width = CSSLength.toDisplayPortValue(
-        present,
-        viewportSize: viewportSize,
-        rootFontSize: rootFontSize,
-        fontSize: fontSize
-      );
-    } else if (property == HEIGHT) {
-      height = CSSLength.toDisplayPortValue(
-        present,
-        viewportSize: viewportSize,
-        rootFontSize: rootFontSize,
-        fontSize: fontSize
-      );
-    }
   }
 
   /// Create a new platformed render box.
@@ -569,44 +547,6 @@ abstract class WebViewElement extends Element {
     _controller.future.then((WebViewController controller) {
       controller.teardownJSBridge();
     });
-  }
-
-  Size get size => Size(width!, height!);
-
-  /// Element attribute width
-  double? _width;
-
-  double? get width => _width;
-
-  set width(double? value) {
-    if (value == null) {
-      return;
-    }
-    if (value != _width) {
-      _width = value;
-
-      if (sizedBox != null) {
-        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
-      }
-    }
-  }
-
-  /// Element attribute height
-  double? _height;
-
-  double? get height => _height;
-
-  set height(double? value) {
-    if (value == null) {
-      return;
-    }
-    if (value != _height) {
-      _height = value;
-
-      if (sizedBox != null) {
-        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
-      }
-    }
   }
 
   /// Default userAgent for kraken.
