@@ -454,7 +454,6 @@ abstract class WebViewElement extends Element {
     int targetId,
     Pointer<NativeEventTarget> nativePtr,
     ElementManager elementManager, {
-    required String tagName,
     this.initialUrl,
     this.javascriptMode = JavascriptMode.unrestricted,
     this.javascriptChannels,
@@ -466,8 +465,7 @@ abstract class WebViewElement extends Element {
     this.initialMediaPlaybackPolicy = AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
   })  : assert(javascriptMode != null),
         assert(initialMediaPlaybackPolicy != null),
-        super(targetId, nativePtr, elementManager,
-            tagName: tagName, defaultStyle: _defaultStyle, isIntrinsicBox: true, repaintSelf: true) {
+        super(targetId, nativePtr, elementManager, defaultStyle: _defaultStyle, isIntrinsicBox: true, repaintSelf: true) {
     _width = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_WIDTH, viewportSize: viewportSize);
     _height = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_HEIGHT, viewportSize: viewportSize);
   }
@@ -830,7 +828,7 @@ abstract class WebViewElement extends Element {
 
 class IFrameElement extends WebViewElement {
   IFrameElement(int targetId, Pointer<NativeEventTarget> nativePtr, ElementManager elementManager)
-      : super(targetId, nativePtr, elementManager, tagName: IFRAME) {
+      : super(targetId, nativePtr, elementManager) {
   }
 
   @override

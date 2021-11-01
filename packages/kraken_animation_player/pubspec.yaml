@@ -1,6 +1,6 @@
 name: kraken_animation_player
 description: A kraken plugin which provide `<animation-player />` tags to play animation format files.
-version: 1.0.0-dev.1
+version: 1.0.0-dev.2
 homepage: https://openkraken.com
 
 environment:
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flare_flutter: ^3.0.0
-  kraken: ^0.9.0-dev.8
+  kraken: ^0.9.0-rc.4
 
 dev_dependencies:
   flutter_test:

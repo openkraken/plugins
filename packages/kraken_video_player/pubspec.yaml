@@ -1,6 +1,6 @@
 name: kraken_video_player
-description: Kraken Video Player
-version: 1.0.0-dev.1
+description: Kraken video player plugin.
+version: 1.0.0-dev.2
 homepage: https://openkraken.com
 
 environment:
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   meta: "^1.3.0"
-  kraken: ^0.9.0-dev.8
+  kraken: ^0.9.0-rc.4
 
 # The following section is specific to Futter.
 flutter:

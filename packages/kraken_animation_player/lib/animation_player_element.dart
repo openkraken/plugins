@@ -34,7 +34,6 @@ class AnimationPlayerElement extends Element {
       int targetId, Pointer<NativeEventTarget> nativeEventTarget, ElementManager elementManager)
       : super(
             targetId, nativeEventTarget, elementManager,
-            tagName: ANIMATION_PLAYER,
             defaultStyle: _defaultStyle,
             isIntrinsicBox: true,
             repaintSelf: true) {
