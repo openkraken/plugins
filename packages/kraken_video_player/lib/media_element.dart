@@ -25,11 +25,6 @@ abstract class MediaElement extends Element {
     return super.getProperty(key);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   void play();
 
   void pause();
