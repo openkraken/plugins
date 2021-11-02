@@ -28,7 +28,6 @@ class VideoElement extends MediaElement {
           targetId,
           nativePtr,
           elementManager,
-          VIDEO,
           defaultStyle: _defaultStyle,
         );
 

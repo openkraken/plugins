@@ -1,4 +1,4 @@
-## 1.0.0-dev.2
+## 1.0.0-dev.3
 
 * Migrate to kraken 0.9.0 rc. 
 ## 0.4.4
