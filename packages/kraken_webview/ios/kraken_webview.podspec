@@ -14,7 +14,6 @@ A WebView Plugin for Flutter.
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.vendored_libraries = 'libkraken_webview_jsc.dylib'
   s.platform = :ios, '8.0'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
 end

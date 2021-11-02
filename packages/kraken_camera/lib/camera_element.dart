@@ -49,31 +49,25 @@ Future<CameraDescription?> detectCamera(String? lens) async {
 }
 
 class CameraPreviewElement extends Element {
-  CameraPreviewElement(int targetId, Pointer<NativeElement> nativePtr, ElementManager elementManager)
-      : super(targetId, nativePtr, elementManager, tagName: CAMERA_PREVIEW, defaultStyle: _defaultStyle, isIntrinsicBox: true);
+  CameraPreviewElement(int targetId, Pointer<NativeEventTarget> nativePtr, ElementManager elementManager)
+      : super(targetId, nativePtr, elementManager, defaultStyle: _defaultStyle, isIntrinsicBox: true);
+
+
+  static const String WIDTH = 'width';
+  static const String HEIGHT = 'height';
+
+  double? _propertyWidth;
+  double? _propertyHeight;
+  double? get width => renderStyle.width.isAuto ? _propertyWidth : renderStyle.width.computedValue;
+  double? get height => renderStyle.height.isAuto ? _propertyHeight : renderStyle.height.computedValue;
+  Size get size => Size(width!, height!);
 
   @override
-  void willAttachRenderer() {
-    super.willAttachRenderer();
-    double viewportWidth = elementManager.viewportWidth;
-    double viewportHeight = elementManager.viewportHeight;
-    Size viewportSize = Size(viewportWidth, viewportHeight);
+  void didAttachRenderer() {
+    super.didAttachRenderer();
 
-    sizedBox = RenderConstrainedBox(
-      additionalConstraints: BoxConstraints.loose(Size(
-        CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_WIDTH, viewportSize)!,
-        CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_HEIGHT, viewportSize)!,
-      )),
-    );
-
+    sizedBox = RenderConstrainedBox(additionalConstraints: BoxConstraints.loose(size));
     addChild(sizedBox);
-    style.addStyleChangeListener(_propertyChangedListener);
-  }
-
-  @override
-  void didDetachRenderer() {
-    super.didDetachRenderer();
-    style.removeStyleChangeListener(_propertyChangedListener);
   }
 
   bool enableAudio = false;
@@ -92,32 +86,6 @@ class CameraPreviewElement extends Element {
   void dispose() {
     super.dispose();
     controller!.dispose();
-  }
-
-  /// Element attribute width
-  double? _width;
-  double? get width => _width;
-  set width(double? newValue) {
-    if (newValue != null) {
-      _width = newValue;
-      sizedBox.additionalConstraints = BoxConstraints.expand(
-        width: width,
-        height: height ?? width! / aspectRatio,
-      );
-    }
-  }
-
-  /// Element attribute height
-  double? _height;
-  double? get height => _height;
-  set height(double? newValue) {
-    if (newValue != null) {
-      _height = newValue;
-      sizedBox.additionalConstraints = BoxConstraints.expand(
-        width: width ?? height! * aspectRatio,
-        height: height,
-      );
-    }
   }
 
   double get aspectRatio {
@@ -220,50 +188,39 @@ class CameraPreviewElement extends Element {
     _setProperty(key, value);
   }
 
-  void _propertyChangedListener(String key, String? original, String present) {
-    double viewportWidth = elementManager.viewportWidth;
-    double viewportHeight = elementManager.viewportHeight;
-    Size viewportSize = Size(viewportWidth, viewportHeight);
-    switch (key) {
-      case 'width':
-        // Trigger width setter to invoke rerender.
-        width = CSSLength.toDisplayPortValue(present, viewportSize) ?? width;
-        break;
-      case 'height':
-        // Trigger height setter to invoke rerender.
-        height = CSSLength.toDisplayPortValue(present, viewportSize) ?? height;
-        break;
-      default:
+  @override
+  getProperty(String key) {
+    switch(key) {
+      case 'takePicture':
+        return (List<dynamic> argv) async => await _takePicture(argv[0]);
     }
+    return super.getProperty(key);
   }
 
   void _setProperty(String key, dynamic value) {
-    double viewportWidth = elementManager.viewportWidth;
-    double viewportHeight = elementManager.viewportHeight;
-    Size viewportSize = Size(viewportWidth, viewportHeight);
     if (key == 'resolution-preset') {
       resolutionPreset = getResolutionPreset(value);
-    } else if (key == 'width') {
-      // <camera-preview width="300" />
-      // Width and height is united with pixel.
-      value = value.toString() + 'px';
-      width = CSSLength.toDisplayPortValue(value, viewportSize) ?? width;
-    } else if (key == 'height') {
-      value = value.toString() + 'px';
-      height = CSSLength.toDisplayPortValue(value, viewportSize) ?? height;
+    } else if (key == WIDTH) {
+      _propertyWidth = CSSNumber.parseNumber(value);
+      if (sizedBox != null) {
+        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
+      }
+    } else if (key == HEIGHT) {
+      _propertyHeight = CSSNumber.parseNumber(value);
+      if (sizedBox != null) {
+        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
+      }
     } else if (key == 'lens') {
       _initCameraWithLens(value);
     } else if (key == 'sensor-orientation') {
       _updateSensorOrientation(value);
-    } else if (key == 'take-picture') {
-      _takePicture(value);
     }
   }
 
-  void _takePicture(value) async {
+  Future<void> _takePicture(value) async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
-    controller!.takePicture(tempPath + '/' + value);
+    await controller!.takePicture(tempPath + '/' + value);
   }
 
   void _updateSensorOrientation(value) async {

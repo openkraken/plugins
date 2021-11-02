@@ -17,61 +17,26 @@ import 'flare_render_object.dart';
 const String ANIMATION_PLAYER = 'ANIMATION-PLAYER';
 const String ANIMATION_TYPE_FLARE = 'flare';
 
-typedef NativePlayAnimation = Void Function(
-    Pointer<NativeAnimationElement> nativePtr,
-    Pointer<NativeString> name,
-    Double mix,
-    Double mixSeconds);
-
-class NativeAnimationElement extends Struct {
-  external Pointer<NativeElement> nativeElement;
-  external Pointer<NativeFunction<NativePlayAnimation>> play;
-}
-
 final Map<String, dynamic> _defaultStyle = {
   DISPLAY: BLOCK,
   WIDTH: ELEMENT_DEFAULT_WIDTH,
   HEIGHT: ELEMENT_DEFAULT_HEIGHT,
 };
 
-final Pointer<NativeFunction<NativePlayAnimation>> nativePlay =
-    Pointer.fromFunction(AnimationPlayerElement._play);
 
 // Ref: https://github.com/LottieFiles/lottie-player
 class AnimationPlayerElement extends Element {
-  static SplayTreeMap<int, AnimationPlayerElement> _nativeMap = SplayTreeMap();
-  static AnimationPlayerElement getAnimationPlayerOfNativePtr(
-      Pointer<NativeAnimationElement> nativeAnimationElement) {
-    AnimationPlayerElement? animationPlayerElement =
-        _nativeMap[nativeAnimationElement.address];
-    if (animationPlayerElement == null) {
-      throw FlutterError(
-          'Can not get animationPlayerElement from nativeElement: $nativeAnimationElement');
-    }
-    return animationPlayerElement;
-  }
-
-  static void _play(Pointer<NativeAnimationElement> nativePtr,
-      Pointer<NativeString> name, double mix, double mixSeconds) {
-    AnimationPlayerElement element = getAnimationPlayerOfNativePtr(nativePtr);
-    element.play(nativeStringToString(name), mix, mixSeconds);
-  }
-
-  final Pointer<NativeAnimationElement> nativeAnimationElement;
 
   FlareRenderObject? _animationRenderObject;
   FlareControls? _animationController;
 
   AnimationPlayerElement(
-      int targetId, this.nativeAnimationElement, ElementManager elementManager)
+      int targetId, Pointer<NativeEventTarget> nativeEventTarget, ElementManager elementManager)
       : super(
-            targetId, nativeAnimationElement.ref.nativeElement, elementManager,
-            tagName: ANIMATION_PLAYER,
+            targetId, nativeEventTarget, elementManager,
             defaultStyle: _defaultStyle,
             isIntrinsicBox: true,
             repaintSelf: true) {
-    _nativeMap[nativeAnimationElement.address] = this;
-    nativeAnimationElement.ref.play = nativePlay;
   }
 
   String get objectFit => style[OBJECT_FIT];
@@ -94,7 +59,16 @@ class AnimationPlayerElement extends Element {
   @override
   void dispose() {
     super.dispose();
-    _nativeMap.remove(nativeAnimationElement.address);
+  }
+
+  @override
+  getProperty(String key) {
+    print('getProperty key: $key');
+    switch(key) {
+      case 'play':
+        return play;
+    }
+    return super.getProperty(key);
   }
 
   @override
@@ -111,8 +85,14 @@ class AnimationPlayerElement extends Element {
     }
   }
 
-  void play(String name, [double mix = 1.0, double mixSeconds = 0.2]) {
-    _animationController?.play(name, mix: mix, mixSeconds: mixSeconds);
+  void play(List<dynamic> args) {
+    if (args.length == 1) {
+      _animationController?.play(args[0]);
+    } else if (args.length == 2) {
+      _animationController?.play(args[0], mix: args[1]);
+    } else if (args.length == 3) {
+      _animationController?.play(args[0], mix: args[1], mixSeconds: args[2]);
+    }
   }
 
   void _updateObjectFit() {

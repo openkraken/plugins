@@ -1,3 +1,6 @@
+## 1.0.0-dev.2
+
+* Migrate to kraken 0.9.0 rc. 
 ## 0.7.0
 
 * Support rem and em unit.

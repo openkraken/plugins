@@ -17,13 +17,6 @@ import 'src/webview_android.dart';
 import 'src/webview_cupertino.dart';
 import 'src/webview_fallback.dart';
 
-typedef NativeIframePostMessage = Void Function(Pointer<NativeIframeElement> nativePtr, Pointer<NativeString> message);
-
-class NativeIframeElement extends Struct {
-  external Pointer<NativeElement> nativeElement;
-  external Pointer<NativeFunction<NativeIframePostMessage>> postMessage;
-}
-
 const String IFRAME = 'IFRAME';
 
 const Map<String, dynamic> _defaultStyle = {
@@ -459,9 +452,8 @@ abstract class WebViewElement extends Element {
   /// The `javascriptMode` and `autoMediaPlaybackPolicy` parameters must not be null.
   WebViewElement(
     int targetId,
-    Pointer<NativeElement> nativePtr,
+    Pointer<NativeEventTarget> nativePtr,
     ElementManager elementManager, {
-    required String tagName,
     this.initialUrl,
     this.javascriptMode = JavascriptMode.unrestricted,
     this.javascriptChannels,
@@ -473,28 +465,12 @@ abstract class WebViewElement extends Element {
     this.initialMediaPlaybackPolicy = AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
   })  : assert(javascriptMode != null),
         assert(initialMediaPlaybackPolicy != null),
-        super(targetId, nativePtr, elementManager,
-            tagName: tagName, defaultStyle: _defaultStyle, isIntrinsicBox: true, repaintSelf: true) {
-    _width = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_WIDTH, viewportSize: viewportSize);
-    _height = CSSLength.toDisplayPortValue(ELEMENT_DEFAULT_HEIGHT, viewportSize: viewportSize);
-  }
-
-  @override
-  void willAttachRenderer() {
-    super.willAttachRenderer();
-    style.addStyleChangeListener(_stylePropertyChanged);
-  }
+        super(targetId, nativePtr, elementManager, defaultStyle: _defaultStyle, isIntrinsicBox: true, repaintSelf: true);
 
   @override
   void didAttachRenderer() {
     super.didAttachRenderer();
     _setupRenderer();
-  }
-
-  @override
-  void didDetachRenderer() {
-    super.didAttachRenderer();
-    style.removeStyleChangeListener(_stylePropertyChanged);
   }
 
   /// The url that WebView loaded at first time.
@@ -511,6 +487,12 @@ abstract class WebViewElement extends Element {
   static const String WIDTH = 'width';
   static const String HEIGHT = 'height';
 
+  double? _propertyWidth;
+  double? _propertyHeight;
+  double? get width => renderStyle.width.isAuto ? _propertyWidth : renderStyle.width.computedValue;
+  double? get height => renderStyle.height.isAuto ? _propertyHeight : renderStyle.height.computedValue;
+  Size get size => Size(width!, height!);
+
   @override
   void setProperty(String key, value) {
     super.setProperty(key, value);
@@ -522,8 +504,16 @@ abstract class WebViewElement extends Element {
       if (renderer != null) {
         _setupRenderer();
       }
-    } else if (key == WIDTH || key == HEIGHT) {
-      setStyle(key, value);
+    } else if (key == WIDTH) {
+      _propertyWidth = CSSNumber.parseNumber(value);
+      if (sizedBox != null) {
+        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
+      }
+    } else if (key == HEIGHT) {
+      _propertyHeight = CSSNumber.parseNumber(value);
+      if (sizedBox != null) {
+        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
+      }
     }
   }
 
@@ -533,27 +523,6 @@ abstract class WebViewElement extends Element {
 
     _buildPlatformRenderBox();
     addChild(sizedBox!);
-  }
-
-  void _stylePropertyChanged(String property, String? prev, String present) {
-    RenderStyle renderStyle = renderBoxModel!.renderStyle;
-    double rootFontSize = renderBoxModel!.elementDelegate.getRootElementFontSize();
-    double fontSize = renderStyle.fontSize;
-    if (property == WIDTH) {
-      width = CSSLength.toDisplayPortValue(
-        present,
-        viewportSize: viewportSize,
-        rootFontSize: rootFontSize,
-        fontSize: fontSize
-      );
-    } else if (property == HEIGHT) {
-      height = CSSLength.toDisplayPortValue(
-        present,
-        viewportSize: viewportSize,
-        rootFontSize: rootFontSize,
-        fontSize: fontSize
-      );
-    }
   }
 
   /// Create a new platformed render box.
@@ -578,44 +547,6 @@ abstract class WebViewElement extends Element {
     _controller.future.then((WebViewController controller) {
       controller.teardownJSBridge();
     });
-  }
-
-  Size get size => Size(width!, height!);
-
-  /// Element attribute width
-  double? _width;
-
-  double? get width => _width;
-
-  set width(double? value) {
-    if (value == null) {
-      return;
-    }
-    if (value != _width) {
-      _width = value;
-
-      if (sizedBox != null) {
-        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
-      }
-    }
-  }
-
-  /// Element attribute height
-  double? _height;
-
-  double? get height => _height;
-
-  set height(double? value) {
-    if (value == null) {
-      return;
-    }
-    if (value != _height) {
-      _height = value;
-
-      if (sizedBox != null) {
-        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
-      }
-    }
   }
 
   /// Default userAgent for kraken.
@@ -835,27 +766,9 @@ abstract class WebViewElement extends Element {
 //   Document? getSVGDocument();
 // };
 
-final Pointer<NativeFunction<NativeIframePostMessage>> nativePostMessage = Pointer.fromFunction(IFrameElement._postMessage);
-
 class IFrameElement extends WebViewElement {
-  static SplayTreeMap<int, IFrameElement> _nativeMap = SplayTreeMap();
-
-  static IFrameElement getIframeElementOfNativePtr(Pointer<NativeIframeElement> nativeIframeElement) {
-    IFrameElement iframeElement = _nativeMap[nativeIframeElement.address]!;
-    assert(iframeElement != null, 'Can not get iframeElement from nativeElement: $nativeIframeElement');
-    return iframeElement;
-  }
-
-  static void _postMessage(Pointer<NativeIframeElement> nativeIframeElement, Pointer<NativeString> message) {
-    IFrameElement iframeElement = getIframeElementOfNativePtr(nativeIframeElement);
-    iframeElement.postMessage(nativeStringToString(message));
-  }
-
-  final Pointer<NativeIframeElement> nativeIframeElement;
-
-  IFrameElement(int targetId, this.nativeIframeElement, ElementManager elementManager)
-      : super(targetId, nativeIframeElement.ref.nativeElement, elementManager, tagName: IFRAME) {
-    nativeIframeElement.ref.postMessage = nativePostMessage;
+  IFrameElement(int targetId, Pointer<NativeEventTarget> nativePtr, ElementManager elementManager)
+      : super(targetId, nativePtr, elementManager) {
   }
 
   @override
@@ -882,6 +795,15 @@ class IFrameElement extends WebViewElement {
   }
 
   @override
+  getProperty(String key) {
+    switch(key) {
+      case 'onPostMessage':
+        return (List<dynamic> argv) => onPostMessage(argv[0]);
+    }
+    return super.getProperty(key);
+  }
+
+  @override
   void onPostMessage(String? message) {
     MessageEvent event = MessageEvent(message!, origin: properties['url']);
     dispatchEvent(event);
@@ -904,6 +826,5 @@ class IFrameElement extends WebViewElement {
 
   void dispose() {
     super.dispose();
-    _nativeMap.remove(nativePostMessage.address);
   }
 }

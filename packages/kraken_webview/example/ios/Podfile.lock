@@ -9,12 +9,8 @@ PODS:
     - Flutter
   - kraken_webview (0.0.1):
     - Flutter
-  - path_provider (0.0.1):
-    - Flutter
   - Reachability (3.2)
   - shared_preferences (0.0.1):
-    - Flutter
-  - vibration (1.7.3):
     - Flutter
 
 DEPENDENCIES:
@@ -23,9 +19,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - kraken (from `.symlinks/plugins/kraken/ios`)
   - kraken_webview (from `.symlinks/plugins/kraken_webview/ios`)
-  - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - vibration (from `.symlinks/plugins/vibration/ios`)
 
 SPEC REPOS:
   trunk:
@@ -42,24 +36,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/kraken/ios"
   kraken_webview:
     :path: ".symlinks/plugins/kraken_webview/ios"
-  path_provider:
-    :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  vibration:
-    :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   kraken: abbf8aa9ebd07539e1a736a1e2fcae73cb6cb4d8
-  kraken_webview: 40ce60ae551b90f49b6dbe3db1512bdc076a7204
-  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  kraken_webview: e03018683b07a732997dda47ae01785e5ca5e386
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  vibration: b5a33e764c3f609a975b9dca73dce20fdde627dc
 
 PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.2
