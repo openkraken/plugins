@@ -141,14 +141,14 @@ packages:
       name: kraken
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.0-dev.9"
+    version: "0.9.0"
   kraken_webview:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "0.8.0-dev.1"
+    version: "1.0.1"
   matcher:
     dependency: transitive
     description:
