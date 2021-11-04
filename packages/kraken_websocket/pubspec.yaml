@@ -1,6 +1,6 @@
 name: kraken_websocket
 description: W3C compact video tag support.
-version: 1.0.0-dev.1
+version: 1.0.0
 author: kraken team
 homepage: https://openkraken.com
 
@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   web_socket_channel: ^2.1.0
-  kraken: ^0.9.0-rc.5
+  kraken: ^0.9.0
 
 dev_dependencies:
   flutter_test:
@@ -23,8 +23,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-  assets:
-    - assets/
   # This section identifies this Flutter project as a plugin project.
   # The 'pluginClass' and Android 'package' identifiers should not ordinarily
   # be modified. They are used by the tooling to maintain consistency when
