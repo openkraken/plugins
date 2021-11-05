@@ -1,6 +1,6 @@
-## 1.0.1
+## 1.0.4
 
-* Fix ios binary.
+* Fix binary not found on iOS platform.
 
 ## 1.0.0
 

@@ -12,7 +12,11 @@ import 'dart:typed_data';
 const String KRAKEN_JS_ENGINE = 'KRAKEN_JS_ENGINE';
 final String libName = 'libkraken_websocket';
 final String nativeDynamicLibraryName = (Platform.isMacOS)
-    ? '$libName.dylib' : Platform.isIOS ? 'kraken_websocket.framework'
-    : Platform.isWindows ? '$libName.dll' : '$libName.so';
+    ? '$libName.dylib'
+    : Platform.isIOS
+        ? 'kraken_websocket.framework/kraken_websocket'
+        : Platform.isWindows
+            ? '$libName.dll'
+            : '$libName.so';
 DynamicLibrary nativeDynamicLibrary =
     DynamicLibrary.open(nativeDynamicLibraryName);
