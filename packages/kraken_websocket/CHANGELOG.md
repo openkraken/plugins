@@ -1,7 +1,10 @@
+## 1.0.1
+
+* Fix ios binary.
+
 ## 1.0.0
 
 * Upgrade to kraken 0.9.0
-
 
 ## 0.2.0+1
 
