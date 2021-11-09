@@ -1,3 +1,7 @@
+## 1.0.5
+
+* Fix macos binary minimal os required version.
+
 ## 1.0.4
 
 * Fix binary not found on iOS platform.
