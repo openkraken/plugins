@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.2.0)
 project(kraken_websocket)
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.11)
 set(CMAKE_CXX_STANDARD 17)
 
 add_library(kraken SHARED IMPORTED)
