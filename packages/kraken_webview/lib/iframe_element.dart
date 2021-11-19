@@ -483,7 +483,7 @@ abstract class WebViewElement extends Element {
         super(targetId, nativePtr, elementManager,
             defaultStyle: _defaultStyle,
             isIntrinsicBox: true,
-            repaintSelf: true);
+            isDefaultRepaintBoundary: true);
 
   @override
   void didAttachRenderer() {
