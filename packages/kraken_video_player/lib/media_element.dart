@@ -8,7 +8,7 @@ abstract class MediaElement extends Element {
       {required Map<String, dynamic> defaultStyle})
       : super(targetId, nativePtr, elementManager,
             isIntrinsicBox: true,
-            repaintSelf: true,
+            isDefaultRepaintBoundary: true,
             defaultStyle: defaultStyle) {
   }
 
