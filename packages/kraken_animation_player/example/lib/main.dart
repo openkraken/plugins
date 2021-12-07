@@ -15,13 +15,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kraken Browser',
       // theme: ThemeData.dark(),
-      home: MyBrowser(),
+      home: MyBrowser(title: 'MyApp'),
     );
   }
 }
 
 class MyBrowser extends StatefulWidget {
-  MyBrowser({Key key, this.title}) : super(key: key);
+  MyBrowser({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyBrowser> {
     kraken = Kraken(
       viewportWidth: window.physicalSize.width / window.devicePixelRatio,
       viewportHeight: window.physicalSize.height / window.devicePixelRatio - appBar.preferredSize.height - queryData.padding.top,
-      bundlePath: 'assets/bundle.js',
+      bundle: KrakenBundle.fromUrl('assets/bundle.js'),
     );
 
     return Scaffold(

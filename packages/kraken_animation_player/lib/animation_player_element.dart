@@ -30,10 +30,9 @@ class AnimationPlayerElement extends Element {
   FlareRenderObject? _animationRenderObject;
   FlareControls? _animationController;
 
-  AnimationPlayerElement(
-      int targetId, Pointer<NativeEventTarget> nativeEventTarget, ElementManager elementManager)
+  AnimationPlayerElement(EventTargetContext context)
       : super(
-            targetId, nativeEventTarget, elementManager,
+            context,
             defaultStyle: _defaultStyle,
             isIntrinsicBox: true,
             isDefaultRepaintBoundary: true) {
@@ -62,8 +61,7 @@ class AnimationPlayerElement extends Element {
   }
 
   @override
-  getProperty(String key) {
-    print('getProperty key: $key');
+  dynamic getProperty(String key) {
     switch(key) {
       case 'play':
         return play;
@@ -74,15 +72,6 @@ class AnimationPlayerElement extends Element {
   @override
   void didDetachRenderer() {
     _animationRenderObject = null;
-  }
-
-  void _updateRenderObject() {
-    if (isConnected && isRendererAttached) {
-      RenderObject? prev = previousSibling?.renderer;
-
-      detach();
-      attachTo(parent as Element, after: prev as RenderBox?);
-    }
   }
 
   void play(List<dynamic> args) {
@@ -103,15 +92,8 @@ class AnimationPlayerElement extends Element {
   }
 
   @override
-  void setProperty(String key, value) {
-    super.setProperty(key, value);
-
-    _updateRenderObject();
-  }
-
-  @override
-  void setStyle(String key, value) {
-    super.setStyle(key, value);
+  void setRenderStyle(String key, value) {
+    super.setRenderStyle(key, value);
     if (key == OBJECT_FIT) {
       _updateObjectFit();
     }
@@ -121,19 +103,14 @@ class AnimationPlayerElement extends Element {
     switch (objectFit) {
       case 'fill':
         return BoxFit.fill;
-        break;
       case 'cover':
         return BoxFit.cover;
-        break;
       case 'fit-height':
         return BoxFit.fitHeight;
-        break;
       case 'fit-width':
         return BoxFit.fitWidth;
-        break;
       case 'scale-down':
         return BoxFit.scaleDown;
-        break;
       case 'contain':
       default:
         return BoxFit.contain;
@@ -151,7 +128,7 @@ class AnimationPlayerElement extends Element {
     return FlareRenderObject()
       ..assetProvider = AssetFlare(
           bundle: NetworkAssetBundle(Uri.parse(src!),
-              contextId: elementManager.contextId),
+              contextId: ownerDocument.contextId),
           name: '')
       ..fit = boxFit
       ..alignment = Alignment.center

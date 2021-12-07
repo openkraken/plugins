@@ -3,9 +3,6 @@ import 'package:kraken/dom.dart';
 
 class KrakenAnimationPlayer {
   static void initialize() {
-    ElementManager.defineElement(
-        'ANIMATION-PLAYER',
-        (id, nativePtr, elementManager) => AnimationPlayerElement(
-            id, nativePtr, elementManager));
+    defineElement('ANIMATION-PLAYER', (EventTargetContext context) => AnimationPlayerElement(context));
   }
 }

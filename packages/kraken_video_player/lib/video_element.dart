@@ -3,9 +3,7 @@
  * Author: Kraken Team.
  */
 
-import 'dart:ffi';
 import 'dart:async';
-import 'package:kraken/bridge.dart';
 import 'package:kraken/css.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kraken/dom.dart';
@@ -23,11 +21,9 @@ const Map<String, dynamic> _defaultStyle = {
 };
 
 class VideoElement extends MediaElement {
-  VideoElement(int targetId, Pointer<NativeEventTarget> nativePtr, ElementManager elementManager)
+  VideoElement(EventTargetContext context)
       : super(
-          targetId,
-          nativePtr,
-          elementManager,
+          context,
           defaultStyle: _defaultStyle,
         );
 

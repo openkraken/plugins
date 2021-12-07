@@ -465,9 +465,7 @@ abstract class WebViewElement extends Element {
   ///
   /// The `javascriptMode` and `autoMediaPlaybackPolicy` parameters must not be null.
   WebViewElement(
-    int targetId,
-    Pointer<NativeEventTarget> nativePtr,
-    ElementManager elementManager, {
+    EventTargetContext context, {
     this.initialUrl,
     this.javascriptMode = JavascriptMode.unrestricted,
     this.javascriptChannels,
@@ -480,7 +478,7 @@ abstract class WebViewElement extends Element {
         AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
   })  : assert(javascriptMode != null),
         assert(initialMediaPlaybackPolicy != null),
-        super(targetId, nativePtr, elementManager,
+        super(context,
             defaultStyle: _defaultStyle,
             isIntrinsicBox: true,
             isDefaultRepaintBoundary: true);
@@ -794,9 +792,8 @@ abstract class WebViewElement extends Element {
 // };
 
 class IFrameElement extends WebViewElement {
-  IFrameElement(int targetId, Pointer<NativeEventTarget> nativePtr,
-      ElementManager elementManager)
-      : super(targetId, nativePtr, elementManager) {}
+  IFrameElement(EventTargetContext context)
+      : super(context) {}
 
   @override
   void onWebViewCreated(WebViewController controller) {}
