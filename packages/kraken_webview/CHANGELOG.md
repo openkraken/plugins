@@ -1,3 +1,19 @@
+## 1.1.1
+
+* Compact with kraken 0.9.1
+
+## 1.1.0
+
+* Compact with kraken 0.9.1-dev.1
+
+## 1.0.1
+
+* Fix build error when kraken 0.9.0
+
+## 1.0.0
+
+* Upgrade to kraken 0.9.0
+
 ## 1.0.0-dev.2
 
 * Migrate to kraken 0.9.0 rc. 

@@ -36,7 +36,7 @@ class AnimationPlayerElement extends Element {
             targetId, nativeEventTarget, elementManager,
             defaultStyle: _defaultStyle,
             isIntrinsicBox: true,
-            repaintSelf: true) {
+            isDefaultRepaintBoundary: true) {
   }
 
   String get objectFit => style[OBJECT_FIT];

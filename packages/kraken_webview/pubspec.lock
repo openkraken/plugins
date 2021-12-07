@@ -131,10 +131,10 @@ packages:
   kraken:
     dependency: "direct main"
     description:
-      name: kraken
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.0-dev.9"
+      path: "/Users/kraken/workspace/kraken_2/kraken"
+      relative: false
+    source: path
+    version: "0.9.1-dev.2"
   matcher:
     dependency: transitive
     description:
@@ -198,6 +198,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.1"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1+1"
   shared_preferences:
     dependency: transitive
     description:

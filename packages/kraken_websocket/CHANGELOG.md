@@ -1,3 +1,15 @@
+## 1.0.6
+## 1.0.5
+
+* Fix macos binary minimal os required version.
+
+## 1.0.4
+
+* Fix binary not found on iOS platform.
+
+## 1.0.0
+
+* Upgrade to kraken 0.9.0
 
 ## 0.2.0+1
 
