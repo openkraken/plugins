@@ -13,7 +13,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
 
   @override
   void initState() {
@@ -24,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Kraken(bundlePath: 'assets/bundle.js'),
+        body: Kraken(bundle: KrakenBundle.fromUrl('assets/bundle.js')),
       ),
     );
   }

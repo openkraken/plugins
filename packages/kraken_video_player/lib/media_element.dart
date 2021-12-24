@@ -1,12 +1,9 @@
-import 'dart:ffi';
-import 'package:kraken/bridge.dart';
 import 'package:kraken/dom.dart';
 
 abstract class MediaElement extends Element {
-  MediaElement(int targetId, Pointer<NativeEventTarget> nativePtr,
-      ElementManager elementManager,
+  MediaElement(EventTargetContext context,
       {required Map<String, dynamic> defaultStyle})
-      : super(targetId, nativePtr, elementManager,
+      : super(context,
             isIntrinsicBox: true,
             isDefaultRepaintBoundary: true,
             defaultStyle: defaultStyle) {

@@ -10,9 +10,8 @@ import 'iframe_element.dart';
 
 class KrakenWebView {
   static void initialize() {
-    ElementManager.defineElement('IFRAME', (id, nativePtr, elementManager) {
-      return IFrameElement(
-          id, nativePtr.cast<NativeEventTarget>(), elementManager);
+    defineElement('IFRAME', (EventTargetContext context) {
+      return IFrameElement(context);
     });
   }
 }
