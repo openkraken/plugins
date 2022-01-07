@@ -3,8 +3,8 @@ import 'package:kraken_websocket/kraken_websocket.dart';
 import 'package:kraken/kraken.dart';
 
 void main() {
-  KrakenWebsocket.initialize();
   runApp(MyApp());
+  KrakenWebsocket.initialize();
 }
 
 class MyApp extends StatefulWidget {
@@ -24,11 +24,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Kraken(bundlePath: 'assets/bundle.js',)
-      ),
+          appBar: AppBar(
+            title: const Text('Plugin example app'),
+          ),
+          body: Kraken(
+            bundle: KrakenBundle.fromUrl('assets://assets/bundle.js'),
+          )),
     );
   }
 }

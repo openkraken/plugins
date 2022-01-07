@@ -12,8 +12,8 @@ Second, add the following code before calling runApp():
 ```dart
 import 'package:kraken_websocket/kraken_websocket.dart';
 void main() {
-  KrakenWebsocket.initialize();
   runApp(MyApp());
+  KrakenWebsocket.initialize();
 }
 ```
 
@@ -27,4 +27,12 @@ ws.onopen = () => {
 ws.onmessage = (event) => {
     console.log(event);
 }
+```
+
+## Contribute
+
+convert javascript code to quickjs bytecode:
+
+```bash
+kraken qjsc ./lib/websocket.js ./lib/websocket_qjsc.dart --dart
 ```
