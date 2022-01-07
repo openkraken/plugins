@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   web_socket_channel: ^2.1.0
-  kraken: ^0.10.0
+  kraken: ^0.10.0-rc.3
 
 dev_dependencies:
   flutter_test:
