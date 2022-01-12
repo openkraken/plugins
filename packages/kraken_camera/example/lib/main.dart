@@ -40,7 +40,6 @@ class MyBrowser extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyBrowser> {
-
   OutlineInputBorder outlineBorder = OutlineInputBorder(
     borderSide: BorderSide(color: Colors.transparent, width: 0.0),
     borderRadius: const BorderRadius.all(
@@ -84,17 +83,17 @@ class _MyHomePageState extends State<MyBrowser> {
     );
 
     kraken = Kraken(
-      viewportWidth: window.physicalSize.width / window.devicePixelRatio,
-      viewportHeight: window.physicalSize.height / window.devicePixelRatio - appBar.preferredSize.height - queryData.padding.top,
-      bundlePath: 'assets/bundle.js',
-    );
+        viewportWidth: window.physicalSize.width / window.devicePixelRatio,
+        viewportHeight: window.physicalSize.height / window.devicePixelRatio -
+            appBar.preferredSize.height -
+            queryData.padding.top,
+        bundle: KrakenBundle.fromUrl('assets://assets/bundle.js'));
 
     return Scaffold(
         appBar: appBar,
         body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-            child: kraken
-        ));
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: kraken));
   }
 }

@@ -21,7 +21,7 @@ const Map<String, dynamic> _defaultStyle = {
 };
 
 class VideoElement extends MediaElement {
-  VideoElement(EventTargetContext context)
+  VideoElement(EventTargetContext? context)
       : super(
           context,
           defaultStyle: _defaultStyle,
@@ -84,8 +84,11 @@ class VideoElement extends MediaElement {
   Future<int> createVideoPlayer(String src) {
     Completer<int> completer = Completer();
 
-    if (src.startsWith('//') || src.startsWith('http://') || src.startsWith('https://')) {
-      controller = VideoPlayerController.network(src.startsWith('//') ? 'https:' + src : src);
+    if (src.startsWith('//') ||
+        src.startsWith('http://') ||
+        src.startsWith('https://')) {
+      controller = VideoPlayerController.network(
+          src.startsWith('//') ? 'https:' + src : src);
     } else if (src.startsWith('file://')) {
       controller = VideoPlayerController.file(src);
     } else {

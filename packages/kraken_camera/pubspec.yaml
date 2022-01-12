@@ -1,16 +1,16 @@
 name: kraken_camera
 description: Kraken camera plugin.
-version: 1.0.0
+version: 2.0.0
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.14.0 <3.0.0'
   flutter: ">=2.2.0"
 
 dependencies:
   flutter:
     sdk: flutter
   path_provider: ^2.0.2
-  kraken: ^0.9.1-rc.0
+  kraken: ^0.10.0
 
 dev_dependencies:
   flutter_test:

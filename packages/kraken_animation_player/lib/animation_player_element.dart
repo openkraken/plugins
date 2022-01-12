@@ -23,20 +23,16 @@ final Map<String, dynamic> _defaultStyle = {
   HEIGHT: ELEMENT_DEFAULT_HEIGHT,
 };
 
-
 // Ref: https://github.com/LottieFiles/lottie-player
 class AnimationPlayerElement extends Element {
-
   FlareRenderObject? _animationRenderObject;
   FlareControls? _animationController;
 
-  AnimationPlayerElement(EventTargetContext context)
-      : super(
-            context,
+  AnimationPlayerElement(EventTargetContext? context)
+      : super(context,
             defaultStyle: _defaultStyle,
             isIntrinsicBox: true,
-            isDefaultRepaintBoundary: true) {
-  }
+            isDefaultRepaintBoundary: true) {}
 
   String get objectFit => style[OBJECT_FIT];
 
@@ -62,7 +58,7 @@ class AnimationPlayerElement extends Element {
 
   @override
   dynamic getProperty(String key) {
-    switch(key) {
+    switch (key) {
       case 'play':
         return play;
     }

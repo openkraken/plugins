@@ -1,17 +1,16 @@
 import 'package:kraken/dom.dart';
 
 abstract class MediaElement extends Element {
-  MediaElement(EventTargetContext context,
+  MediaElement(EventTargetContext? context,
       {required Map<String, dynamic> defaultStyle})
       : super(context,
             isIntrinsicBox: true,
             isDefaultRepaintBoundary: true,
-            defaultStyle: defaultStyle) {
-  }
+            defaultStyle: defaultStyle) {}
 
   @override
   getProperty(String key) {
-    switch(key) {
+    switch (key) {
       case 'play':
         return (List<dynamic> argv) => play();
       case 'pause':

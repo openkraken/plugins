@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyBrowser extends StatefulWidget {
-  MyBrowser({Key? key, required this.title}) : super(key: key);
+  MyBrowser({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -39,7 +39,6 @@ class MyBrowser extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyBrowser> {
-
   OutlineInputBorder outlineBorder = OutlineInputBorder(
     borderSide: BorderSide(color: Colors.transparent, width: 0.0),
     borderRadius: const BorderRadius.all(
@@ -84,16 +83,17 @@ class _MyHomePageState extends State<MyBrowser> {
 
     kraken = Kraken(
       viewportWidth: window.physicalSize.width / window.devicePixelRatio,
-      viewportHeight: window.physicalSize.height / window.devicePixelRatio - appBar.preferredSize.height - queryData.padding.top,
+      viewportHeight: window.physicalSize.height / window.devicePixelRatio -
+          appBar.preferredSize.height -
+          queryData.padding.top,
       bundle: KrakenBundle.fromUrl('assets/bundle.js'),
     );
 
     return Scaffold(
         appBar: appBar,
         body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-            child: kraken
-        ));
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: kraken));
   }
 }
