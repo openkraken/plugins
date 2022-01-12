@@ -1,6 +1,6 @@
 name: kraken_websocket
 description: W3C compact video tag support.
-version: 2.0.0
+version: 2.0.0-rc.0
 author: kraken team
 homepage: https://openkraken.com
 

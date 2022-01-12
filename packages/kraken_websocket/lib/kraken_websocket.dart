@@ -5,8 +5,7 @@ import 'websocket_qjsc.dart';
 
 class KrakenWebsocket {
   static void initialize() {
-    print(byteData);
-    registerPluginByteCode(byteData, 'kraken_websocket');
-    ModuleManager.defineModule((moduleNamager) => WebSocketModule(moduleNamager));
+    registerKrakenWebsocketByteData();
+    ModuleManager.defineModule((moduleManager) => WebSocketModule(moduleManager));
   }
 }
