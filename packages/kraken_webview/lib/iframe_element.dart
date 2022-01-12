@@ -465,7 +465,7 @@ abstract class WebViewElement extends Element {
   ///
   /// The `javascriptMode` and `autoMediaPlaybackPolicy` parameters must not be null.
   WebViewElement(
-    EventTargetContext context, {
+    EventTargetContext? context, {
     this.initialUrl,
     this.javascriptMode = JavascriptMode.unrestricted,
     this.javascriptChannels,
@@ -792,8 +792,7 @@ abstract class WebViewElement extends Element {
 // };
 
 class IFrameElement extends WebViewElement {
-  IFrameElement(EventTargetContext context)
-      : super(context) {}
+  IFrameElement(EventTargetContext? context) : super(context) {}
 
   @override
   void onWebViewCreated(WebViewController controller) {}

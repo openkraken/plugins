@@ -49,24 +49,28 @@ Future<CameraDescription?> detectCamera(String? lens) async {
 }
 
 class CameraPreviewElement extends Element {
-  CameraPreviewElement(int targetId, Pointer<NativeEventTarget> nativePtr, ElementManager elementManager)
-      : super(targetId, nativePtr, elementManager, defaultStyle: _defaultStyle, isIntrinsicBox: true);
-
+  CameraPreviewElement(EventTargetContext? context)
+      : super(context, defaultStyle: _defaultStyle, isIntrinsicBox: true);
 
   static const String WIDTH = 'width';
   static const String HEIGHT = 'height';
 
   double? _propertyWidth;
   double? _propertyHeight;
-  double? get width => renderStyle.width.isAuto ? _propertyWidth : renderStyle.width.computedValue;
-  double? get height => renderStyle.height.isAuto ? _propertyHeight : renderStyle.height.computedValue;
+  double? get width => renderStyle.width.isAuto
+      ? _propertyWidth
+      : renderStyle.width.computedValue;
+  double? get height => renderStyle.height.isAuto
+      ? _propertyHeight
+      : renderStyle.height.computedValue;
   Size get size => Size(width!, height!);
 
   @override
   void didAttachRenderer() {
     super.didAttachRenderer();
 
-    sizedBox = RenderConstrainedBox(additionalConstraints: BoxConstraints.loose(size));
+    sizedBox =
+        RenderConstrainedBox(additionalConstraints: BoxConstraints.loose(size));
     addChild(sizedBox);
   }
 
@@ -117,7 +121,8 @@ class CameraPreviewElement extends Element {
     if (cameraDescription != null) {
       TextureBox textureBox = await createCameraTextureBox(cameraDescription);
       _invokeReady();
-      sizedBox.child = RenderAspectRatio(aspectRatio: aspectRatio, child: textureBox);
+      sizedBox.child =
+          RenderAspectRatio(aspectRatio: aspectRatio, child: textureBox);
     }
   }
 
@@ -134,10 +139,8 @@ class CameraPreviewElement extends Element {
   RenderBox _buildFallbackView(String description) {
     assert(description != null);
 
-    TextStyle textStyle = TextStyle(
-      color: Color(0xFF000000),
-      backgroundColor: Color(0xFFFFFFFF)
-    );
+    TextStyle textStyle =
+        TextStyle(color: Color(0xFF000000), backgroundColor: Color(0xFFFFFFFF));
     return RenderFallbackViewBox(
       child: KrakenRenderParagraph(
         TextSpan(text: description, style: textStyle),
@@ -146,7 +149,8 @@ class CameraPreviewElement extends Element {
     );
   }
 
-  Future<TextureBox> createCameraTextureBox(CameraDescription? cameraDescription) async {
+  Future<TextureBox> createCameraTextureBox(
+      CameraDescription? cameraDescription) async {
     this.cameraDescription = cameraDescription;
     await _createCameraController();
     return TextureBox(textureId: controller!.textureId!);
@@ -190,7 +194,7 @@ class CameraPreviewElement extends Element {
 
   @override
   getProperty(String key) {
-    switch(key) {
+    switch (key) {
       case 'takePicture':
         return (List<dynamic> argv) async => await _takePicture(argv[0]);
     }
@@ -225,7 +229,8 @@ class CameraPreviewElement extends Element {
 
   void _updateSensorOrientation(value) async {
     int? sensorOrientation = int.tryParse(value.toString());
-    cameraDescription = cameraDescription!.copyWith(sensorOrientation: sensorOrientation);
+    cameraDescription =
+        cameraDescription!.copyWith(sensorOrientation: sensorOrientation);
     await _initCamera();
   }
 }
