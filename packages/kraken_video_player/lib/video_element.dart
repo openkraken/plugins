@@ -23,9 +23,9 @@ const Map<String, dynamic> _defaultStyle = {
 class VideoElement extends MediaElement {
   VideoElement(EventTargetContext? context)
       : super(
-          context,
-          defaultStyle: _defaultStyle,
-        );
+    context,
+    defaultStyle: _defaultStyle,
+  );
 
   @override
   void willAttachRenderer() {
@@ -84,11 +84,8 @@ class VideoElement extends MediaElement {
   Future<int> createVideoPlayer(String src) {
     Completer<int> completer = Completer();
 
-    if (src.startsWith('//') ||
-        src.startsWith('http://') ||
-        src.startsWith('https://')) {
-      controller = VideoPlayerController.network(
-          src.startsWith('//') ? 'https:' + src : src);
+    if (src.startsWith('//') || src.startsWith('http://') || src.startsWith('https://')) {
+      controller = VideoPlayerController.network(src.startsWith('//') ? 'https:' + src : src);
     } else if (src.startsWith('file://')) {
       controller = VideoPlayerController.file(src);
     } else {
@@ -98,7 +95,7 @@ class VideoElement extends MediaElement {
 
     _src = src;
 
-    controller!.setLooping(properties.containsKey('loop'));
+    controller!.setLooping(attributes.containsKey('loop'));
     controller!.onCanPlay = onCanPlay;
     controller!.onCanPlayThrough = onCanPlayThrough;
     controller!.onPlay = onPlay;
@@ -108,7 +105,7 @@ class VideoElement extends MediaElement {
     controller!.onEnded = onEnded;
     controller!.onError = onError;
     controller!.initialize().then((int textureId) {
-      if (properties.containsKey('muted')) {
+      if (attributes.containsKey('muted')) {
         controller!.setMuted(true);
       }
 
@@ -127,7 +124,7 @@ class VideoElement extends MediaElement {
 
     addChild(box);
 
-    if (properties.containsKey('autoplay')) {
+    if (attributes.containsKey('autoplay')) {
       controller!.play();
     }
   }
@@ -201,6 +198,18 @@ class VideoElement extends MediaElement {
   }
 
   @override
+  void setAttribute(String key, String value) {
+    switch (key) {
+      case 'src':
+      case 'loop':
+      case 'currentTime':
+        setProperty(key, value);
+        break;
+      default: super.setAttribute(key, value);
+    }
+  }
+
+  @override
   void setProperty(String key, value) {
     super.setProperty(key, value);
     if (key == 'src') {
@@ -213,7 +222,7 @@ class VideoElement extends MediaElement {
   }
 
   @override
-  dynamic getProperty(String key) {
+  getProperty(String key) {
     var value;
     switch (key) {
       case 'loop':

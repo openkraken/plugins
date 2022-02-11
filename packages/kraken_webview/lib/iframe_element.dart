@@ -514,8 +514,8 @@ abstract class WebViewElement extends Element {
   Size get size => Size(width!, height!);
 
   @override
-  void setProperty(String key, value) {
-    super.setProperty(key, value);
+  void setAttribute(String key, String value) {
+    super.setAttribute(key, value);
 
     if (key == SRC) {
       String? url = value;
@@ -534,6 +534,28 @@ abstract class WebViewElement extends Element {
       if (sizedBox != null) {
         sizedBox!.additionalConstraints = BoxConstraints.tight(size);
       }
+    }
+  }
+
+  @override
+  void setProperty(String propertyName, value) {
+    switch (propertyName) {
+      case SRC:
+      case WIDTH:
+      case HEIGHT:
+        setAttribute(propertyName, value.toString());
+    }
+  }
+
+  @override
+  getProperty(String propertyName) {
+    switch (propertyName) {
+      case SRC:
+        return attributes[propertyName];
+      case WIDTH:
+        return width;
+      case HEIGHT:
+        return height;
     }
   }
 
