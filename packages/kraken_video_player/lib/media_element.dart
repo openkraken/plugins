@@ -4,7 +4,7 @@ abstract class MediaElement extends Element {
   MediaElement(EventTargetContext? context,
       {required Map<String, dynamic> defaultStyle})
       : super(context,
-            isIntrinsicBox: true,
+            isReplacedElement: true,
             isDefaultRepaintBoundary: true,
             defaultStyle: defaultStyle) {}
 

@@ -134,7 +134,7 @@ class VideoElement extends MediaElement {
   }
 
   void _removeVideoBox() {
-    (renderBoxModel as RenderIntrinsic).child = null;
+    (renderBoxModel as RenderReplaced).child = null;
   }
 
   onCanPlay() async {

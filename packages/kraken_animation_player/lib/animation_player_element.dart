@@ -31,7 +31,7 @@ class AnimationPlayerElement extends Element {
   AnimationPlayerElement(EventTargetContext? context)
       : super(context,
             defaultStyle: _defaultStyle,
-            isIntrinsicBox: true,
+            isReplacedElement: true,
             isDefaultRepaintBoundary: true) {}
 
   String get objectFit => style[OBJECT_FIT];
