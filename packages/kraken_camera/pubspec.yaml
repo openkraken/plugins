@@ -1,6 +1,6 @@
 name: kraken_camera
 description: Kraken camera plugin.
-version: 2.0.0
+version: 2.1.0
 
 environment:
   sdk: '>=2.14.0 <3.0.0'

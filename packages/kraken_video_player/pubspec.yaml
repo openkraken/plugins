@@ -1,6 +1,6 @@
 name: kraken_video_player
 description: Kraken video player plugin.
-version: 2.1.0
+version: 2.2.0
 homepage: https://openkraken.com
 
 environment:

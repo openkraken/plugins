@@ -50,7 +50,7 @@ Future<CameraDescription?> detectCamera(String? lens) async {
 
 class CameraPreviewElement extends Element {
   CameraPreviewElement(EventTargetContext? context)
-      : super(context, defaultStyle: _defaultStyle, isIntrinsicBox: true);
+      : super(context, defaultStyle: _defaultStyle, isReplacedElement: true);
 
   static const String WIDTH = 'width';
   static const String HEIGHT = 'height';
