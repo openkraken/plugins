@@ -10,8 +10,6 @@ import 'iframe_element.dart';
 
 class KrakenWebView {
   static void initialize() {
-    defineElement('IFRAME', (EventTargetContext? context) {
-      return IFrameElement(context);
-    });
+    defineElement('IFRAME', (context) => IFrameElement(context));
   }
 }

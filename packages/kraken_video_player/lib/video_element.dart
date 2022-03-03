@@ -4,9 +4,10 @@
  */
 
 import 'dart:async';
-import 'package:kraken/css.dart';
 import 'package:flutter/rendering.dart';
+import 'package:kraken/css.dart';
 import 'package:kraken/dom.dart';
+import 'package:kraken/foundation.dart';
 import 'package:kraken/rendering.dart';
 
 import 'video_player.dart';
@@ -21,11 +22,7 @@ const Map<String, dynamic> _defaultStyle = {
 };
 
 class VideoElement extends MediaElement {
-  VideoElement(EventTargetContext? context)
-      : super(
-    context,
-    defaultStyle: _defaultStyle,
-  );
+  VideoElement(context) : super(context, defaultStyle: _defaultStyle);
 
   @override
   void willAttachRenderer() {
@@ -62,9 +59,7 @@ class VideoElement extends MediaElement {
   VideoPlayerController? controller;
 
   String? _src;
-
   String? get src => _src;
-
   set src(String? value) {
     if (_src != value) {
       bool needDispose = _src != null;
@@ -81,6 +76,35 @@ class VideoElement extends MediaElement {
     }
   }
 
+  bool _loop = false;
+  bool get loop => _loop;
+  set loop(bool value) {
+    _loop = value;
+    controller?.setLooping(_loop);
+  }
+
+  bool _muted = false;
+  bool get muted => _muted;
+  set muted(bool value) {
+    _muted = value;
+    controller?.setMuted(_muted);
+  }
+
+  bool _autoplay = false;
+  bool get autoplay => _autoplay;
+  set autoplay(bool value) {
+    _autoplay = value;
+  }
+
+  int get currentTime => controller?.value.position.inSeconds ?? -1;
+  set currentTime(int value) {
+    controller?.seekTo(Duration(seconds: value));
+  }
+
+  double get videoWidth => controller?.value.size!.width ?? 0;
+
+  double get videoHeight => controller?.value.size!.height ?? 0;
+
   Future<int> createVideoPlayer(String src) {
     Completer<int> completer = Completer();
 
@@ -95,7 +119,7 @@ class VideoElement extends MediaElement {
 
     _src = src;
 
-    controller!.setLooping(attributes.containsKey('loop'));
+    controller!.setLooping(loop);
     controller!.onCanPlay = onCanPlay;
     controller!.onCanPlayThrough = onCanPlayThrough;
     controller!.onPlay = onPlay;
@@ -105,9 +129,7 @@ class VideoElement extends MediaElement {
     controller!.onEnded = onEnded;
     controller!.onError = onError;
     controller!.initialize().then((int textureId) {
-      if (attributes.containsKey('muted')) {
-        controller!.setMuted(true);
-      }
+      controller!.setMuted(muted);
 
       completer.complete(textureId);
     });
@@ -124,7 +146,7 @@ class VideoElement extends MediaElement {
 
     addChild(box);
 
-    if (attributes.containsKey('autoplay')) {
+    if (_autoplay) {
       controller!.play();
     }
   }
@@ -134,7 +156,7 @@ class VideoElement extends MediaElement {
   }
 
   void _removeVideoBox() {
-    (renderBoxModel as RenderReplaced).child = null;
+    (renderBoxModel as RenderIntrinsic).child = null;
   }
 
   onCanPlay() async {
@@ -199,62 +221,43 @@ class VideoElement extends MediaElement {
 
   @override
   void setAttribute(String key, String value) {
+    super.setAttribute(key, value);
     switch (key) {
-      case 'src':
-      case 'loop':
-      case 'currentTime':
-        setProperty(key, value);
-        break;
-      default: super.setAttribute(key, value);
+      case 'src': src = attributeToProperty<String>(value); break;
+      case 'loop': loop = attributeToProperty<bool>(value); break;
+      case 'currentTime': currentTime = attributeToProperty<int>(value); break;
     }
   }
 
   @override
-  void setProperty(String key, value) {
-    super.setProperty(key, value);
-    if (key == 'src') {
-      src = value.toString();
-    } else if (key == 'loop') {
-      controller?.setLooping(value == 'true' ? true : false);
-    } else if (key == 'currentTime') {
-      controller?.seekTo(Duration(seconds: int.parse(value)));
+  invokeBindingMethod(String method, List args) {
+    switch (method) {
+      case 'play': return play();
+      case 'pause': return pause();
+      case 'fastSeek': return fastSeek(castToType<num>(args[0]).toDouble());
+      default: return super.invokeBindingMethod(method, args);
     }
   }
 
   @override
-  getProperty(String key) {
-    var value;
+  void setBindingProperty(String key, value) {
     switch (key) {
-      case 'loop':
-        value = controller?.value.isLooping;
-        break;
-      case 'currentTime':
-        value = controller?.value.position.inSeconds;
-        break;
-      case 'src':
-        value = _src;
-        break;
-      case 'videoWidth':
-        value = controller?.value.size!.width;
-        break;
-      case 'videoHeight':
-        value = controller?.value.size!.height;
-        break;
+      case 'src': src = castToType<String>(value); break;
+      case 'loop': loop = castToType<bool>(value); break;
+      case 'currentTime': currentTime = castToType<num>(value).toInt(); break;
+      default: super.setBindingProperty(key, value);
     }
-
-    return value ?? super.getProperty(key);
   }
 
   @override
-  void removeProperty(String key) {
-    super.removeProperty(key);
+  getBindingProperty(String key) {
     switch (key) {
-      case 'loop':
-        controller?.setLooping(false);
-        break;
-      case 'muted':
-        controller?.setMuted(false);
-        break;
+      case 'loop': return loop;
+      case 'currentTime': return currentTime;
+      case 'src': return src;
+      case 'videoWidth': return videoWidth;
+      case 'videoHeight': return videoHeight;
+      default: return super.getBindingProperty(key);
     }
   }
 }
