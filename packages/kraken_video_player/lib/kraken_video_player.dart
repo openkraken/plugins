@@ -4,6 +4,6 @@ import 'video_element.dart';
 class KrakenVideoPlayer {
   static void initialize() {
     defineElement(
-        'VIDEO', (EventTargetContext? context) => VideoElement(context));
+        'VIDEO', (context) => VideoElement(context));
   }
 }

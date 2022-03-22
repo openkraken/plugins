@@ -6,6 +6,7 @@ import 'dart:ffi';
 import 'dart:async';
 import 'dart:collection';
 import 'package:kraken/bridge.dart';
+import 'package:kraken/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
@@ -465,7 +466,7 @@ abstract class WebViewElement extends Element {
   ///
   /// The `javascriptMode` and `autoMediaPlaybackPolicy` parameters must not be null.
   WebViewElement(
-    EventTargetContext? context, {
+    context, {
     this.initialUrl,
     this.javascriptMode = JavascriptMode.unrestricted,
     this.javascriptChannels,
@@ -480,7 +481,7 @@ abstract class WebViewElement extends Element {
         assert(initialMediaPlaybackPolicy != null),
         super(context,
             defaultStyle: _defaultStyle,
-            isReplacedElement: true,
+            isIntrinsicBox: true,
             isDefaultRepaintBoundary: true);
 
   @override
@@ -505,63 +506,72 @@ abstract class WebViewElement extends Element {
 
   double? _propertyWidth;
   double? _propertyHeight;
-  double? get width => renderStyle.width.isAuto
+  double get width => (renderStyle.width.isAuto
       ? _propertyWidth
-      : renderStyle.width.computedValue;
-  double? get height => renderStyle.height.isAuto
+      : renderStyle.width.computedValue) ?? 0;
+
+  set width(double value) {
+    _propertyWidth = value;
+    if (sizedBox != null) {
+      sizedBox!.additionalConstraints = BoxConstraints.tight(size);
+    }
+  }
+
+  double get height => (renderStyle.height.isAuto
       ? _propertyHeight
-      : renderStyle.height.computedValue;
-  Size get size => Size(width!, height!);
+      : renderStyle.height.computedValue) ?? 0;
+  set height(double value) {
+    _propertyHeight = value;
+    if (sizedBox != null) {
+      sizedBox!.additionalConstraints = BoxConstraints.tight(size);
+    }
+  }
+
+  Size get size => Size(width, height);
+
+  String get src => getAttribute(SRC) ?? '';
+  set src(String value) {
+    String? url = value;
+    initialUrl = url;
+
+    if (renderer != null) {
+      _setupRenderer();
+    }
+  }
 
   @override
   void setAttribute(String key, String value) {
     super.setAttribute(key, value);
 
-    if (key == SRC) {
-      String? url = value;
-      initialUrl = url;
-
-      if (renderer != null) {
-        _setupRenderer();
-      }
-    } else if (key == WIDTH) {
-      _propertyWidth = CSSNumber.parseNumber(value);
-      if (sizedBox != null) {
-        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
-      }
-    } else if (key == HEIGHT) {
-      _propertyHeight = CSSNumber.parseNumber(value);
-      if (sizedBox != null) {
-        sizedBox!.additionalConstraints = BoxConstraints.tight(size);
-      }
+    switch (key) {
+      case SRC: src = attributeToProperty<String>(value); break;
+      case WIDTH: width = attributeToProperty<double>(value); break;
+      case HEIGHT: height = attributeToProperty<double>(value); break;
     }
   }
 
   @override
-  void setProperty(String propertyName, value) {
+  void setBindingProperty(String propertyName, value) {
     switch (propertyName) {
-      case SRC:
-      case WIDTH:
-      case HEIGHT:
-        setAttribute(propertyName, value.toString());
+      case SRC: src = castToType<String>(value); break;
+      case WIDTH: width = castToType<num>(value).toDouble(); break;
+      case HEIGHT: height = castToType<num>(value).toDouble(); break;
+      default: super.setBindingProperty(propertyName, value);
     }
   }
 
   @override
-  getProperty(String propertyName) {
+  getBindingProperty(String propertyName) {
     switch (propertyName) {
-      case SRC:
-        return attributes[propertyName];
-      case WIDTH:
-        return width;
-      case HEIGHT:
-        return height;
+      case SRC: return src;
+      case WIDTH: return width;
+      case HEIGHT: return height;
     }
   }
 
   void _setupRenderer() {
-    assert(renderBoxModel is RenderReplaced);
-    (renderBoxModel as RenderReplaced).child = null;
+    assert(renderBoxModel is RenderIntrinsic);
+    (renderBoxModel as RenderIntrinsic).child = null;
 
     _buildPlatformRenderBox();
     addChild(sizedBox!);
@@ -580,7 +590,7 @@ abstract class WebViewElement extends Element {
       onFocus: onFocus,
     );
     sizedBox = RenderWebViewBoundaryBox(onDetach,
-        additionalConstraints: BoxConstraints.tight(Size(width!, height!)),
+        additionalConstraints: BoxConstraints.tight(Size(width, height)),
         child: platformRenderBox);
   }
 
@@ -814,7 +824,7 @@ abstract class WebViewElement extends Element {
 // };
 
 class IFrameElement extends WebViewElement {
-  IFrameElement(EventTargetContext? context) : super(context) {}
+  IFrameElement(context) : super(context);
 
   @override
   void onWebViewCreated(WebViewController controller) {}
@@ -840,17 +850,16 @@ class IFrameElement extends WebViewElement {
   }
 
   @override
-  getProperty(String key) {
-    switch (key) {
-      case 'onPostMessage':
-        return (List<dynamic> argv) => onPostMessage(argv[0]);
+  invokeBindingMethod(String method, List args) {
+    switch (method) {
+      case 'onPostMessage': return onPostMessage(castToType<String>(args[0]));
+      default: return super.invokeBindingMethod(method, args);
     }
-    return super.getProperty(key);
   }
 
   @override
   void onPostMessage(String? message) {
-    MessageEvent event = MessageEvent(message!, origin: properties['url']);
+    MessageEvent event = MessageEvent(message!, origin: src);
     dispatchEvent(event);
   }
 
