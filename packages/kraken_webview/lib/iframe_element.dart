@@ -481,7 +481,7 @@ abstract class WebViewElement extends Element {
         assert(initialMediaPlaybackPolicy != null),
         super(context,
             defaultStyle: _defaultStyle,
-            isIntrinsicBox: true,
+            isReplacedElement: true,
             isDefaultRepaintBoundary: true);
 
   @override
@@ -570,8 +570,8 @@ abstract class WebViewElement extends Element {
   }
 
   void _setupRenderer() {
-    assert(renderBoxModel is RenderIntrinsic);
-    (renderBoxModel as RenderIntrinsic).child = null;
+    assert(renderBoxModel is RenderReplaced);
+    (renderBoxModel as RenderReplaced).child = null;
 
     _buildPlatformRenderBox();
     addChild(sizedBox!);
