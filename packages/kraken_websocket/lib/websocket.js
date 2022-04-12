@@ -127,8 +127,8 @@
   
     Object.defineProperty(globalThis, 'WebSocket', {
       enumerable: true,
-      writable: false,
-      configurable: false,
+      writable: true,
+      configurable: true,
       value: WebSocket
     });
   })();
