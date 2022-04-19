@@ -249,7 +249,7 @@ class VideoElement extends MediaElement {
   }
 
   void _bindingFastSeek(List args) {
-    fastSeek(castToType<double>(args[0]));
+    fastSeek(castToType<num>(args[0]).toDouble());
   }
 
   @override
