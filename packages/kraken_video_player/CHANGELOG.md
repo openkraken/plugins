@@ -1,3 +1,7 @@
+## 2.4.1
+
+* Fix the binding method can not be called.
+
 ## 1.1.0
 
 * Upgrade to kraken 0.9.1
