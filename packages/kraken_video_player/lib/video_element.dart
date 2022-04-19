@@ -230,33 +230,40 @@ class VideoElement extends MediaElement {
   }
 
   @override
-  invokeBindingMethod(String method, List args) {
-    switch (method) {
-      case 'play': return play();
-      case 'pause': return pause();
-      case 'fastSeek': return fastSeek(castToType<num>(args[0]).toDouble());
-      default: return super.invokeBindingMethod(method, args);
-    }
-  }
-
-  @override
   void setBindingProperty(String key, value) {
     switch (key) {
       case 'src': src = castToType<String>(value); break;
       case 'loop': loop = castToType<bool>(value); break;
+      case 'autoplay': autoplay = castToType<bool>(value); break;
       case 'currentTime': currentTime = castToType<num>(value).toInt(); break;
       default: super.setBindingProperty(key, value);
     }
   }
 
+  void _bindingPlay(List args) {
+    play();
+  }
+
+  void _bindingPause(List args) {
+    pause();
+  }
+
+  void _bindingFastSeek(List args) {
+    fastSeek(castToType<double>(args[0]));
+  }
+
   @override
   getBindingProperty(String key) {
     switch (key) {
+      case 'play': return _bindingPlay;
+      case 'pause': return _bindingPause;
+      case 'fastSeek': return _bindingFastSeek;
+      case 'autoplay': return autoplay;
       case 'loop': return loop;
       case 'currentTime': return currentTime;
       case 'src': return src;
-      case 'videoWidth': return videoWidth;
-      case 'videoHeight': return videoHeight;
+      case 'width': return videoWidth;
+      case 'height': return videoHeight;
       default: return super.getBindingProperty(key);
     }
   }
