@@ -1,7 +1,6 @@
 name: kraken_webview
 description: Kraken `<iframe />` tags support.
 version: 2.5.0
-author: openkraken.com
 homepage: https://openkraken.com/
 repository: https://github.com/openkraken/plugins
 environment:
