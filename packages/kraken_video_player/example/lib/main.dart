@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Kraken(
-      bundle: KrakenBundle.fromUrl('assets://assets/bundle.js'),
+      bundle: KrakenBundle.fromUrl('assets:///assets/bundle.js'),
     );
   }
 }

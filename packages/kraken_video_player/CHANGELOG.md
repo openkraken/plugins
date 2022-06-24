@@ -1,3 +1,7 @@
+## 2.5.0
+
+* Compact with kraken 0.11.0
+
 ## 2.4.1
 
 * Fix the binding method can not be called.
