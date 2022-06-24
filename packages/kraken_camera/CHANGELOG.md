@@ -1,3 +1,7 @@
+## 2.3.0
+
+* Compact with kraken >= 0.11.0
+
 ## 1.0.0
 
 * Upgrade to kraken 0.9.0

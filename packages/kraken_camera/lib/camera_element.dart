@@ -3,12 +3,11 @@
  * Author: Kraken Team.
  */
 
-import 'dart:ffi';
 import 'dart:async';
 import 'dart:io';
-import 'package:kraken/bridge.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kraken/dom.dart';
+import 'package:kraken/foundation.dart';
 import 'package:kraken/rendering.dart';
 import 'package:kraken/css.dart';
 import 'package:path_provider/path_provider.dart';
@@ -49,7 +48,7 @@ Future<CameraDescription?> detectCamera(String? lens) async {
 }
 
 class CameraPreviewElement extends Element {
-  CameraPreviewElement(EventTargetContext? context)
+  CameraPreviewElement(BindingContext? context)
       : super(context, defaultStyle: _defaultStyle, isReplacedElement: true);
 
   static const String WIDTH = 'width';
@@ -187,18 +186,18 @@ class CameraPreviewElement extends Element {
   }
 
   @override
-  void setProperty(String key, dynamic value) async {
-    super.setProperty(key, value);
+  void setBindingProperty(String key, value) {
+    super.setBindingProperty(key, value);
     _setProperty(key, value);
   }
 
   @override
-  getProperty(String key) {
+  getBindingProperty(String key) {
     switch (key) {
       case 'takePicture':
         return (List<dynamic> argv) async => await _takePicture(argv[0]);
     }
-    return super.getProperty(key);
+    return super.getBindingProperty(key);
   }
 
   void _setProperty(String key, dynamic value) {
