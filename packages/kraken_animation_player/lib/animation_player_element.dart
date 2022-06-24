@@ -5,7 +5,8 @@
 
 import 'dart:collection';
 import 'dart:ffi';
-import 'package:kraken/bridge.dart';
+import 'package:flutter/services.dart';
+import 'package:kraken/kraken.dart';
 import 'package:flare_flutter/provider/asset_flare.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/rendering.dart';
@@ -28,7 +29,7 @@ class AnimationPlayerElement extends Element {
   FlareRenderObject? _animationRenderObject;
   FlareControls? _animationController;
 
-  AnimationPlayerElement(EventTargetContext? context)
+  AnimationPlayerElement(BindingContext? context)
       : super(context,
             defaultStyle: _defaultStyle,
             isReplacedElement: true,
@@ -37,9 +38,9 @@ class AnimationPlayerElement extends Element {
   String get objectFit => style[OBJECT_FIT];
 
   // Default type to flare
-  String get type => properties['type'] ?? ANIMATION_TYPE_FLARE;
+  String get type => attributes['type'] ?? ANIMATION_TYPE_FLARE;
 
-  String? get src => properties['src'];
+  String? get src => attributes['src'];
 
   @override
   void willAttachRenderer() {
@@ -57,12 +58,13 @@ class AnimationPlayerElement extends Element {
   }
 
   @override
-  dynamic getProperty(String key) {
+  getBindingProperty(String key) {
     switch (key) {
       case 'play':
         return play;
     }
-    return super.getProperty(key);
+
+    return super.getBindingProperty(key);
   }
 
   @override
@@ -122,13 +124,11 @@ class AnimationPlayerElement extends Element {
     _animationController = FlareControls();
 
     return FlareRenderObject()
-      ..assetProvider = AssetFlare(
-          bundle: NetworkAssetBundle(Uri.parse(src!),
-              contextId: ownerDocument.contextId),
-          name: '')
+      ..assetProvider =
+          AssetFlare(bundle: NetworkAssetBundle(Uri.parse(src!)), name: '')
       ..fit = boxFit
       ..alignment = Alignment.center
-      ..animationName = properties['name']
+      ..animationName = attributes['name']
       ..shouldClip = false
       ..useIntrinsicSize = true
       ..controller = _animationController;
