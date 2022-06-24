@@ -1,3 +1,7 @@
+## 2.5.0
+
+* Compact with kraken >= 0.11.0
+
 ## 1.1.1
 
 * Compact with kraken 0.9.1

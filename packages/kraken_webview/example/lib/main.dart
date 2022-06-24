@@ -13,7 +13,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
@@ -23,7 +22,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Kraken(bundle: KrakenBundle.fromUrl('assets/bundle.js')),
+        body:
+            Kraken(bundle: KrakenBundle.fromUrl('assets:///assets/bundle.js')),
       ),
     );
   }
